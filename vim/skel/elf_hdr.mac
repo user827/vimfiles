@@ -1,0 +1,108 @@
+%ifidn DEFBITS,32
+%define Xax eax
+%define Xsp esp
+%define Xbp ebp
+%define ADDR_SIZE 4
+%else
+%define Xax rax
+%define Xsp rsp
+%define Xbp rbp
+%define ADDR_SIZE 8
+%endif
+
+%ifidn DEFBITS,32
+%define ADDR_WORD dd
+%else
+%define ADDR_WORD dq
+%endif
+
+
+; BEGIN ELF
+; Constants for elf
+%define PT_LOOS    0x60000000
+%define PT_GNU_STACK  (PT_LOOS + 0x474e551)
+%define EI_NIDENT 16
+%define SHN_UNDEF 0
+%define	Elf_Addr  ADDR_WORD
+%define	Elf_Off   ADDR_WORD
+%define	Elf_Xword ADDR_WORD ;Is Elf_Word for 32bit
+
+BITS DEFBITS ;needed for bin output
+%ifidn DEFBITS,32
+		org	08048000h	; for 32bit
+%else
+		org	00400000h	; for 64bit
+%endif
+
+ehdr:
+e_ident:
+		db	0x7F,"ELF"	; EI_MAGs
+%ifidn DEFBITS,32
+		db	1 ; 32bit	; EI_CLASS
+%else
+		db	2 ; 64bit	; EI_CLASS
+%endif
+		db	1, 1		; EI_DATA lsb, EI_VERSION
+times EI_NIDENT-$+e_ident db 0	; EI_PAD
+
+		dw	2 ; exec	; e_type 
+%ifidn DEFBITS,32
+		dw	3 ; i386	; e_machine 
+%else
+		dw	62 ; amd64	; e_machine 
+%endif
+		dd	1		; e_version
+		Elf_Addr _start		; e_entry
+		Elf_Off	phdr - $$	; e_phoff
+		Elf_Off	0		; e_shoff
+		dd	0		; e_flags
+		dw	ehdrsize	; e_ehsize
+		dw	phdrsize	; e_phentsize
+%ifdef NXSTACK
+		dw	2		; e_phnum nbr of ph entries (are of size phentize)
+%else
+		dw	1		; e_phnum nbr of ph entries (are of size phentize)
+%endif
+		dw	0		; e_shentsize
+		dw	0		; e_shnum
+		dw	SHN_UNDEF	; e_shstrndx
+
+ehdrsize	equ	$ - ehdr
+
+phdr:
+		dd	1		; p_type
+%ifnidn DEFBITS,32
+		dd	PERM		; p_flags
+%endif
+		Elf_Off	0		; p_offset
+		Elf_Addr $$		; p_vaddr
+		Elf_Addr $$		; p_paddr
+		Elf_Xword filesize	; p_filesz
+		Elf_Xword filesize	; p_memsz
+%ifidn DEFBITS,32
+		dd	PERM		; p_flags
+		Elf_Xword 0x1000	; p_align
+%else 
+; no need for exec type?
+		Elf_Xword 0x2000000	; p_align
+%endif
+phdrsize	equ	$ - phdr
+%ifdef NXSTACK
+;GNU_STACK
+		dd	PT_GNU_STACK	; p_type
+%ifnidn DEFBITS,32
+		dd	6		; p_flags
+%endif
+		Elf_Off	0		; p_offset
+		Elf_Addr $$		; p_vaddr
+		Elf_Addr $$		; p_paddr
+		Elf_Xword 0		; p_filesz
+		Elf_Xword 0		; p_memsz
+%ifidn DEFBITS,32
+		dd	6		; p_flags
+		Elf_Xword 4		; p_align
+%else
+		Elf_Xword 8		; p_align
+%endif
+%endif
+; END ELF

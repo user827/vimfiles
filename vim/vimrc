@@ -1,0 +1,909 @@
+" TOLEARN
+" c-w T open buf in tab
+" cmdline: S-left, S-right
+" c-w H trc for splits, c-w= to reset
+" :verbose nmap ,
+" https://github.com/wincent/wincent/blob/master/aspects/vim/files/.vim/plugin/settings.vim
+" TODO use space as nmap
+
+" {{{ Startup
+if &compatible
+  set nocompatible "default, but lets dot it safe, should also be the first option if set
+endif
+
+scriptencoding utf-8
+"set debug=msg
+
+fun! s:is_restricted_argv() abort
+  for l:line in split(readfile('/proc/'.getpid().'/cmdline')[0], "\x00")
+    if l:line == "-Z"
+      return 1
+    endif
+  endfor
+  return 0
+endfun
+
+
+let s:restrict = v:progname == 'rvim' || s:is_restricted_argv()
+if ! s:restrict
+  py3 import os
+  let s:restrict = py3eval('os.geteuid()') == 0
+endif
+
+
+if s:restrict || v:progname == 'vi'
+  set noloadplugins
+endif
+
+
+
+
+let s:vim_local_prefix = $HOME . '/.vim'
+if exists('$VIM_SWAP_DIRS')
+  let s:vim_local_prefix = $VIM_SWAP_DIRS . '/'
+endif
+
+
+let s:use_unicode = !has('win32') && (&termencoding ==# 'utf-8' || &encoding ==# 'utf-8')
+" }}}
+
+" Plugins {{{
+" use z] z[ to move betwwen end and beginning of a fold
+""" Choose packages """
+if &loadplugins
+  packadd! Colorizer
+  packadd! vim-colors-github
+  packadd! ale
+  packadd! ferm
+  packadd! fzf
+  packadd! fzf-base
+  packadd! popup
+  packadd! indentLine
+  packadd! lightline
+  packadd! nerdtree
+  packadd! pinnacle
+  packadd! rust
+  packadd! ultisnips
+  packadd! vim-commentary
+  packadd! vim-eunuch
+  packadd! vim-fugitive
+  packadd! vim-gitgutter
+  packadd! vim-glsl
+  " for teh funcs
+  packadd! vim-pathogen
+  packadd! vim-repeat
+  packadd! vim-scriptease
+  packadd! vim-solarized8
+  packadd! vim-surround
+  packadd! vim-tmux
+  packadd! vim-snippets
+  packadd! vim-unimpaired
+  packadd! vimchant
+  packadd! Jenkinsfile-vim-syntax
+  packadd! vim-jsonnet
+  packadd! editorconfig-vim
+
+  if has('nvim')
+    " text wrapping still does not work with this
+    packadd! rust-tools
+    packadd! nvim-lspconfig
+    packadd! lsp-status
+    packadd! compe
+    packadd! plenary
+    packadd! nvim-dap
+    packadd! nvim-dap-go
+  endif
+endif
+" }}}
+
+if !has('nvim')
+  "must be without exclamation
+  packadd vim-sensible
+else
+  " TODO?
+  " Must come *after* the `:packadd!` calls above otherwise the contents of
+  " package "ftdetect" directories won't be evaluated.
+  filetype indent plugin on
+  "TODO which one?
+  "syntax on
+  if !exists('g:syntax_on')
+    syntax enable
+  endif
+endif
+
+" {{{ Helper functions
+fun! s:cabbrev_first( from, to ) "{{{
+  exe "cab ".a:from." <C-R>=(getcmdtype()==':' && getcmdpos()==1 ? '".a:to."' : '".a:from."')<CR>"
+endfunction "}}}
+
+function! s:appendSemiColon()
+  if getline('.') !~ ';$'
+    let original_cursor_position = getpos('.')
+    exec("s/$/;/")
+    call setpos('.', original_cursor_position)
+  endif
+endfunction
+
+" Use Q to intelligently close a window
+" (if there are multiple windows into the same buffer)
+" or kill the buffer entirely if it's the last window looking into that buffer
+function! CloseWindowOrKillBuffer() abort
+  "let number_of_windows_to_this_buffer = len(filter(range(1, winnr('$')), "winbufnr(v:val) == bufnr('%')"))
+  let number_of_windows_to_this_buffer = 0
+  for l:tab in range(1, tabpagenr('$'))
+    let number_of_windows_to_this_buffer += len(filter(range(1, tabpagewinnr(l:tab, '$')), "winbufnr(v:val) == bufnr('%')"))
+  endfor
+
+  "TODO vimfiler
+  " We should never bdelete a nerd tree
+  if matchstr(expand("%"), 'NERD') == 'NERD'
+    wincmd c
+    return
+  endif
+
+  if number_of_windows_to_this_buffer > 1
+    wincmd c
+  else
+    bdelete
+  endif
+endfunction
+
+
+
+" Jump to the next or previous line that has the same level or a lower
+" level of indentation than the current line.
+"
+" exclusive (bool): true: Motion is exclusive
+" false: Motion is inclusive
+" fwd (bool): true: Go to next line
+" false: Go to previous line
+" lowerlevel (bool): true: Go to line with lower indentation level
+" false: Go to line with the same indentation level
+" skipblanks (bool): true: Skip blank lines
+" false: Don't skip blank lines
+function! NextIndent(exclusive, fwd, lowerlevel, skipblanks)
+  let line = line('.')
+  let column = col('.')
+  let lastline = line('$')
+  let indent = indent(line)
+  let stepvalue = a:fwd ? 1 : -1
+  while (line > 0 && line <= lastline)
+    let line = line + stepvalue
+    if ( ! a:lowerlevel && indent(line) == indent ||
+          \ a:lowerlevel && indent(line) < indent)
+      if (! a:skipblanks || strlen(getline(line)) > 0)
+        if (a:exclusive)
+          let line = line - stepvalue
+        endif
+        exe line
+        exe "normal " column . "|"
+        return
+      endif
+    endif
+  endwhile
+endfunction
+
+
+if has('nvim')
+  " nvim uses didfferent format for undo
+  let s:dir_list = {
+	\ 'backup': 'backupdir',
+	\ 'views': 'viewdir',
+	\ 'swap': 'directory',
+	\ 'undonvim': 'undodir' }
+else
+  let s:dir_list = {
+	\ 'backup': 'backupdir',
+	\ 'views': 'viewdir',
+	\ 'swap': 'directory',
+	\ 'undo': 'undodir' }
+endif
+function! <SID>InitializeDirectories(common_dir)
+  for [s:dirname, s:settingname] in items(s:dir_list)
+    let s:directory = a:common_dir . s:dirname . '/'
+    if !isdirectory(s:directory)
+      call mkdir(s:directory)
+    endif
+    if !isdirectory(s:directory)
+      echom "Warning: Unable to create backup directory: " . s:directory
+      echom "Try: mkdir -p " . s:directory
+    else
+      let s:directory = substitute(s:directory, " ", "\\\\ ", "g")
+      exec "set " . s:settingname . "=" . s:directory
+    endif
+  endfor
+endfunction
+
+let s:in_private_mode = 0
+function! <sid>init_local(set_private)
+  if s:in_private_mode
+    return
+  endif
+
+  " use systems own backup
+  set nobackup
+  set nowritebackup
+
+  if s:restrict || (a:set_private && !exists('$VIM_SWAP_DIRS'))
+    echom "private mode"
+    set noswapfile
+    set noundofile
+    if has('viminfo') " ie. Vim.
+      set viminfo=
+      set viminfofile=NONE
+    elseif has('shada') " ie. Neovim.
+      set shada=
+      set shadafile=NONE
+    endif
+    let s:in_private_mode = 1
+  else
+    "if exists('$VIM_SWAP_DIRS')
+      "echom "cache: ". $VIM_SWAP_DIRS
+    "endif
+    call <SID>InitializeDirectories(s:vim_local_prefix)
+    if has('viminfo') " ie. Vim.
+      let &viminfofile= s:vim_local_prefix . 'info'
+    elseif has('shada') " ie. Neovim.
+      let &shadafile= s:vim_local_prefix . 'shada'
+    endif
+    "set viminfo^=f1
+
+
+    set undofile
+    set undolevels=1000
+    set undoreload=10000
+  endif
+endfun
+
+if !exists('*<sid>MyVimrcReload')
+  " cannot redefine a function in use
+  fun <sid>MyVimrcReload() abort
+    let l:foldlevel = &l:foldlevel
+    source $MYVIMRC
+    call lightline#init()
+    call lightline#update()
+    filetype detect
+    let &l:foldlevel = l:foldlevel
+    echom 'vimrc reloaded'
+  endfun
+endif
+" }}}
+
+" {{{ Settings
+let g:java_highlight_java_lang_ids = 1
+let g:ft_man_folding_enable=1
+let g:tex_flavor                   = "latex"
+
+"set cpoptions=cesB$ "does not work $ with autopopups
+"set switchbuf=usetab " When switching buffers, jump to opened window even if it is in a different tab
+set background=dark
+set belloff=all
+set cmdheight=1
+set conceallevel=0
+set confirm
+set cpoptions-=aAF
+set cursorline
+set diffopt+=foldcolumn:0
+set diffopt+=vertical
+set display=lastline " Show as much as possible in the window in case we wrap
+set encoding=utf-8
+set foldlevelstart=99
+set foldmethod=indent " event more clear than syntax
+set foldnestmax=2
+set formatoptions+=l "Remove comment leaders when joining lines
+set formatoptions-=o " Do not put comment leader after pressing o.
+set grepprg=grep\ -nH
+set hidden
+set history=1000        " keep 1000 lines of command line history
+set hlsearch
+set ignorecase "affects only tags and infercase when smartcase is on?
+set keymap=finnish_utf-8
+set iminsert=0
+set imsearch=-1
+set lazyredraw
+set linebreak "TOLEARN switch with ]ol
+set list
+set maxmempattern=100000
+set mouse=a
+set nojoinspaces
+set noshiftround
+set nostartofline
+set number
+set numberwidth=3
+set path+=./include;~
+set path+=/usr/local/include
+set relativenumber
+set ruler       " show the cursor position all the time, info in statusline but no need in ctrl-g
+set scrolloff=3
+set secure
+set selection=exclusive
+set shell=sh " setting this to bash breaks lsp
+set shiftwidth=2
+set shortmess+=acOtI " Abbrev. of messages (avoids 'hit enter')"
+set shortmess-=F " don't set F as it disables echom in autocmds for example
+set showbreak=…
+set showcmd
+set sidescroll=1
+set smartcase
+set spelllang=en
+set splitright                      " open vertical splits to the right of the current window
+set suffixes+=.aux,~,.bak,.bbl,.blg,.brf,.cb,.dvi,.idx,.ilg,.ind,.info,.inx,.log,.o,.out,.swp,.toc
+set suffixes+=.avi,.mkv,.wmv,.mp4,.mp3,.wma
+set suffixes+=.exe
+set suffixes-=.h
+set switchbuf=useopen
+set textwidth=80
+set thesaurus=/usr/share/myspell/dicts/th_en_US_v2.dat
+set title
+set updatecount=80
+set updatetime=300
+set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatibility
+set virtualedit=block
+set whichwrap=b,h,l,s,<,>,[,],~
+set wildmode=longest:full,full
+set winminheight=0
+
+let s:colors_set=0
+"Set colors only after defining `background`
+if $TERM =~# "alacritty\\|tmux\\|xterm" || has('gui_running')
+  if !has('nvim')
+    let &t_8f="\e[38;2;%ld;%ld;%ldm"
+    let &t_8b="\e[48;2;%ld;%ld;%ldm"
+  endif
+  set termguicolors
+
+  " https://vimcolors.com/
+  " https://colorswat.ch/vim/list?bg=dark&cat=all
+
+  let s:colors_set=1
+  colorscheme mysolarized8
+endif
+" }}}
+
+
+let &colorcolumn='+' . join(range(0, 254), ',+')
+
+if v:progname !=# 'vi'
+  set softtabstop=-1
+endif
+if has('nvim-0.3.1')
+  set fillchars+=eob:\              " suppress ~ at EndOfBuffer
+endif
+if exists('&inccommand')
+  set inccommand=split                " live preview of :s results
+endif
+
+" Terminal tunings
+if !has('nvim')
+  if $TERM =~# 'alacritty\|tmux\|xterm\|screen-256color-it'
+    let &t_SC = "\<Esc>]12;%p1%s\<Esc>\\"
+    let &t_EC = "\<Esc>]112\<Esc>\\"
+    let &t_SI = "\<Esc>[6 q"
+    let &t_SR = "\<Esc>[4 q"
+    let &t_EI = "\<Esc>[2 q"
+    let &t_SH = "\<Esc>[%p1%d q"
+
+    " curly
+    let &t_Cs = "\e[4:3m"
+    " double -- should be curly but that does not work with alacritty... work
+    " somehwhat with latest git version
+    "let &t_Cs = "\e[4:2m"
+    let &t_Ce = "\e[4:0m"
+  endif
+
+  set cryptmethod=blowfish2
+  set swapsync=
+  set ttymouse=sgr
+
+  " Make S-Up etc work inside tmux.
+  " See: https://superuser.com/a/402084/322531
+  if &term =~# 'tmux-256color'
+    execute "set <xUp>=\e[1;*A"
+    execute "set <xDown>=\e[1;*B"
+    execute "set <xRight>=\e[1;*C"
+    execute "set <xLeft>=\e[1;*D"
+  endif
+endif
+
+
+call <sid>init_local(0)
+
+"slow when glyphs do not exist
+if s:use_unicode
+  let &listchars = "tab:\u21e5 ,trail:\u2423,extends:\u21c9,precedes:\u21c7,nbsp:\u00b7"
+else
+  set listchars=tab:>\ ,trail:-,extends:>,precedes:<,nbsp:+
+endif
+
+syntax spell toplevel
+
+" Filetype specific settings
+augroup myfiletypes
+  au!
+
+  " undodir needs to be changed soon
+  " private files I don't want to leak
+  " unsilent in case F was in shortmess
+  " don't do anything when i.e fugitive shows  its git blame window
+  autocmd BufReadPre,BufNewFile ~/private/* unsilent if empty(&buftype) | call <sid>init_local(1) | endif
+
+  autocmd FileType c,cpp setlocal keywordprg=info\ --vi-keys
+
+  autocmd FileType gitcommit setlocal spell
+  autocmd FileType markdown setlocal signcolumn=number showbreak= norelativenumber nonumber breakindent linebreak
+  " shiftwidt so that folds work
+  autocmd FileType man setlocal iskeyword+=(,) shiftwidth=2 showbreak= virtualedit=all nocursorline foldlevel=1
+
+  autocmd FileType vim setlocal keywordprg=:help
+  autocmd FileType vim setlocal foldexpr=getline(v\:lnum)=~'^\"\ Section\:'?'>1'\:getline(v\:lnum)=~#'^fu'?'a1'\:getline(v\:lnum)=~#'^endf'?'s1'\:'='
+
+  autocmd FileType ruby compiler ruby | set makeprg=ruby\ %
+
+  autocmd FileType tex setlocal textwidth=80
+
+  "comply with psr2
+  autocmd FileType php setlocal keywordprg=pman sw=4 sts=4 expandtab
+  "use jedi doc
+  autocmd FileType python setlocal sw=4 sts=4 expandtab
+
+  autocmd BufRead  *.s  let b:asmsyntax = "asm"
+  autocmd BufRead  *.asm  let b:asmsyntax = "nasm"
+  autocmd BufNewFile  *.s  0r ~/.vim/skel/gas.s | let b:asmsyntax = "asm"
+  autocmd BufNewFile  *.asm,*.lst 0r ~/.vim/skel/nasm.asm | let b:asmsyntax = "nasm"
+
+  autocmd BufNewFile  *_spec.rb 0put =\"require 'spec_helper'\" | 2
+
+  autocmd FileType nasm,asm setlocal sw=8 sts=8 noexpandtab keywordprg=x86man
+  autocmd FileType asm setlocal makeprg=as\ -o\ %:r.o
+  autocmd FileType nasm setlocal makeprg=nasm\ -f\ bin\ -l\ %:r.lst
+augroup END
+
+" override settings forced in filetypes:
+augroup lateoptions
+  au!
+  autocmd FileType * set formatoptions-=o
+augroup END
+" }}}
+
+" {{{ Commands
+"annoyances
+call s:cabbrev_first('E', 'e')
+call s:cabbrev_first('W', 'w')
+call s:cabbrev_first('Wa', 'wa')
+call s:cabbrev_first('Wq', 'wq')
+call s:cabbrev_first('Q', 'q')
+call s:cabbrev_first('Qa', 'qa')
+
+" TODO: this should happen automatically for certain file types (e.g. markdown)
+command! -nargs=* Wrap :call SetupWrapping()<CR>
+command! -nargs=* UnWrap :call UnSetupWrapping()<CR>
+" }}}
+
+" {{{ Mappings
+let g:mapleader = ',' "has to be defined before usage!
+let maplocalleader = '\'
+
+nnoremap <silent> <C-_> :silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(expand('%:p:h'))<CR><CR>
+nnoremap - :NERDTreeFind<CR>
+
+" Repurpose cursor keys (accessible near homerow via "SpaceFN" layout) for one
+" of my most oft-use key sequences.
+nnoremap <silent> <S-Up> :lua vim.diagnostic.goto_prev()<cr>
+nnoremap <silent> <S-Down> :lua vim.diagnostic.goto_next()<cr>
+
+" Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
+" yanked stack (also, in visual mode)
+nnoremap <silent> <leader>d "_d
+vnoremap <silent> <leader>d "_d
+
+nnoremap <silent> <leader>cd :lcd %:h<CR>
+
+nmap <silent> <leader>vi :put=nr2char(10)<CR>ovim:set ts=<c-r>=&ts<cr> sw=<c-r>=&sw<cr> fdm=<c-r>=&fdm<cr>:<ESC>gcc:<ESC>
+
+" Underline the current line with '='
+nnoremap <silent> <leader>u= :t.<bar>s/./=/g<bar>:nohls<cr>
+nnoremap <silent> <leader>u- :t.<bar>s/./-/g<bar>:nohls<cr>
+
+" open the non-symlinked one
+noremap <leader>ve :exec ":e ".resolve(expand($MYVIMRC))<CR>
+"noremap <silent> <leader>vs :source $MYVIMRC<CR>:filetype detect<CR>:exe ":echo 'vimrc reloaded'"<CR>
+nnoremap <silent> <leader>vs :call <sid>MyVimrcReload()<cr>
+
+"CONSISTENCE
+" Yank from the cursor to the end of the line, to be consistent with C and D.
+nnoremap Y y$
+"delete the space after the word also
+nnoremap cw dwi
+nnoremap cW dWi
+
+nnoremap <Leader>ll :lwindow<CR>:ll<CR><c-w>bz<CR><CR>
+
+nnoremap <silent> <leader>; :call <SID>appendSemiColon()<CR>
+
+nnoremap <silent> Q :call CloseWindowOrKillBuffer()<CR>
+
+nnoremap <leader>spe :call LSetLang('en')<CR>
+nnoremap <leader>sps :call LSetLang('sv')<CR>
+nnoremap <leader>ces :call CleanExtraSpaces()<CR>
+
+"inoremap jk <Esc>
+"cnoremap jk <Esc>
+cnoremap <c-a> <c-b>
+"cnoremap <c-b> <c-a>
+cnoremap <c-b> <left>
+cnoremap <c-f> <right>
+cnoremap <left> <c-f>
+" }}}
+
+" {{{ Autocommands
+augroup LsAutocommands
+  au!
+  autocmd VimResized * execute "normal! \<c-w>="
+  "use only pastetoggle
+  autocmd InsertLeave  * set nopaste
+
+  if exists('##TextYankPost') && has('nvim')
+    autocmd TextYankPost * silent! lua return (not vim.v.event.visual) and require'vim.highlight'.on_yank({higroup='Substitute', timeout=200})
+  endif
+augroup END
+
+function! <sid>DisableCompe()
+    if (exists('b:compeDisabled') || index(['', 'text', 'markdown'], &ft) < 0)
+        return
+    endif
+    call compe#setup({ 'enabled': v:false }, 0)
+    let b:compeDisabled = 1
+  endfunction
+
+"}}}
+
+" {{{ Plugins
+let g:jsonnet_fmt_on_save = 0
+
+fun! s:external_plugins()
+  let g:indentLine_fileTypeExclude = ['man', 'help', 'markdown', 'tex']
+  " filetypeexlucsion fires too late for man?
+  let g:indentLine_bufNameExclude = ['man://']
+  let g:markdown_syntax_conceal=0
+  let g:vim_json_conceal=0
+
+  "LINTING: statusline, lsp, ale
+
+  let g:ale_set_balloons = 1
+  let g:ale_set_balloons_legacy_echo = 0
+
+  let g:ale_lint_on_text_changed = 0
+  let g:ale_lint_on_insert_leave = 0
+  let g:ale_lint_on_enter = 0
+  let g:ale_lint_on_save = 1
+  let g:ale_lint_on_filetype_changed = 0
+
+  let g:ale_fix_on_save = 0
+
+
+  let g:ale_completion_enabled = 0
+
+  let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
+  let g:ale_rust_cargo_check_tests = 1
+  let g:ale_rust_cargo_check_examples = 1
+  let g:ale_rust_analyzer_executable = 'rustana'
+
+  " TODO sh not giving diagnostics
+  " python not giving completions
+  let g:ale_linters = {
+	\ 'sh': ['shell', 'bashate'],
+	\ 'rust': [],
+	\ 'go': ['golangci-lint', 'gofmt', 'golint', 'gopls', 'govet'],
+	\ 'python': [],
+	\ 'lua': [],
+	\ 'ruby': [],
+	\ 'perl': ['perlcritic', 'perl'],
+	\ 'cs': [],
+	\ 'javascript': ['xo'],
+	\ }
+  let g:ale_disable_lsp = 1
+  let g:ale_set_loclist = 0
+  let g:ale_go_golangci_lint_options = '--fast'
+
+
+  nmap <leader>i <plug>(ale_detail)
+  nnoremap <S-Left> <Plug>(ale_previous_wrap)
+  nnoremap <S-Right> <Plug>(ale_next_wrap)
+
+
+
+  let g:ale_fixers = {
+        \   'javascript': [
+        \       'xo',
+        \   ],
+        \   'typescript': [
+        \       'eslint',
+        \   ],
+        \   'rust': [
+        \       'remove_trailing_lines',
+        \       'trim_whitespace',
+        \       'rustfmt',
+        \   ],
+        \   'go': [
+        \       'remove_trailing_lines',
+        \       'trim_whitespace',
+        \       'gofmt',
+        \   ],
+        \   '*': [
+        \       'remove_trailing_lines',
+        \       'trim_whitespace',
+        \   ],
+        \}
+
+
+  let g:lightline = {
+        \ 'active': {
+        \   'left': [ [ 'mode', 'paste' ],
+        \             [ 'readonly', 'relativepath', 'modified', 'git' ], [ 'lsp' ] ],
+        \   'right': [ [ 'ale', 'lineinfo' ],
+        \              [ 'percent' ],
+        \              [ 'myfileformat', 'myfileencoding', 'filetype' ] ]
+        \ },
+        \ 'inactive': {
+        \   'left': [ [ 'relativepath' ] ],
+        \   'right': [ [ 'lineinfo' ],
+        \            [ 'percent' ] ]
+        \ },
+        \ 'tabline': {
+        \   'left': [ [ 'tabs' ] ],
+        \   'right': []
+        \ },
+        \ 'component_type': {
+        \   'ale': 'error',
+        \ },
+        \ 'component_expand': {
+        \   'ale': 'MyAleStatus',
+        \ },
+        \ 'component_function': {
+        \   'lsp': 'MyLspStatus',
+        \   'git': 'FugitiveHead',
+        \   'myfileencoding': 'MyFileEncoding',
+        \   'myfileformat': 'MyFileFormat',
+        \ },
+        \}
+
+  if s:colors_set == 1
+    let g:lightline.colorscheme = 'solarized'
+  endif
+
+  if ! has('nvim')
+    fun! MyDummy() abort
+      return ''
+    endfun
+    let g:lightline.component_function.lsp = 'MyDummy'
+  endif
+
+  function! MyFileEncoding() abort
+    if &fileencoding !=# 'utf-8'
+      return &fileencoding
+    endif
+    return ''
+  endfun
+
+  function! MyFileFormat() abort
+    if &fileformat !=# 'unix'
+      return &fileformat
+    endif
+    return ''
+  endfun
+
+  function! s:adds(res, symbol, num) abort
+    let l:r = a:res
+    if a:num == 0
+      return l:r
+    endif
+
+    if l:r != ''
+      let l:r .= ' '
+    endif
+
+    let l:r .= a:symbol . a:num
+    return l:r
+  endfunction
+
+  function! s:format_lint(errors, warns, infos, hints) abort
+    let res = s:adds('', 'H:', a:hints)
+    let res = s:adds(res, 'I:', a:infos)
+    let res = s:adds(res, 'W:', a:warns)
+    let res = s:adds(res, 'E:', a:errors)
+    return res
+  endfunction
+
+  "breakadd func s:format_lint
+
+  function! MyAleStatus() abort
+    if ale#engine#IsCheckingBuffer(bufnr('')) == 1
+      return '...'
+    endif
+
+    let counts = ale#statusline#Count(bufnr(''))
+    let errors = counts.error + counts.style_error
+    let warns = counts.total - errors
+    return s:format_lint(errors, warns, 0, 0)
+  endfunction
+
+  augroup myale
+    au!
+    autocmd User ALEJobStarted,ALELintPost call lightline#update()
+  augroup END
+
+  function! MyLspStatus() abort
+    if luaeval('#vim.lsp.buf_get_clients() <= 0')
+      return ''
+    endif
+    let l:status = luaeval("require('lsp-status').status()")
+    "echom l:status
+    return l:status
+  endfunction
+
+  "let g:gitgutter_sign_allow_clobber = 0
+  let g:gitgutter_sign_priority = 5
+  let g:gitgutter_max_signs = 500
+
+
+
+  if has('nvim')
+    lua require 'mylsp'
+  endif
+
+  augroup mylspconf
+    au!
+    "autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
+    autocmd Filetype python setlocal omnifunc=
+  augroup END
+
+
+
+
+
+
+  if has('nvim')
+    augroup compeaug
+      au!
+      autocmd BufEnter * call <sid>DisableCompe()
+      inoremap <silent><expr> <C-Space> compe#complete()
+      inoremap <silent><expr> <CR>      compe#confirm('<CR>')
+      inoremap <silent><expr> <C-e>     compe#close('<C-e>')
+      inoremap <silent><expr> <C-f>     compe#scroll({ 'delta': +4 })
+      "inoremap <silent><expr> <C-d>     compe#scroll({ 'delta': -4 })
+      "inoremap <expr> <cr> (pumvisible() ? (complete_info().selected == -1 ? "\<c-y>\<cr>" : "\<c-y>") : "\<cr>")
+    augroup END
+  endif
+  set completeopt=menuone,noselect
+  let g:compe = {}
+  let g:compe.source = {}
+  let g:compe.source.path = v:true
+  let g:compe.source.buffer = v:false
+  let g:compe.source.calc = v:true
+  let g:compe.source.nvim_lsp = v:true
+  let g:compe.source.nvim_lua = v:true
+  let g:compe.source.vsnip = v:false
+  let g:compe.source.ultisnips = v:false
+  let g:compe.source.luasnip = v:false
+  let g:compe.source.emoji = v:true
+
+  """DAP
+  if has('nvim')
+    lua require('dap-go').setup()
+    "lua require('dap').set_log_level('DEBUG')
+  endif
+
+  """Editorconfig
+  let g:EditorConfig_exclude_patterns = ['fugitive://.*']
+
+  """Vimchant
+  let g:vimchant_spellcheck_lang = 'fi'
+  nmap \st <Plug>VimchantSpellCheckSwitch
+  nmap \sl <Plug>VimchantChangeLanguage
+
+
+
+  """ fzf
+  "nnoremap <leader>fg :GFiles2<cr>
+  "nnoremap <Leader>fd <cmd>lua require'my.telescope'.edit_dots{}<CR>
+  "nnoremap <Leader>fH <cmd>lua require'my.telescope'.edit_home{}<CR>
+  "nnoremap <Leader>fg <cmd>lua require'telescope.builtin'.git_files{}<CR>
+  nnoremap <Leader>fg <cmd>GFiles<CR>
+  "nnoremap <Leader>fG <cmd>lua require'telescope.builtin'.git_files({ show_untracked = false, recurse_submodules = true })<CR>
+  nnoremap <Leader>fG <cmd>GFiles --recurse-submodules<cr>
+  nnoremap <leader>fh :HomeFiles<cr>
+  nnoremap <leader>fr :RuntimeFZF<cr>
+  nnoremap <leader>fv :HelptagsFZF<cr>
+  " this is like using cat as a source because we don't supply any keyword for
+  " git-grep
+  nnoremap <expr> <leader>gg ':GG ' . expand('<cword>') . '<cr>'
+  nnoremap <expr><leader>gt ':Tags ' . expand('<cword>') . '<cr>'
+  nnoremap <expr><leader>gr ':RuntimeGrep '. expand('<cword>') . '<cr>'
+
+  command! -bar -bang HelptagsFZF call fzf#vim#helptags(<bang>0)
+
+  function! s:p(bang, ...) abort
+    let preview_window = get(g:, 'fzf_preview_window', a:bang && &columns >= 80 || &columns >= 120 ? 'right': '')
+    if len(preview_window)
+      return call('fzf#vim#with_preview', add(copy(a:000), preview_window))
+    endif
+    return {}
+  endfunction
+
+  command! -bang HomeFiles call fzf#vim#files('~', s:p(<bang>0), <bang>0)
+
+  function! <sid>gfiles(bang, dir)
+    lcd %:p:h
+    exe 'GFiles'.a:bang a:dir
+    lcd -
+  endfun
+  command! -bang -nargs=? GFiles2 :call <sid>gfiles(<q-bang>, <q-args>)
+
+  function! CollectUniquePaths() abort
+    let l:paths = []
+    for p in sort(pathogen#split(&runtimepath))
+      let l:found = 0
+      for e in l:paths
+        if stridx(p, e) == 0
+          let l:found = 1
+          break
+        endif
+      endfor
+      if !l:found
+        call add(l:paths, p)
+      endif
+    endfor
+    return l:paths
+  endfunction
+
+  command! -bang -nargs=? RuntimeFZF :call fzf#run(fzf#wrap(
+        \ 'runtime',
+        \ s:p(<bang>0, {
+        \   'source': 'fd --type f --hidden . '. join(map(CollectUniquePaths(), 'shellescape(v:val)'), ' '),
+        \   'options': [
+        \      '-m',
+        \      '--prompt=Runtime> ',
+        \    ]
+        \ }),
+        \ <bang>0))
+
+  command! -bang -nargs=* -complete=tag_listfiles GG
+        \ call fzf#vim#grep(
+        \   'git grep --column --line-number -- '.shellescape(<q-args>), 1,
+        \   s:p(<bang>0, {'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
+
+  " define a comman with a function so we won't mess fzf on error
+  "... doesn't help... was neovim bug: has('nvim') returned 0 sometimes... nope
+  "it was a vim bug and has('nvim') was right...
+  fun! <sid>grep(pattern, got_bang, paths) abort
+    call fzf#vim#grep(
+          \   'rg --column --line-number --no-heading --color=always --smart-case -- '
+          \     . shellescape(a:pattern)
+          \     . ' '
+          \     . join(map(a:paths, 'shellescape(v:val)'), ' '),
+          \   1,
+          \   s:p(a:got_bang, {
+          \   }),
+          \   a:got_bang)
+  endfun
+  " q-args makes it work with no args
+  command! -bang -nargs=? -complete=tag_listfiles RuntimeGrep
+        \ call <sid>grep(<q-args>, <bang>0, CollectUniquePaths())
+  command! -bang -nargs=? -complete=tag_listfiles CIncludeGrep
+        \ call <sid>grep(<q-args>, <bang>0, ['/usr/include/'])
+endfun
+
+let g:colorizer_hex_pattern = ['\(#\|0x\)', '\%(\x\{3}\|\x\{6}\|\x\{8\}\)', '\%(\>\|[-_]\)\@=']
+
+if &loadplugins
+  call s:external_plugins()
+endif
+" }}}
+
+
+for s:script_file in split(glob($HOME . '/.vimrc.d/*.vim'), '\n')
+  exec "so" s:script_file
+endfor
+
+" todo foldlevel gets executed on every change when using vimls
+" vim:set ts=8 sw=2 noexpandtab fdm=marker:

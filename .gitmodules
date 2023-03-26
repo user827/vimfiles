@@ -1,0 +1,138 @@
+[submodule "vim/pack/light/opt/vim-eunuch"]
+	path = vim/pack/light/opt/vim-eunuch
+	url = https://github.com/tpope/vim-eunuch.git
+[submodule "vim/pack/light/opt/vim-commentary"]
+	path = vim/pack/light/opt/vim-commentary
+	url = https://github.com/tpope/vim-commentary.git
+[submodule "vim/pack/light/opt/vim-unimpaired"]
+	path = vim/pack/light/opt/vim-unimpaired
+	url = https://github.com/tpope/vim-unimpaired.git
+[submodule "vim/pack/light/opt/vim-repeat"]
+	path = vim/pack/light/opt/vim-repeat
+	url = https://github.com/tpope/vim-repeat.git
+[submodule "vim/pack/light/opt/ferm"]
+	path = vim/pack/light/opt/ferm
+	url = https://github.com/cometsong/ferm.vim.git
+[submodule "vim/pack/light/opt/fzf"]
+	path = vim/pack/light/opt/fzf
+	url = https://github.com/junegunn/fzf.vim.git
+[submodule "vim/pack/light/opt/rust"]
+	path = vim/pack/light/opt/rust
+	url = https://github.com/rust-lang/rust.vim.git
+[submodule "vim/pack/light/opt/vim-scriptease"]
+	path = vim/pack/light/opt/vim-scriptease
+	url = https://github.com/tpope/vim-scriptease.git
+[submodule "vim/pack/light/opt/ale"]
+	path = vim/pack/light/opt/ale
+	url = https://github.com/dense-analysis/ale.git
+[submodule "vim/pack/light/opt/vim-fugitive"]
+	path = vim/pack/light/opt/vim-fugitive
+	url = https://github.com/tpope/vim-fugitive.git
+[submodule "vim/pack/light/opt/vim-tmux"]
+	path = vim/pack/light/opt/vim-tmux
+	url = https://github.com/tmux-plugins/vim-tmux.git
+[submodule "vim/pack/light/opt/vim-solarized8"]
+	path = vim/pack/light/opt/vim-solarized8
+	url = https://github.com/lifepillar/vim-solarized8.git
+[submodule "vim/pack/light/opt/vim-gitgutter"]
+	path = vim/pack/light/opt/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git
+[submodule "vim/pack/light/opt/lightline"]
+	path = vim/pack/light/opt/lightline
+	url = https://github.com/itchyny/lightline.vim.git
+[submodule "vim/pack/light/opt/vim-surround"]
+	path = vim/pack/light/opt/vim-surround
+	url = https://github.com/tpope/vim-surround.git
+[submodule "vim/pack/light/opt/vim-pathogen"]
+	path = vim/pack/light/opt/vim-pathogen
+	url = https://github.com/tpope/vim-pathogen.git
+[submodule "vim/pack/light/opt/vim-sensible"]
+	path = vim/pack/light/opt/vim-sensible
+	url = https://github.com/tpope/vim-sensible.git
+[submodule "vim/pack/light/opt/nerdtree"]
+	path = vim/pack/light/opt/nerdtree
+	url = https://github.com/preservim/nerdtree.git
+[submodule "vim/pack/light/opt/loupe"]
+	path = vim/pack/light/opt/loupe
+	url = https://github.com/wincent/loupe.git
+[submodule "vim/pack/light/opt/pinnacle"]
+	path = vim/pack/light/opt/pinnacle
+	url = https://github.com/wincent/pinnacle.git
+[submodule "vim/pack/light/opt/vim-glsl"]
+	path = vim/pack/light/opt/vim-glsl
+	url = https://github.com/tikhomirov/vim-glsl.git
+[submodule "vim/pack/light/opt/nvim-lspconfig"]
+	path = vim/pack/light/opt/nvim-lspconfig
+	url = https://github.com/neovim/nvim-lspconfig.git
+[submodule "vim/pack/light/opt/lsp-status"]
+	path = vim/pack/light/opt/lsp-status
+	url = https://github.com/nvim-lua/lsp-status.nvim.git
+[submodule "vim/pack/light/opt/ultisnips"]
+	path = vim/pack/light/opt/ultisnips
+	url = https://github.com/SirVer/ultisnips.git
+[submodule "vim/pack/light/opt/vim-snippets"]
+	path = vim/pack/light/opt/vim-snippets
+	url = https://github.com/honza/vim-snippets.git
+[submodule "vim/pack/light/opt/float-preview"]
+	path = vim/pack/light/opt/float-preview
+	url = https://github.com/ncm2/float-preview.nvim.git
+[submodule "vim/pack/light/opt/gruvbox"]
+	path = vim/pack/light/opt/gruvbox
+	url = https://github.com/morhetz/gruvbox.git
+[submodule "vim/pack/light/opt/base16-vim"]
+	path = vim/pack/light/opt/base16-vim
+	url = https://github.com/chriskempson/base16-vim.git
+[submodule "vim/pack/light/opt/seoul256"]
+	path = vim/pack/light/opt/seoul256
+	url = https://github.com/junegunn/seoul256.vim.git
+[submodule "vim/pack/light/opt/ayu-vim"]
+	path = vim/pack/light/opt/ayu-vim
+	url = https://github.com/ayu-theme/ayu-vim.git
+[submodule "vim/pack/light/opt/vim-hybrid"]
+	path = vim/pack/light/opt/vim-hybrid
+	url = https://github.com/w0ng/vim-hybrid.git
+[submodule "vim/pack/light/opt/vim-hybrid-material"]
+	path = vim/pack/light/opt/vim-hybrid-material
+	url = https://github.com/kristijanhusak/vim-hybrid-material.git
+[submodule "vim/pack/light/opt/vim-colors-github"]
+	path = vim/pack/light/opt/vim-colors-github
+	url = https://github.com/cormacrelf/vim-colors-github.git
+[submodule "vim/pack/light/opt/Colorizer"]
+	path = vim/pack/light/opt/Colorizer
+	url = https://github.com/chrisbra/Colorizer.git
+[submodule "vim/pack/light/opt/vim-colorscheme-primary"]
+	path = vim/pack/light/opt/vim-colorscheme-primary
+	url = https://github.com/google/vim-colorscheme-primary.git
+[submodule "vim/pack/light/opt/plenary"]
+	path = vim/pack/light/opt/plenary
+	url = https://github.com/nvim-lua/plenary.nvim.git
+[submodule "vim/pack/light/opt/popup"]
+	path = vim/pack/light/opt/popup
+	url = https://github.com/nvim-lua/popup.nvim.git
+[submodule "vim/pack/light/opt/rust-tools"]
+	path = vim/pack/light/opt/rust-tools
+	url = https://github.com/simrat39/rust-tools.nvim.git
+[submodule "vim/pack/light/opt/compe"]
+	path = vim/pack/light/opt/compe
+	url = https://github.com/hrsh7th/nvim-compe.git
+[submodule "vim/pack/light/opt/Jenkinsfile-vim-syntax"]
+	path = vim/pack/light/opt/Jenkinsfile-vim-syntax
+	url = https://github.com/martinda/Jenkinsfile-vim-syntax.git
+[submodule "vim/pack/light/opt/fzf-base"]
+	path = vim/pack/light/opt/fzf-base
+	url = https://github.com/junegunn/fzf.git
+[submodule "vim/pack/light/opt/vim-jsonnet"]
+	path = vim/pack/light/opt/vim-jsonnet
+	url = https://github.com/google/vim-jsonnet.git
+[submodule "vim/pack/light/opt/indentLine"]
+	path = vim/pack/light/opt/indentLine
+	url = https://github.com/Yggdroot/indentLine.git
+[submodule "vim/pack/light/opt/nvim-dap"]
+	path = vim/pack/light/opt/nvim-dap
+	url = https://github.com/mfussenegger/nvim-dap.git
+[submodule "vim/pack/light/opt/nvim-dap-go"]
+	path = vim/pack/light/opt/nvim-dap-go
+	url = https://github.com/leoluz/nvim-dap-go.git
+[submodule "vim/pack/light/opt/editorconfig-vim"]
+	path = vim/pack/light/opt/editorconfig-vim
+	url = https://github.com/editorconfig/editorconfig-vim.git

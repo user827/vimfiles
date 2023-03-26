@@ -1,0 +1,63 @@
+; TODO needs to be aligned 16. Is already?
+%macro cf_prologue_ex 0-1+
+	%push mycontext
+	%assign %$localsize 0
+	%if %0 >= 1
+	%local %1
+	%endif
+%ifidn DEFBITS,32
+	%stacksize flat
+%else
+	%stacksize flat64
+%endif
+	cf_prologue %$localsize
+%endmacro
+
+%ifidn DEFBITS,32
+%macro cf_prologue 1
+		enter %1, 0
+		;push ebp
+		;mov ebp, esp
+		;sub esp, %1
+		push edi
+		push esi
+		push ebx
+%endmacro
+%else
+%macro cf_prologue 1 ; pads to 16
+		enter %1, 0
+		;push rbp
+		;mov rbp, rsp
+		;sub rsp, %1
+		push rbx
+		push r12
+		push r13
+		push r14
+		push r15
+%endmacro
+%endif
+
+%ifidn DEFBITS,32
+%macro cf_epilogue 0
+		pop ebx
+		pop esi
+		pop edi
+		leave
+		;mov esp,ebp
+		;pop ebp
+		ret
+%endmacro
+%else
+%macro cf_epilogue 0
+		pop r15
+		pop r14
+		pop r13
+		pop r12
+		pop rbx
+		leave
+		;mov rsp,rbp
+		;pop rbp
+		ret
+%endmacro
+%endif
+

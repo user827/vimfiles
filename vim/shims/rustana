@@ -1,0 +1,7 @@
+#!/bin/sh
+set -eu
+[ -d ~/.cache ] || mkdir ~/.cache
+exec allownet /usr/bin/rust-analyzer --log-file ~/.cache/rustanalyzer.log "$@"
+#tee ~/rustanalyzer.in.log | allownet /usr/bin/rust-analyzer "$@" | tee ~/rustanalyzer.out.log
+#tee ~/rustanalyzer.in.log | RA_LOG=info allownet /usr/bin/rust-analyzer --log-file ~/rustanalyzer.log "$@" | tee ~/rustanalyzer.out.log
+#RA_LOG=rust_analyzer=trace nse /usr/bin/rust-analyzer --log-file ~/rustanalyzer.log "$@" | tee ~/rustanalyzer.out.log
