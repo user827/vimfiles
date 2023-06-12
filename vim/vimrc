@@ -342,6 +342,7 @@ set virtualedit=block
 set whichwrap=b,h,l,s,<,>,[,],~
 set wildmode=longest:full,full
 set winminheight=0
+set expandtab
 
 let s:colors_set=0
 "Set colors only after defining `background`
