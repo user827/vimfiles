@@ -531,9 +531,9 @@ nnoremap <leader>ces :call CleanExtraSpaces()<CR>
 "cnoremap jk <Esc>
 cnoremap <c-a> <c-b>
 "cnoremap <c-b> <c-a>
-cnoremap <c-b> <left>
-cnoremap <c-f> <right>
-cnoremap <left> <c-f>
+"cnoremap <c-b> <left>
+"cnoremap <c-f> <right>
+"cnoremap <left> <c-f>
 " }}}
 
 " {{{ Autocommands
