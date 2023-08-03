@@ -312,7 +312,6 @@ set number
 set numberwidth=3
 set path+=./include;~
 set path+=/usr/local/include
-set relativenumber
 set ruler       " show the cursor position all the time, info in statusline but no need in ctrl-g
 set scrolloff=3
 set secure
