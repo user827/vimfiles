@@ -82,6 +82,7 @@ if &loadplugins
   packadd! Jenkinsfile-vim-syntax
   packadd! vim-jsonnet
   packadd! editorconfig-vim
+  packadd! vim-terraform
 
   if has('nvim')
     " text wrapping still does not work with this

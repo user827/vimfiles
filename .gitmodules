@@ -136,3 +136,6 @@
 [submodule "vim/pack/light/opt/editorconfig-vim"]
 	path = vim/pack/light/opt/editorconfig-vim
 	url = https://github.com/editorconfig/editorconfig-vim.git
+[submodule "vim/pack/light/opt/vim-terraform"]
+	path = vim/pack/light/opt/vim-terraform
+	url = https://github.com/hashivim/vim-terraform.git
