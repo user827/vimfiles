@@ -91,15 +91,19 @@ install_file() {
       if [ -f "$dst" ]; then
         cmp -s -- "$src" "$dst" && return 0
       elif [ -d "$dst" ]; then
-        read -rp"replace directory '$dst'? " ans
-        [ "$ans" = y ] || return 0
+        [ -n "${BATCH:-}" ] || read -rp"replace directory '$dst'? " ans
+        if [ -z "${BATCH:-}" ] && [ "$ans" != y ]; then
+          warn skipping
+          return 0
+        fi
         mv -T --backup=numbered -- "$dst" "$dst".old
       fi
     fi
   fi
   if [ -h "$dst" ] || [ -e "$dst" ]; then
-    read -rp"overwrite '$dst'? " ans
-    if [ "$ans" != y ]; then
+    [ -n "${BATCH:-}" ] || read -rp"overwrite '$dst'? " ans
+    if [ -z "${BATCH:-}" ] && [ "$ans" != y ]; then
+      warn "skipping"
       return 0
     else
       rm --interactive=never -- "$dst"
@@ -123,15 +127,21 @@ Lln() {
     [ "$(readlink -- "$dst")" = "$linksrc" ] && return 0
   elif [ -d "$dst" ]; then
     if [ "$OPT_FORCE" != true ]; then
-      read -rp"replace directory '$dst'? " ans
-      [ "$ans" = y ] || return 0
+      [ -n "${BATCH:-}" ] || read -rp"replace directory '$dst'? " ans
+      if [ -z "${BATCH:-}" ] && [ "$ans" != y ]; then
+        warn skipping
+        return 0
+      fi
     fi
     mv -T --backup=numbered -- "$dst" "$dst".old
   fi
   if [ -h "$dst" ] || [ -e "$dst" ]; then
     if [ "$OPT_FORCE" != true ]; then
-      read -rp"overwrite '$dst'? " ans
-      [ "$ans" = y ] || return 0
+      [ -n "${BATCH:-}" ] || read -rp"overwrite '$dst'? " ans
+      if [ -z "${BATCH:-}" ] && [ "$ans" != y ]; then
+        warn skipping
+        return 0
+      fi
     fi
     rm --interactive=never -- "$dst"
   fi

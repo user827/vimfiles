@@ -20,10 +20,10 @@ fi
 
 log notice "(Re)Initializing $(basename "$PWD") with:"
 msg "vim path in $vimpath"
-read -rp"press key to continue" ans
+[ -n "${BATCH:-}" ] || read -rp"press key to continue" ans
 
 if [ -d "$vimpath" ] && ! [ -L "$vimpath" ]; then
-  read -rp"Old .vim needs to be moved. Press key to back it up." ans
+  [ -n "${BATCH:-}" ] || read -rp"Old .vim needs to be moved. Press key to back it up." ans
   mv -- "$vimpath" "$vimpath".old.bck
 fi
 link_verbose "$L_GIT_ROOT/vim" "$vimpath"
