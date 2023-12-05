@@ -15,7 +15,8 @@ scriptencoding utf-8
 "set debug=msg
 
 fun! s:is_restricted_argv() abort
-  for l:line in split(readfile('/proc/'.getpid().'/cmdline')[0], "\x00")
+  "TODO BUG? getpid migh fail here when used in chroot
+  for l:line in split(readfile('/proc/self/cmdline')[0], "\x00")
     if l:line == "-Z"
       return 1
     endif
