@@ -123,8 +123,8 @@ Lln() {
   #TODO do something with a broken link?
   #if [ -h "$dst" ] && [ ! -e "$dst" ]; then
   #fi
-  if [ -h "$dst" ]; then
-    [ "$(readlink -- "$dst")" = "$linksrc" ] && return 0
+  if [ -h "$dst" ] && [ "$(readlink -- "$dst")" = "$linksrc" ]; then
+    return 0
   elif [ -d "$dst" ]; then
     if [ "$OPT_FORCE" != true ]; then
       [ -n "${BATCH:-}" ] || read -rp"replace directory '$dst'? " ans
@@ -134,8 +134,7 @@ Lln() {
       fi
     fi
     mv -T --backup=numbered -- "$dst" "$dst".old
-  fi
-  if [ -h "$dst" ] || [ -e "$dst" ]; then
+  elif [ -h "$dst" ] || [ -e "$dst" ]; then
     if [ "$OPT_FORCE" != true ]; then
       [ -n "${BATCH:-}" ] || read -rp"overwrite '$dst'? " ans
       if [ -z "${BATCH:-}" ] && [ "$ans" != y ]; then
@@ -143,7 +142,7 @@ Lln() {
         return 0
       fi
     fi
-    rm --interactive=never -- "$dst"
+    mv --backup=numbered -- "$dst" "$dst".old
   fi
   [ "$verbose" != silent ] && msg "Linking: $dst"
   ln -siT --backup=numbered -- "$linksrc" "$dst"
