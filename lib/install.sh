@@ -106,7 +106,7 @@ install_file() {
       warn "skipping"
       return 0
     else
-      rm --interactive=never -- "$dst"
+      mv -T --backup=numbered -- "$dst" "$dst".old
     fi
   fi
   [ "$verbose" != silent ] && msg "Install: $dst"
@@ -142,7 +142,7 @@ Lln() {
         return 0
       fi
     fi
-    mv --backup=numbered -- "$dst" "$dst".old
+    mv -T --backup=numbered -- "$dst" "$dst".old
   fi
   [ "$verbose" != silent ] && msg "Linking: $dst"
   ln -siT --backup=numbered -- "$linksrc" "$dst"
