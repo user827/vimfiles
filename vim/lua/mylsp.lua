@@ -54,10 +54,10 @@ do
 
   lsp_status.register_progress()
 
+  local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
   lspconfig.util.default_config = vim.tbl_deep_extend("force", lspconfig.util.default_config, {
     on_attach = on_attach,
-    capabilities = vim.tbl_deep_extend("force", lsp_status.capabilities, {
-    })
+    capabilities = vim.tbl_deep_extend("force", lsp_status.capabilities, cmp_capabilities)
   })
 
   -- TODO why does vim.cmd not work here?
@@ -316,6 +316,12 @@ do
   --     { name = 'buffer' },
   --   })
   -- })
+
+  cmp.setup.filetype('markdown', {
+    enabled = function ()
+      return false
+    end
+  })
 
   -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
   cmp.setup.cmdline({ '/', '?' }, {
