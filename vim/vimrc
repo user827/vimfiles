@@ -89,7 +89,7 @@ if &loadplugins
     " text wrapping still does not work with this
     packadd! rust-tools
     packadd! nvim-lspconfig
-    packadd! lsp-status
+    packadd! lsp-progress
     packadd! cmp-nvim-lsp
     packadd! cmp-buffer
     packadd! cmp-path
@@ -735,7 +735,7 @@ fun! s:external_plugins()
     if luaeval('#vim.lsp.buf_get_clients() <= 0')
       return ''
     endif
-    let l:status = luaeval("require('lsp-status').status()")
+    let l:status = luaeval("require('lsp-progress').progress()")
     "echom l:status
     return l:status
   endfunction

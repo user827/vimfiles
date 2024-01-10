@@ -64,9 +64,6 @@
 [submodule "vim/pack/light/opt/nvim-lspconfig"]
 	path = vim/pack/light/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig.git
-[submodule "vim/pack/light/opt/lsp-status"]
-	path = vim/pack/light/opt/lsp-status
-	url = https://github.com/nvim-lua/lsp-status.nvim.git
 [submodule "vim/pack/light/opt/vim-snippets"]
 	path = vim/pack/light/opt/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
@@ -151,3 +148,6 @@
 [submodule "vim/pack/light/opt/cmp-cmdline"]
 	path = vim/pack/light/opt/cmp-cmdline
 	url = https://github.com/hrsh7th/cmp-cmdline.git
+[submodule "vim/pack/light/opt/lsp-progress"]
+	path = vim/pack/light/opt/lsp-progress
+	url = https://github.com/linrongbin16/lsp-progress.nvim.git

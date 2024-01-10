@@ -1,28 +1,13 @@
 local lspconfig = require('lspconfig')
-local lsp_status = require('lsp-status')
 
 local function nnoremap(lhs, rhs)
   vim.keymap.set('n', lhs, rhs, {buffer = 0, silent = true})
 end
 
--- Because the lsp_status uses deprecated resolved_capabilities
-local function setup_status(client)
-  local messaging = require('lsp-status/messaging')
-  -- Register the client for messages
-  messaging.register_client(client.id, client.name)
-  local gid = vim.api.nvim_create_augroup('lsp_global_aucmds', {clear = false})
-  vim.api.nvim_clear_autocmds({group = gid})
-  vim.api.nvim_create_autocmd({'User'}, {group = gid, pattern = 'DiagnosticChanged', callback = function () require("lsp-status/redraw").redraw() end})
-
-  -- If the client is a documentSymbolProvider, set up an autocommand
-  -- to update the containing symbol
-  if client.server_capabilities.documentSymbolProvider then
-    -- not multiclient safe
-    local id = vim.api.nvim_create_augroup('lsp_aucmds', {clear = false})
-    vim.api.nvim_clear_autocmds({buffer = 0, group = id})
-    vim.api.nvim_create_autocmd({'CursorHold'}, {buffer = 0, group = id, callback = function () require("lsp-status").update_current_function() end})
-  end
-end
+local gid = vim.api.nvim_create_augroup('lsp_global_aucmds', {clear = false})
+vim.api.nvim_clear_autocmds({group = gid})
+vim.api.nvim_create_autocmd({'User'}, {group = gid, pattern = 'LspProgressStatusUpdated', callback = vim.schedule_wrap(
+function() vim.cmd('redrawstatus') end)})
 
 
 local function on_attach(client)
@@ -30,7 +15,6 @@ local function on_attach(client)
   nnoremap('<Leader>gl',    vim.diagnostic.setloclist)
   nnoremap('<Leader>ld', vim.diagnostic.open_float)
   vim.api.nvim_win_set_option(0, 'signcolumn', 'yes')
-  setup_status(client)
 
   nnoremap('<c-]>', vim.lsp.buf.definition)
   nnoremap('K',     vim.lsp.buf.hover)
@@ -52,27 +36,19 @@ do
     }
   )
 
-  lsp_status.register_progress()
-
+  require('lsp-progress').setup()
   local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
   lspconfig.util.default_config = vim.tbl_deep_extend("force", lspconfig.util.default_config, {
     on_attach = on_attach,
-    capabilities = vim.tbl_deep_extend("force", lsp_status.capabilities, cmp_capabilities)
+    capabilities = vim.tbl_deep_extend("force", {}, cmp_capabilities)
   })
 
+  -- TODO still used with lsp-progress?
   -- TODO why does vim.cmd not work here?
   vim.api.nvim_command('sign define LspDiagnosticsSignError text=')
   vim.api.nvim_command('sign define LspDiagnosticsSignWarning text=')
   vim.api.nvim_command('sign define LspDiagnosticsSignInformation text=ℹ')
   vim.api.nvim_command('sign define LspDiagnosticsSignHint text=➤')
-  lsp_status.config {
-    indicator_errors = '',
-    indicator_warnings = '',
-    indicator_info = 'ℹ',
-    indicator_hint = '➤',
-    indicator_ok = '',
-    status_symbol = 'LSP',
-  }
   vim.api.nvim_command('highlight! link LspDiagnosticsSignError ALEErrorSign')
   vim.api.nvim_command('highlight! link LspDiagnosticsSignWarning ALEWarningSign')
   vim.api.nvim_command('highlight! link LspDiagnosticsSignInformation ALEInfoSign')
@@ -324,22 +300,24 @@ do
   })
 
   -- Use buffer source for `/` and `?` (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline({ '/', '?' }, {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = {
-      { name = 'buffer' }
-    }
-  })
+  -- might be slow
+  --cmp.setup.cmdline({ '/', '?' }, {
+  --  mapping = cmp.mapping.preset.cmdline(),
+  --  sources = {
+  --    { name = 'buffer' }
+  --  }
+  --})
 
   -- Use cmdline & path source for ':' (if you enabled `native_menu`, this won't work anymore).
-  cmp.setup.cmdline(':', {
-    mapping = cmp.mapping.preset.cmdline(),
-    sources = cmp.config.sources({
-      { name = 'path' }
-    }, {
-      { name = 'cmdline' }
-    })
-  })
+  -- annoying path completion for now
+  -- cmp.setup.cmdline(':', {
+  --   mapping = cmp.mapping.preset.cmdline(),
+  --   sources = cmp.config.sources({
+  --     { name = 'path' }
+  --   }, {
+  --     { name = 'cmdline' }
+  --   })
+  -- })
 
   -- Set up lspconfig.
   -- local capabilities = require('cmp_nvim_lsp').default_capabilities()
