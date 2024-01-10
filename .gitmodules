@@ -67,9 +67,6 @@
 [submodule "vim/pack/light/opt/lsp-status"]
 	path = vim/pack/light/opt/lsp-status
 	url = https://github.com/nvim-lua/lsp-status.nvim.git
-[submodule "vim/pack/light/opt/ultisnips"]
-	path = vim/pack/light/opt/ultisnips
-	url = https://github.com/SirVer/ultisnips.git
 [submodule "vim/pack/light/opt/vim-snippets"]
 	path = vim/pack/light/opt/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
@@ -112,9 +109,6 @@
 [submodule "vim/pack/light/opt/rust-tools"]
 	path = vim/pack/light/opt/rust-tools
 	url = https://github.com/simrat39/rust-tools.nvim.git
-[submodule "vim/pack/light/opt/compe"]
-	path = vim/pack/light/opt/compe
-	url = https://github.com/hrsh7th/nvim-compe.git
 [submodule "vim/pack/light/opt/Jenkinsfile-vim-syntax"]
 	path = vim/pack/light/opt/Jenkinsfile-vim-syntax
 	url = https://github.com/martinda/Jenkinsfile-vim-syntax.git
@@ -139,3 +133,18 @@
 [submodule "vim/pack/light/opt/vim-terraform"]
 	path = vim/pack/light/opt/vim-terraform
 	url = https://github.com/hashivim/vim-terraform.git
+[submodule "vim/pack/light/opt/nvim-cmp"]
+	path = vim/pack/light/opt/nvim-cmp
+	url = https://github.com/hrsh7th/nvim-cmp.git
+[submodule "vim/pack/light/opt/cmp-nvim-lsp"]
+	path = vim/pack/light/opt/cmp-nvim-lsp
+	url = https://github.com/hrsh7th/cmp-nvim-lsp.git
+[submodule "vim/pack/light/opt/cmp-buffer"]
+	path = vim/pack/light/opt/cmp-buffer
+	url = https://github.com/hrsh7th/cmp-buffer.git
+[submodule "vim/pack/light/opt/cmp-path"]
+	path = vim/pack/light/opt/cmp-path
+	url = https://github.com/hrsh7th/cmp-path.git
+[submodule "vim/pack/light/opt/vim-vsnip"]
+	path = vim/pack/light/opt/vim-vsnip
+	url = https://github.com/hrsh7th/vim-vsnip.git
