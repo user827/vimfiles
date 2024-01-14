@@ -67,42 +67,24 @@
 [submodule "vim/pack/light/opt/vim-snippets"]
 	path = vim/pack/light/opt/vim-snippets
 	url = https://github.com/honza/vim-snippets.git
-[submodule "vim/pack/light/opt/float-preview"]
-	path = vim/pack/light/opt/float-preview
-	url = https://github.com/ncm2/float-preview.nvim.git
 [submodule "vim/pack/light/opt/gruvbox"]
 	path = vim/pack/light/opt/gruvbox
 	url = https://github.com/morhetz/gruvbox.git
 [submodule "vim/pack/light/opt/base16-vim"]
 	path = vim/pack/light/opt/base16-vim
 	url = https://github.com/chriskempson/base16-vim.git
-[submodule "vim/pack/light/opt/seoul256"]
-	path = vim/pack/light/opt/seoul256
-	url = https://github.com/junegunn/seoul256.vim.git
-[submodule "vim/pack/light/opt/ayu-vim"]
-	path = vim/pack/light/opt/ayu-vim
-	url = https://github.com/ayu-theme/ayu-vim.git
 [submodule "vim/pack/light/opt/vim-hybrid"]
 	path = vim/pack/light/opt/vim-hybrid
 	url = https://github.com/w0ng/vim-hybrid.git
 [submodule "vim/pack/light/opt/vim-hybrid-material"]
 	path = vim/pack/light/opt/vim-hybrid-material
 	url = https://github.com/kristijanhusak/vim-hybrid-material.git
-[submodule "vim/pack/light/opt/vim-colors-github"]
-	path = vim/pack/light/opt/vim-colors-github
-	url = https://github.com/cormacrelf/vim-colors-github.git
 [submodule "vim/pack/light/opt/Colorizer"]
 	path = vim/pack/light/opt/Colorizer
 	url = https://github.com/chrisbra/Colorizer.git
-[submodule "vim/pack/light/opt/vim-colorscheme-primary"]
-	path = vim/pack/light/opt/vim-colorscheme-primary
-	url = https://github.com/google/vim-colorscheme-primary.git
 [submodule "vim/pack/light/opt/plenary"]
 	path = vim/pack/light/opt/plenary
 	url = https://github.com/nvim-lua/plenary.nvim.git
-[submodule "vim/pack/light/opt/popup"]
-	path = vim/pack/light/opt/popup
-	url = https://github.com/nvim-lua/popup.nvim.git
 [submodule "vim/pack/light/opt/rust-tools"]
 	path = vim/pack/light/opt/rust-tools
 	url = https://github.com/simrat39/rust-tools.nvim.git

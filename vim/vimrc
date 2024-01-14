@@ -53,12 +53,10 @@ let s:use_unicode = !has('win32') && (&termencoding ==# 'utf-8' || &encoding ==#
 """ Choose packages """
 if &loadplugins
   packadd! Colorizer
-  packadd! vim-colors-github
   packadd! ale
   packadd! ferm
   packadd! fzf
   packadd! fzf-base
-  packadd! popup
   packadd! indentLine
   packadd! lightline
   packadd! nerdtree
