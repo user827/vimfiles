@@ -342,3 +342,7 @@ do
   --   capabilities = capabilities
   -- }
 end
+
+require('glow').setup({
+  -- your override config
+})

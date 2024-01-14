@@ -136,3 +136,6 @@
 [submodule "vim/pack/light/opt/friendly-snippets"]
 	path = vim/pack/light/opt/friendly-snippets
 	url = https://github.com/rafamadriz/friendly-snippets.git
+[submodule "vim/pack/light/opt/glow"]
+	path = vim/pack/light/opt/glow
+	url = https://github.com/ellisonleao/glow.nvim.git

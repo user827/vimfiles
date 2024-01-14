@@ -84,7 +84,7 @@ if &loadplugins
   packadd! vim-terraform
 
   if has('nvim')
-    " text wrapping still does not work with this
+    packadd! glow
     packadd! rust-tools
     packadd! nvim-lspconfig
     packadd! lsp-progress
