@@ -765,7 +765,7 @@ fun! s:external_plugins()
   "nnoremap <Leader>fd <cmd>lua require'my.telescope'.edit_dots{}<CR>
   "nnoremap <Leader>fH <cmd>lua require'my.telescope'.edit_home{}<CR>
   "nnoremap <Leader>fg <cmd>lua require'telescope.builtin'.git_files{}<CR>
-  nnoremap <Leader>fg <cmd>GFiles<CR>
+  nnoremap <Leader>fg <cmd>GFiles --cached --others --exclude-standard<CR>
   "nnoremap <Leader>fG <cmd>lua require'telescope.builtin'.git_files({ show_untracked = false, recurse_submodules = true })<CR>
   nnoremap <Leader>fG <cmd>GFiles --recurse-submodules<cr>
   nnoremap <leader>fh :HomeFiles<cr>
