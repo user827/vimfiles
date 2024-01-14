@@ -55,6 +55,7 @@ if &loadplugins
   packadd! Colorizer
   packadd! ale
   packadd! ferm
+  packadd! friendly-snippets
   packadd! fzf
   packadd! fzf-base
   packadd! indentLine
@@ -75,7 +76,6 @@ if &loadplugins
   packadd! vim-solarized8
   packadd! vim-surround
   packadd! vim-tmux
-  packadd! vim-snippets
   packadd! vim-unimpaired
   packadd! vimchant
   packadd! Jenkinsfile-vim-syntax
@@ -283,7 +283,7 @@ let g:tex_flavor                   = "latex"
 set background=dark
 set belloff=all
 set cmdheight=1
-set completeopt=menuone,preview
+set completeopt=menuone,preview,noselect,noinsert
 set conceallevel=0
 set confirm
 set cpoptions-=aAF
@@ -363,8 +363,6 @@ if $TERM =~# "alacritty\\|tmux\\|xterm" || has('gui_running')
   let s:colors_set=1
   colorscheme mysolarized8
 endif
-" }}}
-
 
 let &colorcolumn='+' . join(range(0, 254), ',+')
 
@@ -555,9 +553,9 @@ augroup END
 "}}}
 
 " {{{ Plugins
-let g:jsonnet_fmt_on_save = 0
-
 fun! s:external_plugins()
+  let g:jsonnet_fmt_on_save = 0
+
   let g:indentLine_fileTypeExclude = ['man', 'help', 'markdown', 'tex']
   " filetypeexlucsion fires too late for man?
   let g:indentLine_bufNameExclude = ['man://']
@@ -767,6 +765,13 @@ fun! s:external_plugins()
   let g:vimchant_spellcheck_lang = 'fi'
   nmap \st <Plug>VimchantSpellCheckSwitch
   nmap \sl <Plug>VimchantChangeLanguage
+
+  """vsnip
+  " Jump forward or backward
+  imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+  smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
+  imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
+  smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 
 

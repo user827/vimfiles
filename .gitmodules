@@ -64,9 +64,6 @@
 [submodule "vim/pack/light/opt/nvim-lspconfig"]
 	path = vim/pack/light/opt/nvim-lspconfig
 	url = https://github.com/neovim/nvim-lspconfig.git
-[submodule "vim/pack/light/opt/vim-snippets"]
-	path = vim/pack/light/opt/vim-snippets
-	url = https://github.com/honza/vim-snippets.git
 [submodule "vim/pack/light/opt/gruvbox"]
 	path = vim/pack/light/opt/gruvbox
 	url = https://github.com/morhetz/gruvbox.git
@@ -133,3 +130,9 @@
 [submodule "vim/pack/light/opt/lsp-progress"]
 	path = vim/pack/light/opt/lsp-progress
 	url = https://github.com/linrongbin16/lsp-progress.nvim.git
+[submodule "vim/pack/light/opt/cmp-nvim-lsp-signature-help"]
+	path = vim/pack/light/opt/cmp-nvim-lsp-signature-help
+	url = https://github.com/hrsh7th/cmp-nvim-lsp-signature-help.git
+[submodule "vim/pack/light/opt/friendly-snippets"]
+	path = vim/pack/light/opt/friendly-snippets
+	url = https://github.com/rafamadriz/friendly-snippets.git

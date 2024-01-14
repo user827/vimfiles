@@ -38,10 +38,13 @@ do
 
   require('lsp-progress').setup()
   local cmp_capabilities = require('cmp_nvim_lsp').default_capabilities()
+  -- print(vim.inspect(lspconfig.util.default_config))
   lspconfig.util.default_config = vim.tbl_deep_extend("force", lspconfig.util.default_config, {
     on_attach = on_attach,
     capabilities = vim.tbl_deep_extend("force", {}, cmp_capabilities)
   })
+  -- print(vim.inspect(cmp_capabilities))
+  -- print(vim.inspect(lspconfig.util.default_config))
 
   -- TODO still used with lsp-progress?
   -- TODO why does vim.cmd not work here?
@@ -271,16 +274,23 @@ do
       ['<C-f>'] = cmp.mapping.scroll_docs(4),
       ['<C-Space>'] = cmp.mapping.complete(),
       ['<C-e>'] = cmp.mapping.abort(),
-      ['<CR>'] = cmp.mapping.confirm({ select = true }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
+      ['<CR>'] = cmp.mapping.confirm({ select = false }), -- Accept currently selected item. Set `select` to `false` to only confirm explicitly selected items.
     }),
     sources = cmp.config.sources({
-      { name = 'nvim_lsp' },
+      {
+        name = 'nvim_lsp',
+        -- entry_filter = function(entry, _)
+        --   return entry:get_kind() ~= cmp.lsp.CompletionItemKind.Text and entry:get_kind() ~= cmp.lsp.CompletionItemKind.Snippet
+        -- end
+      },
+      { name = 'nvim_lsp_signature_help' },
       { name = 'vsnip' }, -- For vsnip users.
       -- { name = 'luasnip' }, -- For luasnip users.
       -- { name = 'ultisnips' }, -- For ultisnips users.
       -- { name = 'snippy' }, -- For snippy users.
     }, {
       { name = 'buffer' },
+      { name = 'path' },
     })
   })
 
@@ -294,6 +304,12 @@ do
   -- })
 
   cmp.setup.filetype('markdown', {
+    enabled = function ()
+      return false
+    end
+  })
+
+  cmp.setup.filetype('text', {
     enabled = function ()
       return false
     end
