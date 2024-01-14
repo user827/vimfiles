@@ -489,11 +489,6 @@ let maplocalleader = '\'
 nnoremap <silent> <C-_> :silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(expand('%:p:h'))<CR><CR>
 nnoremap - :NERDTreeFind<CR>
 
-" Repurpose cursor keys (accessible near homerow via "SpaceFN" layout) for one
-" of my most oft-use key sequences.
-nnoremap <silent> <S-Up> :lua vim.diagnostic.goto_prev()<cr>
-nnoremap <silent> <S-Down> :lua vim.diagnostic.goto_next()<cr>
-
 " Use ,d (or ,dd or ,dj or 20,dd) to delete a line without adding it to the
 " yanked stack (also, in visual mode)
 nnoremap <silent> <leader>d "_d
@@ -742,21 +737,11 @@ fun! s:external_plugins()
 
 
 
-  if has('nvim')
-    lua require 'mylsp'
-  endif
-
   augroup mylspconf
     au!
     "autocmd Filetype python setlocal omnifunc=v:lua.vim.lsp.omnifunc
     autocmd Filetype python setlocal omnifunc=
   augroup END
-
-  """DAP
-  if has('nvim')
-    lua require('dap-go').setup()
-    "lua require('dap').set_log_level('DEBUG')
-  endif
 
   """Editorconfig
   let g:EditorConfig_exclude_patterns = ['fugitive://.*']
