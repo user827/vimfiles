@@ -54,7 +54,7 @@ remove() {
   fi
 
   echo Removing cached entry and from the working tree
-  if ! git rm $force "$path" && [ -z "$force" ]; then
+  if ! git rm "$force" "$path" && [ -z "$force" ]; then
     return 1
   fi
   if [ -f "$path" ] || [ -d "$path" ]; then
@@ -66,7 +66,7 @@ remove() {
   exists_modules "$path" &&  { git config -f .gitmodules --remove-section submodule."$path" || true; }
   exists_config "$path" &&  { git config -f "$GITCONFIG" --remove-section submodule."$path" || true; }
 
-  local dir
+  local dir oldpwd="$PWD"
   echo Removing module meta
   if [ -d "$MODULE_META_PATH/$path" ]; then
     cd "$MODULE_META_PATH/$path"/..
@@ -79,6 +79,7 @@ remove() {
       rmdir -v "$dir"
     done
   fi
+  cd "$oldpwd"
 }
 
 case "$1" in
