@@ -64,7 +64,6 @@ if &loadplugins
   packadd! pinnacle
   packadd! rust
   packadd! vim-vsnip
-  packadd! vim-commentary
   packadd! vim-eunuch
   packadd! vim-fugitive
   packadd! vim-gitgutter

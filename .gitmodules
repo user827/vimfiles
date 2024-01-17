@@ -1,9 +1,6 @@
 [submodule "vim/pack/light/opt/vim-eunuch"]
 	path = vim/pack/light/opt/vim-eunuch
 	url = https://github.com/tpope/vim-eunuch.git
-[submodule "vim/pack/light/opt/vim-commentary"]
-	path = vim/pack/light/opt/vim-commentary
-	url = https://github.com/tpope/vim-commentary.git
 [submodule "vim/pack/light/opt/vim-unimpaired"]
 	path = vim/pack/light/opt/vim-unimpaired
 	url = https://github.com/tpope/vim-unimpaired.git
