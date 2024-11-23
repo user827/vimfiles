@@ -142,10 +142,13 @@ do
 end
 
 local function nnoremap(lhs, rhs)
-  vim.keymap.set('n', lhs, rhs, {buffer = 0, silent = true})
+  vim.keymap.set('n', lhs, rhs, {silent = true})
 end
 
 -- Repurpose cursor keys (accessible near homerow via "SpaceFN" layout) for one
 -- of my most oft-use key sequences.
 nnoremap('<S-Up>', vim.diagnostic.goto_prev)
 nnoremap('<S-Down>', vim.diagnostic.goto_next)
+nnoremap('<Leader>gq',    vim.diagnostic.setqflist)
+nnoremap('<Leader>gl',    vim.diagnostic.setloclist)
+nnoremap('<Leader>ld', vim.diagnostic.open_float)

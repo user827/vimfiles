@@ -11,9 +11,6 @@ function() vim.cmd('redrawstatus') end)})
 
 
 local function on_attach(client)
-  nnoremap('<Leader>gq',    vim.diagnostic.setqflist)
-  nnoremap('<Leader>gl',    vim.diagnostic.setloclist)
-  nnoremap('<Leader>ld', vim.diagnostic.open_float)
   vim.api.nvim_win_set_option(0, 'signcolumn', 'yes')
 
   nnoremap('<c-]>', vim.lsp.buf.definition)
