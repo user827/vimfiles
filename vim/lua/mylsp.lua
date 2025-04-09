@@ -191,7 +191,7 @@ do
 
   lspconfig.solargraph.setup {}
 
-  lspconfig.tsserver.setup {}
+  lspconfig.ts_ls.setup {}
 
 
   local rcstart = 'file://' .. home .. '/.config/awesome/'
