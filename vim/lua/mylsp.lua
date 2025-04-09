@@ -193,6 +193,12 @@ do
 
   lspconfig.ts_ls.setup {}
 
+  lspconfig.jsonnet_ls.setup {}
+
+  lspconfig.bicep.setup {
+    cmd = { "bicep-langserver" }
+  }
+
 
   local rcstart = 'file://' .. home .. '/.config/awesome/'
   local lualspcmd = "lua-language-server"
