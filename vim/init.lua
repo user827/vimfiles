@@ -42,7 +42,10 @@ local opts = {
         diagnostics = { disabled = { "unresolved-import" } },
         cargo = { loadOutDirsFromCheck = true },
         procMacro = { enable = true },
-        checkOnSave = { command = "clippy" },
+        checkOnSave = true,
+        check = {
+          command = "clippy"
+        }
       },
     }
   }
