@@ -54,7 +54,7 @@ remove() {
   fi
 
   echo Removing cached entry and from the working tree
-  if ! git rm "$force" "$path" && [ -z "$force" ]; then
+  if ! git rm $force "$path" && [ -z "$force" ]; then
     return 1
   fi
   if [ -f "$path" ] || [ -d "$path" ]; then

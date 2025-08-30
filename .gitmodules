@@ -106,30 +106,12 @@
 [submodule "vim/pack/light/opt/vim-terraform"]
 	path = vim/pack/light/opt/vim-terraform
 	url = https://github.com/hashivim/vim-terraform.git
-[submodule "vim/pack/light/opt/nvim-cmp"]
-	path = vim/pack/light/opt/nvim-cmp
-	url = https://github.com/hrsh7th/nvim-cmp.git
-[submodule "vim/pack/light/opt/cmp-nvim-lsp"]
-	path = vim/pack/light/opt/cmp-nvim-lsp
-	url = https://github.com/hrsh7th/cmp-nvim-lsp.git
-[submodule "vim/pack/light/opt/cmp-buffer"]
-	path = vim/pack/light/opt/cmp-buffer
-	url = https://github.com/hrsh7th/cmp-buffer.git
-[submodule "vim/pack/light/opt/cmp-path"]
-	path = vim/pack/light/opt/cmp-path
-	url = https://github.com/hrsh7th/cmp-path.git
 [submodule "vim/pack/light/opt/vim-vsnip"]
 	path = vim/pack/light/opt/vim-vsnip
 	url = https://github.com/hrsh7th/vim-vsnip.git
-[submodule "vim/pack/light/opt/cmp-cmdline"]
-	path = vim/pack/light/opt/cmp-cmdline
-	url = https://github.com/hrsh7th/cmp-cmdline.git
 [submodule "vim/pack/light/opt/lsp-progress"]
 	path = vim/pack/light/opt/lsp-progress
 	url = https://github.com/linrongbin16/lsp-progress.nvim.git
-[submodule "vim/pack/light/opt/cmp-nvim-lsp-signature-help"]
-	path = vim/pack/light/opt/cmp-nvim-lsp-signature-help
-	url = https://github.com/hrsh7th/cmp-nvim-lsp-signature-help.git
 [submodule "vim/pack/light/opt/friendly-snippets"]
 	path = vim/pack/light/opt/friendly-snippets
 	url = https://github.com/rafamadriz/friendly-snippets.git

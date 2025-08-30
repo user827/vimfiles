@@ -87,11 +87,6 @@ if &loadplugins
     packadd! rust-tools
     packadd! nvim-lspconfig
     packadd! lsp-progress
-    packadd! cmp-nvim-lsp
-    packadd! cmp-buffer
-    packadd! cmp-path
-    packadd! cmp-cmdline
-    packadd! nvim-cmp
     packadd! plenary
     packadd! nvim-dap
     packadd! nvim-dap-go
