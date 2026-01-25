@@ -79,9 +79,6 @@
 [submodule "vim/pack/light/opt/plenary"]
 	path = vim/pack/light/opt/plenary
 	url = https://github.com/nvim-lua/plenary.nvim.git
-[submodule "vim/pack/light/opt/rust-tools"]
-	path = vim/pack/light/opt/rust-tools
-	url = https://github.com/simrat39/rust-tools.nvim.git
 [submodule "vim/pack/light/opt/Jenkinsfile-vim-syntax"]
 	path = vim/pack/light/opt/Jenkinsfile-vim-syntax
 	url = https://github.com/martinda/Jenkinsfile-vim-syntax.git
