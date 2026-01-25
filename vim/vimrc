@@ -84,7 +84,6 @@ if &loadplugins
 
   if has('nvim')
     packadd! glow
-    packadd! rust-tools
     packadd! nvim-lspconfig
     packadd! lsp-progress
     packadd! plenary

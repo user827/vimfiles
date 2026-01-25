@@ -50,7 +50,6 @@ local opts = {
     }
   }
 }
-require('rust-tools').setup(opts)
 
 local function nnoremap(lhs, rhs)
   vim.keymap.set('n', lhs, rhs, {silent = true})
