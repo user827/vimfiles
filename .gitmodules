@@ -115,3 +115,6 @@
 [submodule "vim/pack/light/opt/glow"]
 	path = vim/pack/light/opt/glow
 	url = https://github.com/ellisonleao/glow.nvim.git
+[submodule "vim/pack/light/opt/blink.cmp"]
+	path = vim/pack/light/opt/blink.cmp
+	url = https://github.com/saghen/blink.cmp.git

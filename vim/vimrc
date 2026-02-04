@@ -89,6 +89,7 @@ if &loadplugins
     packadd! plenary
     packadd! nvim-dap
     packadd! nvim-dap-go
+    packadd! blink.cmp
   endif
 endif
 " }}}
