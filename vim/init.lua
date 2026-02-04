@@ -42,11 +42,8 @@ require('blink.cmp').setup({
   },
 
   completion = {
-    documentation = { auto_show = false }
-  },
-
-  sources = {
-    default = { 'lsp', 'path', 'snippets', 'buffer' },
+    documentation = { auto_show = false },
+    list = { selection = { preselect = false, auto_insert = true } },
   },
 
   fuzzy = {

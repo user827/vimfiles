@@ -26,14 +26,15 @@ do
         -- Create a keymap for vim.lsp.buf.implementation ...
       end
 
-      -- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
-      if client:supports_method('textDocument/completion') then
-        -- Optional: trigger autocompletion on EVERY keypress. May be slow!
-        local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
-        client.server_capabilities.completionProvider.triggerCharacters = chars
+      -- use blink.cmp instead
+      ---- Enable auto-completion. Note: Use CTRL-Y to select an item. |complete_CTRL-Y|
+      --if client:supports_method('textDocument/completion') then
+      --  -- Optional: trigger autocompletion on EVERY keypress. May be slow!
+      --  local chars = {}; for i = 32, 126 do table.insert(chars, string.char(i)) end
+      --  client.server_capabilities.completionProvider.triggerCharacters = chars
 
-        vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = true})
-      end
+      --  vim.lsp.completion.enable(true, client.id, args.buf, {autotrigger = true})
+      --end
 
       -- Auto-format ("lint") on save.
       -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
@@ -50,16 +51,16 @@ do
 
       vim.api.nvim_win_set_option(0, 'signcolumn', 'yes')
 
-      nnoremap('<c-]>', vim.lsp.buf.definition)
-      nnoremap('K',     vim.lsp.buf.hover)
-      nnoremap('<Leader>gD',    vim.lsp.buf.implementation)
-      nnoremap('1K',    vim.lsp.buf.signature_help)
-      nnoremap('<Leader>1gD',   vim.lsp.buf.type_definition)
-      nnoremap('<Leader>gr',    vim.lsp.buf.references)
-      nnoremap('<Leader>g0',    vim.lsp.buf.document_symbol)
-      nnoremap('<Leader>gW',    vim.lsp.buf.workspace_symbol)
-      nnoremap('<Leader>gA',    vim.lsp.buf.code_action)
-      nnoremap('<Leader>gd',    vim.lsp.buf.declaration)
+      -- nnoremap('<c-]>', vim.lsp.buf.definition)
+      ---- nnoremap('K',     vim.lsp.buf.hover)
+      -- nnoremap('<Leader>gD',    vim.lsp.buf.implementation)
+      -- nnoremap('1K',    vim.lsp.buf.signature_help)
+      -- nnoremap('<Leader>1gD',   vim.lsp.buf.type_definition)
+      -- nnoremap('<Leader>gr',    vim.lsp.buf.references)
+      -- nnoremap('<Leader>g0',    vim.lsp.buf.document_symbol)
+      -- nnoremap('<Leader>gW',    vim.lsp.buf.workspace_symbol)
+      -- nnoremap('<Leader>gA',    vim.lsp.buf.code_action)
+      -- nnoremap('<Leader>gd',    vim.lsp.buf.declaration)
     end,
   })
 
