@@ -541,6 +541,59 @@ augroup END
 
 "}}}
 
+function! s:AzurePipelinesLint()
+    let l:lines = getline(1, 20)
+    let l:id = ""
+    let l:org = ""
+    let l:proj = ""
+    let l:script_path = "checkyaml"
+    let l:param_args = []
+
+    for l:line in l:lines
+        if l:line =~ '# azdev-id:'
+            let l:id = trim(split(l:line, ':')[1])
+        elseif l:line =~ '# azdev-org:'
+            let l:org = trim(split(l:line, ':')[1])
+        elseif l:line =~ '# azdev-project:'
+            let l:proj = trim(split(l:line, ':')[1])
+	elseif l:line =~ '# azdev-param:'
+            " Push the raw 'key=value' string into our list
+            let l:kv = trim(split(l:line, ':')[1])
+            call add(l:param_args, shellescape(l:kv))
+        endif
+    endfor
+
+    if empty(l:id)
+        return
+    endif
+
+    "let l:cmd = printf("%s %s %s %s %s", l:script_path, l:org, l:proj, l:id, expand('%'))
+    let l:cmd = printf("%s %s %s", l:script_path, l:id, shellescape(expand('%'))) . " " . join(l:param_args, " ")
+
+    if !empty(l:proj) | let $AZD_PROJECT = l:proj | endif
+
+    let l:output = system(l:cmd)
+
+    if v:shell_error != 0
+      " Attempt to find line number for Quickfix
+      let l:lnum = matchstr(l:output, 'line \zs\d\+')
+      let l:lnum = empty(l:lnum) ? 1 : l:lnum
+
+      call setqflist([{'bufnr': bufnr('%'), 'lnum': l:lnum, 'text': l:output}])
+      botright cwindow 5
+    else
+      cclose
+      echo "✅ Valid"
+    endif
+endfunction
+command! LintAzure call s:AzurePipelinesLint()
+augroup AzureDevOpsLint
+    autocmd!
+    " Trigger on every save of a yaml file
+    autocmd BufWritePost *.yml,*.yaml call s:AzurePipelinesLint()
+augroup END
+
+
 " {{{ Plugins
 fun! s:external_plugins()
   let g:jsonnet_fmt_on_save = 0
