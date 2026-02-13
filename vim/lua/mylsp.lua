@@ -38,16 +38,16 @@ do
 
       -- Auto-format ("lint") on save.
       -- Usually not needed if server supports "textDocument/willSaveWaitUntil".
-      if not client:supports_method('textDocument/willSaveWaitUntil')
-          and client:supports_method('textDocument/formatting') then
-        vim.api.nvim_create_autocmd('BufWritePre', {
-          group = vim.api.nvim_create_augroup('my.lsp', {clear=false}),
-          buffer = args.buf,
-          callback = function()
-            vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
-          end,
-        })
-      end
+      -- if not client:supports_method('textDocument/willSaveWaitUntil')
+      --     and client:supports_method('textDocument/formatting') then
+      --   vim.api.nvim_create_autocmd('BufWritePre', {
+      --     group = vim.api.nvim_create_augroup('my.lsp', {clear=false}),
+      --     buffer = args.buf,
+      --     callback = function()
+      --       vim.lsp.buf.format({ bufnr = args.buf, id = client.id, timeout_ms = 1000 })
+      --     end,
+      --   })
+      -- end
 
       vim.api.nvim_win_set_option(0, 'signcolumn', 'yes')
 
@@ -77,115 +77,176 @@ do
 
 
   local home = os.getenv("HOME")
+  local rcstart = 'file://' .. home .. '/.config/awesome/'
 
-  local cmd = home .. '/javascriptlib/node_modules/.bin/diagnostic-languageserver'
-  vim.lsp.enable('diagnosticls')
-  vim.lsp.config('diagnosticls', {
-    -- cmd = { home .. '/bin/lsplog', 'diagnosticls', home .. '/javascriptlib/node_modules/.bin/diagnostic-languageserver', '--stdio', '--log-level', '2' },
-    cmd = { cmd, '--stdio', '--log-level', '2' },
-    -- root_dir = lspconfig.util.path.dirname,
-    filetypes = { 'sh' },
-    -- on_attach = setup_status,
-    -- todo why atuocmd error on textdocuemnt/documentsymbol?
-    -- on_attach = function() end,
-    init_options = {
-      filetypes = {
-        -- python = {'mypy', 'pylint'},
-        -- python = {'mypy'},
-        -- python = {'pylint'},
-        sh = {'shellcheck'},
-      },
-      linters = {
-        shellcheck = {
-          command = "shellcheck",
-          debounce = 100,
-          args = {
-            "--format",
-            "json",
-            "-"
+  opts = {
+    servers = {
+      diagnosticls = {
+        -- cmd = { home .. '/bin/lsplog', 'diagnosticls', home .. '/javascriptlib/node_modules/.bin/diagnostic-languageserver', '--stdio', '--log-level', '2' },
+        cmd = { home .. '/javascriptlib/node_modules/.bin/diagnostic-languageserver', '--stdio', '--log-level', '2' },
+        -- root_dir = lspconfig.util.path.dirname,
+        filetypes = { 'sh' },
+        -- on_attach = setup_status,
+        -- todo why atuocmd error on textdocuemnt/documentsymbol?
+        -- on_attach = function() end,
+        init_options = {
+          filetypes = {
+            -- python = {'mypy', 'pylint'},
+            -- python = {'mypy'},
+            -- python = {'pylint'},
+            sh = {'shellcheck'},
           },
-          sourceName = "shellcheck",
-          parseJson = {
-            line = "line",
-            column = "column",
-            endLine = "endLine",
-            endColumn = "endColumn",
-            message = "${message} [${code}]",
-            security = "level"
-          },
-          securities = {
-            error = "error",
-            warning = "warning",
-            info = "info",
-            style = "hint"
-          }
-        },
-        pylint = {
-          sourceName = "pylint",
-          command = "pylint",
-          args = {
-            "--output-format",
-            "text",
-            "--score",
-            "no",
-            "--msg-template",
-            "'{line}:{column}:{category}:{msg} ({msg_id}:{symbol})'",
-            "%file"
-          },
-          formatPattern = {
-            "^(\\d+?):(\\d+?):([a-z]+?):(.*)$",
-            {
-              line = 1,
-              column = 2,
-              security = 3,
-              message = 4
+          linters = {
+            shellcheck = {
+              command = "shellcheck",
+              debounce = 100,
+              args = {
+                "--format",
+                "json",
+                "-"
+              },
+              sourceName = "shellcheck",
+              parseJson = {
+                line = "line",
+                column = "column",
+                endLine = "endLine",
+                endColumn = "endColumn",
+                message = "${message} [${code}]",
+                security = "level"
+              },
+              securities = {
+                error = "error",
+                warning = "warning",
+                info = "info",
+                style = "hint"
+              }
+            },
+            pylint = {
+              sourceName = "pylint",
+              command = "pylint",
+              args = {
+                "--output-format",
+                "text",
+                "--score",
+                "no",
+                "--msg-template",
+                "'{line}:{column}:{category}:{msg} ({msg_id}:{symbol})'",
+                "%file"
+              },
+              formatPattern = {
+                "^(\\d+?):(\\d+?):([a-z]+?):(.*)$",
+                {
+                  line = 1,
+                  column = 2,
+                  security = 3,
+                  message = 4
+                }
+              },
+              rootPatterns = {".git", "pyproject.toml", "setup.py"},
+              securities = {
+                informational = "hint",
+                refactor = "info",
+                convention = "info",
+                warning = "warning",
+                error = "error",
+                fatal = "error"
+              },
+              offsetColumn = 1,
+              formatLines = 1,
+            },
+            mypy = {
+              sourceName = "mypy",
+              command = "mypy",
+              args = {
+                "--no-color-output",
+                "--no-error-summary",
+                "--show-column-numbers",
+                "--follow-imports=silent",
+                "%file"
+              },
+              formatPattern = {
+                "^.*:(\\d+?):(\\d+?): ([a-z]+?): (.*)$",
+                {
+                  line = 1,
+                  column = 2,
+                  security = 3,
+                  message = 4
+                }
+              },
+              securities = {
+                error = "error"
+              }
             }
-          },
-          rootPatterns = {".git", "pyproject.toml", "setup.py"},
-          securities = {
-            informational = "hint",
-            refactor = "info",
-            convention = "info",
-            warning = "warning",
-            error = "error",
-            fatal = "error"
-          },
-          offsetColumn = 1,
-          formatLines = 1,
-        },
-        mypy = {
-          sourceName = "mypy",
-          command = "mypy",
-          args = {
-            "--no-color-output",
-            "--no-error-summary",
-            "--show-column-numbers",
-            "--follow-imports=silent",
-            "%file"
-          },
-          formatPattern = {
-            "^.*:(\\d+?):(\\d+?): ([a-z]+?): (.*)$",
-            {
-              line = 1,
-              column = 2,
-              security = 3,
-              message = 4
-            }
-          },
-          securities = {
-            error = "error"
           }
         }
+      },
+      omnisharp = {
+        cmd = { 'omnisharp', '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
+      },
+      pylsp = { },
+      bashls = {},
+      vimls = {},
+      gopls = {
+        cmd = { home .. "/.vim/shims/gopls" },
+        settings = {
+          gopls = {
+            staticcheck = true,
+          }
+        }
+      },
+
+      solargraph = {},
+      ts_ls = {},
+      jsonnet_ls = {},
+
+      bicep = {
+        cmd = { "bicep-langserver" }
+      },
+      lualspcmd = {
+        cmd = { "lua-language-server" },
+        on_new_config = function(config)
+          local uri = vim.uri_from_bufnr(0)
+          if uri:sub(1, #rcstart) == rcstart then
+            config.settings.Lua.diagnostics.globals = vim.tbl_extend(
+              "force",
+              config.settings.Lua.diagnostics.globals, {
+                'awesome', 'mouse', 'screen', 'client', 'root'
+              })
+            -- print(vim.inspect(config))
+            table.insert(config.settings.Lua.runtime.path,
+              '/usr/share/awesome/lib/?.lua'
+            )
+            table.insert(config.settings.Lua.runtime.path,
+              '/usr/share/awesome/lib/?/?.lua'
+            )
+            -- print('matches')
+          end
+        end,
+        settings = {
+          Lua = {
+            diagnostics = {
+              enable = true,
+              globals = {'vim'},
+            },
+            filetypes = {'lua'},
+            runtime = {
+              path = vim.split(package.path, ';'),
+              version = 'LuaJIT',
+            },
+          }
+        },
       }
     }
-  })
+  }
 
-  vim.lsp.enable('omnisharp')
-  vim.lsp.config('omnisharp', {
-    cmd = { 'omnisharp', '--languageserver', '--hostPID', tostring(vim.fn.getpid()) },
-  })
+  for server, config in pairs(opts.servers) do
+    -- passing config.capabilities to blink.cmp merges with the capabilities in your
+    -- `opts[server].capabilities, if you've defined it
+    config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+    vim.lsp.enable(server)
+    vim.lsp.config(server, config)
+  end
 
-  vim.lsp.enable('pylsp')
 
   -- lspconfig.jedi_language_server.setup {
   --    root_dir = lspconfig.util.path.dirname,
@@ -194,65 +255,7 @@ do
   --    --},
   --  }
 
-  vim.lsp.enable('bashls')
-  vim.lsp.enable('vimls')
-
-  vim.lsp.enable('gopls')
-  vim.lsp.config('gopls', {
-    cmd = { home .. "/.vim/shims/gopls" },
-    settings = {
-      gopls = {
-        staticcheck = true,
-      }
-    }
-  })
-
-  vim.lsp.enable('clangd')
-  vim.lsp.enable('solargraph')
-  vim.lsp.enable('ts_ls')
-  vim.lsp.enable('jsonnet_ls')
-
-  vim.lsp.enable('bicep')
-  vim.lsp.config('bicep', {
-    cmd = { "bicep-langserver" }
-  })
 
 
-  local rcstart = 'file://' .. home .. '/.config/awesome/'
-  local lualspcmd = "lua-language-server"
-  vim.lsp.enable('lualspcmd')
-  vim.lsp.config('lualspcmd', {
-    cmd = { lualspcmd },
-    on_new_config = function(config)
-      local uri = vim.uri_from_bufnr(0)
-      if uri:sub(1, #rcstart) == rcstart then
-        config.settings.Lua.diagnostics.globals = vim.tbl_extend(
-          "force",
-          config.settings.Lua.diagnostics.globals, {
-            'awesome', 'mouse', 'screen', 'client', 'root'
-          })
-        -- print(vim.inspect(config))
-        table.insert(config.settings.Lua.runtime.path,
-          '/usr/share/awesome/lib/?.lua'
-        )
-        table.insert(config.settings.Lua.runtime.path,
-          '/usr/share/awesome/lib/?/?.lua'
-        )
-        -- print('matches')
-      end
-    end,
-    settings = {
-      Lua = {
-        diagnostics = {
-          enable = true,
-          globals = {'vim'},
-        },
-        filetypes = {'lua'},
-        runtime = {
-          path = vim.split(package.path, ';'),
-          version = 'LuaJIT',
-        },
-      }
-    },
-  })
+
 end

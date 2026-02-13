@@ -546,6 +546,7 @@ function! s:AzurePipelinesLint()
     let l:id = ""
     let l:org = ""
     let l:proj = ""
+    let l:ref = ""
     let l:script_path = "checkyaml"
     let l:param_args = []
 
@@ -556,6 +557,8 @@ function! s:AzurePipelinesLint()
             let l:org = trim(split(l:line, ':')[1])
         elseif l:line =~ '# azdev-project:'
             let l:proj = trim(split(l:line, ':')[1])
+        elseif l:line =~ '# azdev-refname:'
+            let l:ref = trim(split(l:line, ':')[1])
 	elseif l:line =~ '# azdev-param:'
             " Push the raw 'key=value' string into our list
             let l:kv = trim(split(l:line, ':')[1])
@@ -571,12 +574,24 @@ function! s:AzurePipelinesLint()
     let l:cmd = printf("%s %s %s", l:script_path, l:id, shellescape(expand('%'))) . " " . join(l:param_args, " ")
 
     if !empty(l:proj) | let $AZD_PROJECT = l:proj | endif
+    if !empty(l:ref) | let $AZD_REFNAME = l:ref | endif
+
+    " is valid for 5 min at min
+    if exists('g:az_token_data') && (localtime() + 60) < g:az_token_data.expiry
+      let $ACCESS_TOKEN = g:az_token_data.token
+    endif
+    if empty($ACCESS_TOKEN)
+      let l:raw = system("az account get-access-token --resource 499b84ac-1321-427f-aa17-267ca6975798")
+      let l:json = json_decode(l:raw)
+      let g:az_token_data = {'expiry': str2nr(l:json.expires_on), 'token': l:json.accessToken}
+      let $ACCESS_TOKEN = g:az_token_data.token
+    endif
 
     let l:output = system(l:cmd)
 
     if v:shell_error != 0
       " Attempt to find line number for Quickfix
-      let l:lnum = matchstr(l:output, 'line \zs\d\+')
+      let l:lnum = matchstr(l:output, 'line: \zs\d\+')
       let l:lnum = empty(l:lnum) ? 1 : l:lnum
 
       call setqflist([{'bufnr': bufnr('%'), 'lnum': l:lnum, 'text': l:output}])
