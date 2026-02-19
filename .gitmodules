@@ -103,9 +103,6 @@
 [submodule "vim/pack/light/opt/friendly-snippets"]
 	path = vim/pack/light/opt/friendly-snippets
 	url = https://github.com/rafamadriz/friendly-snippets.git
-[submodule "vim/pack/light/opt/glow"]
-	path = vim/pack/light/opt/glow
-	url = https://github.com/ellisonleao/glow.nvim.git
 [submodule "vim/pack/light/opt/blink.cmp"]
 	path = vim/pack/light/opt/blink.cmp
 	url = https://github.com/saghen/blink.cmp.git
@@ -118,3 +115,18 @@
 [submodule "vim/pack/light/opt/snacks"]
 	path = vim/pack/light/opt/snacks
 	url = https://github.com/folke/snacks.nvim.git
+[submodule "vim/pack/light/opt/nvim-notify"]
+	path = vim/pack/light/opt/nvim-notify
+	url = https://github.com/rcarriga/nvim-notify.git
+[submodule "vim/pack/light/opt/nvim-treesitter"]
+	path = vim/pack/light/opt/nvim-treesitter
+	url = https://github.com/nvim-treesitter/nvim-treesitter.git
+[submodule "vim/pack/light/opt/nvim-solarized-lua"]
+	path = vim/pack/light/opt/nvim-solarized-lua
+	url = https://github.com/ishan9299/nvim-solarized-lua
+[submodule "vim/pack/light/opt/tokyonight"]
+	path = vim/pack/light/opt/tokyonight
+	url = https://github.com/folke/tokyonight.nvim.git
+[submodule "vim/pack/light/opt/render-markdown"]
+	path = vim/pack/light/opt/render-markdown
+	url = https://github.com/MeanderingProgrammer/render-markdown.nvim.git
