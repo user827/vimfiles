@@ -37,7 +37,9 @@ require('lazydev').setup({})
 
 require('snacks').setup({
   explorer = {},
-  picker = {}
+  picker = {},
+  image = {},
+
 })
 
 -- Plugin configuration
