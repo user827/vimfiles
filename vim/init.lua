@@ -43,7 +43,15 @@ require('blink.cmp').setup({
 
   completion = {
     documentation = { auto_show = true },
-    list = { selection = { preselect = false, auto_insert = true } },
+    list = { selection = { preselect = true, auto_insert = true } },
+  },
+
+  cmdline = {
+    completion = {
+      menu = {
+        auto_show = true
+      }
+    }
   },
 
   fuzzy = {
