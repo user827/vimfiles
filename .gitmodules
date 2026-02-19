@@ -10,9 +10,6 @@
 [submodule "vim/pack/light/opt/ferm"]
 	path = vim/pack/light/opt/ferm
 	url = https://github.com/cometsong/ferm.vim.git
-[submodule "vim/pack/light/opt/fzf"]
-	path = vim/pack/light/opt/fzf
-	url = https://github.com/junegunn/fzf.vim.git
 [submodule "vim/pack/light/opt/rust"]
 	path = vim/pack/light/opt/rust
 	url = https://github.com/rust-lang/rust.vim.git
@@ -46,9 +43,6 @@
 [submodule "vim/pack/light/opt/vim-sensible"]
 	path = vim/pack/light/opt/vim-sensible
 	url = https://github.com/tpope/vim-sensible.git
-[submodule "vim/pack/light/opt/nerdtree"]
-	path = vim/pack/light/opt/nerdtree
-	url = https://github.com/preservim/nerdtree.git
 [submodule "vim/pack/light/opt/loupe"]
 	path = vim/pack/light/opt/loupe
 	url = https://github.com/wincent/loupe.git
@@ -82,9 +76,6 @@
 [submodule "vim/pack/light/opt/Jenkinsfile-vim-syntax"]
 	path = vim/pack/light/opt/Jenkinsfile-vim-syntax
 	url = https://github.com/martinda/Jenkinsfile-vim-syntax.git
-[submodule "vim/pack/light/opt/fzf-base"]
-	path = vim/pack/light/opt/fzf-base
-	url = https://github.com/junegunn/fzf.git
 [submodule "vim/pack/light/opt/vim-jsonnet"]
 	path = vim/pack/light/opt/vim-jsonnet
 	url = https://github.com/google/vim-jsonnet.git
@@ -118,3 +109,12 @@
 [submodule "vim/pack/light/opt/blink.cmp"]
 	path = vim/pack/light/opt/blink.cmp
 	url = https://github.com/saghen/blink.cmp.git
+[submodule "vim/pack/light/opt/which-key"]
+	path = vim/pack/light/opt/which-key
+	url = https://github.com/folke/which-key.nvim.git
+[submodule "vim/pack/light/opt/lazydev"]
+	path = vim/pack/light/opt/lazydev
+	url = https://github.com/folke/lazydev.nvim.git
+[submodule "vim/pack/light/opt/snacks"]
+	path = vim/pack/light/opt/snacks
+	url = https://github.com/folke/snacks.nvim.git

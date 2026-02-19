@@ -56,16 +56,16 @@ if &loadplugins
   packadd! ale
   packadd! ferm
   packadd! friendly-snippets
-  packadd! fzf
-  packadd! fzf-base
   packadd! indentLine
+  " todo replace with lualine
   packadd! lightline
-  packadd! nerdtree
+  "packadd! nerdtree
   packadd! pinnacle
   packadd! rust
   packadd! vim-vsnip
   packadd! vim-eunuch
   packadd! vim-fugitive
+  " TODO replace with gitsigns?
   packadd! vim-gitgutter
   packadd! vim-glsl
   " for teh funcs
@@ -90,6 +90,9 @@ if &loadplugins
     packadd! nvim-dap
     packadd! nvim-dap-go
     packadd! blink.cmp
+    packadd! which-key
+    packadd! lazydev
+    packadd! snacks
   endif
 endif
 " }}}
@@ -820,96 +823,6 @@ fun! s:external_plugins()
   imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
   smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
-
-
-  """ fzf
-  "nnoremap <leader>fg :GFiles2<cr>
-  "nnoremap <Leader>fd <cmd>lua require'my.telescope'.edit_dots{}<CR>
-  "nnoremap <Leader>fH <cmd>lua require'my.telescope'.edit_home{}<CR>
-  "nnoremap <Leader>fg <cmd>lua require'telescope.builtin'.git_files{}<CR>
-  nnoremap <Leader>fg <cmd>GFiles --cached --others --exclude-standard<CR>
-  "nnoremap <Leader>fG <cmd>lua require'telescope.builtin'.git_files({ show_untracked = false, recurse_submodules = true })<CR>
-  nnoremap <Leader>fG <cmd>GFiles --recurse-submodules<cr>
-  nnoremap <leader>fh :HomeFiles<cr>
-  nnoremap <leader>fr :RuntimeFZF<cr>
-  nnoremap <leader>fv :HelptagsFZF<cr>
-  " this is like using cat as a source because we don't supply any keyword for
-  " git-grep
-  nnoremap <expr> <leader>gg ':GG ' . expand('<cword>') . '<cr>'
-  nnoremap <expr><leader>gt ':Tags ' . expand('<cword>') . '<cr>'
-  nnoremap <expr><leader>gr ':RuntimeGrep '. expand('<cword>') . '<cr>'
-
-  command! -bar -bang HelptagsFZF call fzf#vim#helptags(<bang>0)
-
-  function! s:p(bang, ...) abort
-    let preview_window = get(g:, 'fzf_preview_window', a:bang && &columns >= 80 || &columns >= 120 ? 'right': '')
-    if len(preview_window)
-      return call('fzf#vim#with_preview', add(copy(a:000), preview_window))
-    endif
-    return {}
-  endfunction
-
-  command! -bang HomeFiles call fzf#vim#files('~', s:p(<bang>0), <bang>0)
-
-  function! <sid>gfiles(bang, dir)
-    lcd %:p:h
-    exe 'GFiles'.a:bang a:dir
-    lcd -
-  endfun
-  command! -bang -nargs=? GFiles2 :call <sid>gfiles(<q-bang>, <q-args>)
-
-  function! CollectUniquePaths() abort
-    let l:paths = []
-    for p in sort(pathogen#split(&runtimepath))
-      let l:found = 0
-      for e in l:paths
-        if stridx(p, e) == 0
-          let l:found = 1
-          break
-        endif
-      endfor
-      if !l:found
-        call add(l:paths, p)
-      endif
-    endfor
-    return l:paths
-  endfunction
-
-  command! -bang -nargs=? RuntimeFZF :call fzf#run(fzf#wrap(
-        \ 'runtime',
-        \ s:p(<bang>0, {
-        \   'source': 'fd --type f --hidden . '. join(map(CollectUniquePaths(), 'shellescape(v:val)'), ' '),
-        \   'options': [
-        \      '-m',
-        \      '--prompt=Runtime> ',
-        \    ]
-        \ }),
-        \ <bang>0))
-
-  command! -bang -nargs=* -complete=tag_listfiles GG
-        \ call fzf#vim#grep(
-        \   'git grep --column --line-number -- '.shellescape(<q-args>), 1,
-        \   s:p(<bang>0, {'dir': systemlist('git rev-parse --show-toplevel')[0]}), <bang>0)
-
-  " define a comman with a function so we won't mess fzf on error
-  "... doesn't help... was neovim bug: has('nvim') returned 0 sometimes... nope
-  "it was a vim bug and has('nvim') was right...
-  fun! <sid>grep(pattern, got_bang, paths) abort
-    call fzf#vim#grep(
-          \   'rg --column --line-number --no-heading --color=always --smart-case -- '
-          \     . shellescape(a:pattern)
-          \     . ' '
-          \     . join(map(a:paths, 'shellescape(v:val)'), ' '),
-          \   1,
-          \   s:p(a:got_bang, {
-          \   }),
-          \   a:got_bang)
-  endfun
-  " q-args makes it work with no args
-  command! -bang -nargs=? -complete=tag_listfiles RuntimeGrep
-        \ call <sid>grep(<q-args>, <bang>0, CollectUniquePaths())
-  command! -bang -nargs=? -complete=tag_listfiles CIncludeGrep
-        \ call <sid>grep(<q-args>, <bang>0, ['/usr/include/'])
 endfun
 
 let g:colorizer_hex_pattern = ['\(#\|0x\)', '\%(\x\{3}\|\x\{6}\|\x\{8\}\)', '\%(\>\|[-_]\)\@=']
