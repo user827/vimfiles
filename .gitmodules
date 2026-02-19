@@ -118,3 +118,6 @@
 [submodule "vim/pack/light/opt/snacks"]
 	path = vim/pack/light/opt/snacks
 	url = https://github.com/folke/snacks.nvim.git
+[submodule "vim/pack/light/opt/CopilotChat"]
+	path = vim/pack/light/opt/CopilotChat
+	url = https://github.com/CopilotC-Nvim/CopilotChat.nvim.git

@@ -93,6 +93,9 @@ if &loadplugins
     packadd! which-key
     packadd! lazydev
     packadd! snacks
+    packadd! CopilotChat
+    "packadd! copilot
+    "packadd! blink-cmp-copilot
   endif
 endif
 " }}}

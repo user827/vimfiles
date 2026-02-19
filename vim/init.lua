@@ -40,6 +40,18 @@ require('snacks').setup({
   picker = {}
 })
 
+--require('copilot').setup({
+--  suggestion = { enabled = false },
+--  panel = { enabled = false },
+--  -- avoid secrets
+--  filetypes = {
+--    markdown = false,
+--    sh = true,
+--    bash = true,
+--    ["*"] = false,
+--  }
+--})
+
 -- Plugin configuration
 require('blink.cmp').setup({
   keymap = { preset = 'default' },
@@ -63,6 +75,21 @@ require('blink.cmp').setup({
 
   fuzzy = {
     implementation = "prefer_rust_with_warning"
+  },
+
+  sources = {
+    -- default = { "lsp", "path", "snippets", "buffer", "copilot" },
+    -- providers = {
+    --   copilot = {
+    --     name = "copilot",
+    --     module = "blink-cmp-copilot",
+    --     score_offset = 100,
+    --     async = true,
+    --   },
+    -- },
+    per_filetype = {
+      ['copilot-chat'] = { }
+    }
   }
 })
 
