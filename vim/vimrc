@@ -72,7 +72,7 @@ if &loadplugins
   packadd! vim-pathogen
   packadd! vim-repeat
   packadd! vim-scriptease
-  packadd! vim-solarized8
+  "packadd! vim-solarized8
   packadd! vim-surround
   packadd! vim-tmux
   packadd! vim-unimpaired
@@ -83,7 +83,6 @@ if &loadplugins
   packadd! vim-terraform
 
   if has('nvim')
-    packadd! glow
     packadd! nvim-lspconfig
     packadd! lsp-progress
     packadd! plenary
@@ -96,6 +95,14 @@ if &loadplugins
     packadd! CopilotChat
     "packadd! copilot
     "packadd! blink-cmp-copilot
+    packadd! nvim-notify
+    packadd! nvim-treesitter
+    "packadd! nui
+    "packadd! noice
+    packadd! nvim-solarized-lua
+    " hurts eyes
+    packadd! tokyonight
+    packadd! render-markdown
   endif
 endif
 " }}}
@@ -305,7 +312,7 @@ set ignorecase "affects only tags and infercase when smartcase is on?
 set keymap=finnish_utf-8
 set iminsert=0
 set imsearch=-1
-set lazyredraw
+"set lazyredraw
 set linebreak "TOLEARN switch with ]ol
 set list
 set maxmempattern=100000
@@ -361,7 +368,8 @@ if $TERM =~# "alacritty\\|tmux\\|xterm" || has('gui_running')
   " https://colorswat.ch/vim/list?bg=dark&cat=all
 
   let s:colors_set=1
-  colorscheme mysolarized8
+  "colorscheme mysolarized8
+  colorscheme solarized
 endif
 
 let &colorcolumn='+' . join(range(0, 254), ',+')
