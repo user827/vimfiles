@@ -98,7 +98,8 @@ require('blink.cmp').setup({
     --   },
     -- },
     per_filetype = {
-      ['copilot-chat'] = { }
+      ['copilot-chat'] = { },
+      markdown = { },
     }
   }
 })
