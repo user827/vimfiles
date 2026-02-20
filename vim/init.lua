@@ -13,7 +13,9 @@ require('snacks').setup({
   picker = {},
   image = {},
   -- otherwise the previous plugins kill the performance
-  bigfile = {},
+  -- bigfile = {},
+  profiler = {},
+  toggle = {},
   -- so slow
   --indent = {
   --  scope = {
@@ -21,6 +23,63 @@ require('snacks').setup({
   --  }
   --},
 })
+
+require'trouble'.setup()
+require'colorizer'.setup()
+
+-- custom_solarized.normal.a.fg = '#112233'
+require('lsp-progress').setup({})
+require("lualine").setup({
+  options = {
+    theme = "auto",
+    globalstatus = vim.o.laststatus == 3,
+    disabled_filetypes = { statusline = { "dashboard", "alpha", "ministarter", "snacks_dashboard" } },
+  },
+  sections = {
+    -- Other Status Line components
+    lualine_a = { "mode" },
+    lualine_b = { "branch" },
+    lualine_c = {
+      'diagnostics',
+      { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
+      {
+        'filename',
+        path = 1,
+      },
+      function()
+        -- invoke `progress` here.
+        return require('lsp-progress').progress()
+      end,
+    },
+    lualine_x = {
+      Snacks.profiler.status(),
+      {
+        'diff',
+        source = function()
+          vim.fn.GitGutterGetHunkSummary()
+          local gitsigns = vim.fn.GitGutterGetHunkSummary()
+          if gitsigns then
+            return {
+              added = gitsigns[1],
+              modified = gitsigns[2],
+              removed = gitsigns[3],
+            }
+          end
+        end,
+      }
+    },
+    ...
+  }
+})
+
+-- listen lsp-progress event and refresh lualine
+vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
+vim.api.nvim_create_autocmd("User", {
+  group = "lualine_augroup",
+  pattern = "LspProgressStatusUpdated",
+  callback = require("lualine").refresh,
+})
+
 
 --require('copilot').setup({
 --  suggestion = { enabled = false },
@@ -197,10 +256,45 @@ local keys = {
   { "<c-/>",      function() Snacks.terminal() end, desc = "Toggle Terminal" },
   { "<c-_>",      function() Snacks.terminal() end, desc = "which_key_ignore" },
   { "]]",         function() Snacks.words.jump(vim.v.count1) end, desc = "Next Reference", mode = { "n", "t" } },
-  { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } }
+  { "[[",         function() Snacks.words.jump(-vim.v.count1) end, desc = "Prev Reference", mode = { "n", "t" } },
+
+  { "<leader>ps", function() Snacks.profiler.scratch() end, desc = "Profiler Scratch Bufer" },
+
+  {
+    "<leader>xx",
+    "<cmd>Trouble diagnostics toggle<cr>",
+    desc = "Diagnostics (Trouble)",
+  },
+  {
+    "<leader>xX",
+    "<cmd>Trouble diagnostics toggle filter.buf=0<cr>",
+    desc = "Buffer Diagnostics (Trouble)",
+  },
+  {
+    "<leader>cs",
+    "<cmd>Trouble symbols toggle focus=false<cr>",
+    desc = "Symbols (Trouble)",
+  },
+  {
+    "<leader>cl",
+    "<cmd>Trouble lsp toggle focus=false win.position=right<cr>",
+    desc = "LSP Definitions / references / ... (Trouble)",
+  },
+  {
+    "<leader>xL",
+    "<cmd>Trouble loclist toggle<cr>",
+    desc = "Location List (Trouble)",
+  },
+  {
+    "<leader>xQ",
+    "<cmd>Trouble qflist toggle<cr>",
+    desc = "Quickfix List (Trouble)",
+  },
 }
 
 for _, value in ipairs(keys) do
   local mode = value.mode or 'n'
   noremap(mode, value[1], value[2], value.desc)
 end
+Snacks.toggle.profiler():map("<leader>pp")
+Snacks.toggle.profiler_highlights():map("<leader>ph")

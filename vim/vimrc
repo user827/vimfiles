@@ -57,7 +57,7 @@ if &loadplugins
   packadd! friendly-snippets
   packadd! indentLine
   " todo replace with lualine
-  packadd! lightline
+  "packadd! lightline
   "packadd! nerdtree
   packadd! pinnacle
   packadd! vim-vsnip
@@ -100,6 +100,9 @@ if &loadplugins
     " annoying
     "packadd! render-markdown
     packadd! grug-far
+    packadd! lualine
+    packadd! nvim-colorizer
+    packadd! trouble
   endif
 endif
 " }}}
@@ -268,8 +271,8 @@ if !exists('*<sid>MyVimrcReload')
   fun <sid>MyVimrcReload() abort
     let l:foldlevel = &l:foldlevel
     source $MYVIMRC
-    call lightline#init()
-    call lightline#update()
+    "call lightline#init()
+    "call lightline#update()
     filetype detect
     let &l:foldlevel = l:foldlevel
     echom 'vimrc reloaded'
@@ -795,10 +798,10 @@ fun! s:external_plugins()
     return s:format_lint(errors, warns, 0, 0)
   endfunction
 
-  augroup myale
-    au!
-    autocmd User ALEJobStarted,ALELintPost call lightline#update()
-  augroup END
+  "augroup myale
+  "  au!
+  "  autocmd User ALEJobStarted,ALELintPost call lightline#update()
+  "augroup END
 
   function! MyLspStatus() abort
     if luaeval('#vim.lsp.buf_get_clients() <= 0')

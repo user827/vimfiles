@@ -22,9 +22,6 @@
 [submodule "vim/pack/light/opt/vim-gitgutter"]
 	path = vim/pack/light/opt/vim-gitgutter
 	url = https://github.com/airblade/vim-gitgutter.git
-[submodule "vim/pack/light/opt/lightline"]
-	path = vim/pack/light/opt/lightline
-	url = https://github.com/itchyny/lightline.vim.git
 [submodule "vim/pack/light/opt/vim-surround"]
 	path = vim/pack/light/opt/vim-surround
 	url = https://github.com/tpope/vim-surround.git
@@ -127,3 +124,12 @@
 [submodule "vim/pack/light/opt/noice"]
 	path = vim/pack/light/opt/noice
 	url = https://github.com/folke/noice.nvim.git
+[submodule "vim/pack/light/opt/lualine"]
+	path = vim/pack/light/opt/lualine
+	url = https://github.com/nvim-lualine/lualine.nvim.git
+[submodule "vim/pack/light/opt/nvim-colorizer"]
+	path = vim/pack/light/opt/nvim-colorizer
+	url = https://github.com/norcalli/nvim-colorizer.lua.git
+[submodule "vim/pack/light/opt/trouble"]
+	path = vim/pack/light/opt/trouble
+	url = https://github.com/folke/trouble.nvim.git
