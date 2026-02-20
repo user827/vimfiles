@@ -163,6 +163,7 @@ run_module() {
   if ! is_func "$_action"; then
     type -t -- "$_action"
     log info "no $_action action for $module"
+    return 0
   fi
   log notice "$_action: $module"
   log_prefix "$module"
