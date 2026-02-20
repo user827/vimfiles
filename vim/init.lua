@@ -14,11 +14,12 @@ require('snacks').setup({
   image = {},
   -- kills diary
   -- bigfile = {},
-  indent = {
-    scope = {
-      enabled = false
-    }
-  },
+  -- kills diary
+  --indent = {
+  --  scope = {
+  --    enabled = false
+  --  }
+  --},
 })
 
 --require('copilot').setup({
