@@ -12,9 +12,9 @@ require('snacks').setup({
   explorer = {},
   picker = {},
   image = {},
-  -- kills diary
-  -- bigfile = {},
-  -- kills diary
+  -- otherwise the previous plugins kill the performance
+  bigfile = {},
+  -- so slow
   --indent = {
   --  scope = {
   --    enabled = false

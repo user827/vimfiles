@@ -442,6 +442,8 @@ augroup myfiletypes
 
   autocmd FileType gitcommit setlocal spell
   autocmd FileType markdown setlocal signcolumn=number showbreak= norelativenumber nonumber breakindent linebreak
+  " diary is recognized as bigfile with snacks bigfile enabled
+  autocmd FileType bigfile setlocal signcolumn=number showbreak= norelativenumber nonumber breakindent linebreak
   " shiftwidt so that folds work
   autocmd FileType man setlocal iskeyword+=(,) shiftwidth=2 showbreak= virtualedit=all nocursorline foldlevel=1
 
