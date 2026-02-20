@@ -121,3 +121,9 @@
 [submodule "vim/pack/light/opt/grug-far"]
 	path = vim/pack/light/opt/grug-far
 	url = https://github.com/MagicDuck/grug-far.nvim.git
+[submodule "vim/pack/light/opt/nui"]
+	path = vim/pack/light/opt/nui
+	url = https://github.com/MunifTanjim/nui.nvim.git
+[submodule "vim/pack/light/opt/noice"]
+	path = vim/pack/light/opt/noice
+	url = https://github.com/folke/noice.nvim.git

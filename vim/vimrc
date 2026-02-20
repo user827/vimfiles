@@ -88,10 +88,10 @@ if &loadplugins
     packadd! lazydev
     packadd! snacks
     packadd! CopilotChat
-    "packadd! copilot
-    "packadd! blink-cmp-copilot
-    packadd! nvim-notify
+    " flickers
+    "packadd! nvim-notify
     packadd! nvim-treesitter
+    " not nice without notify
     "packadd! nui
     "packadd! noice
     packadd! nvim-solarized-lua
@@ -354,7 +354,7 @@ set expandtab
 
 let s:colors_set=0
 "Set colors only after defining `background`
-if $TERM =~# "alacritty\\|tmux\\|xterm" || has('gui_running')
+if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
   if !has('nvim')
     let &t_8f="\e[38;2;%ld;%ld;%ldm"
     let &t_8b="\e[48;2;%ld;%ld;%ldm"
@@ -386,7 +386,7 @@ endif
 
 " Terminal tunings
 if !has('nvim')
-  if $TERM =~# 'alacritty\|tmux\|xterm\|screen-256color-it'
+  if $TERM =~# 'alacritty\|tmux\|xterm\|screen-256color-it\|kitty'
     let &t_SC = "\<Esc>]12;%p1%s\<Esc>\\"
     let &t_EC = "\<Esc>]112\<Esc>\\"
     let &t_SI = "\<Esc>[6 q"
