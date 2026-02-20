@@ -160,7 +160,10 @@ run_module() {
   fi
   (
   . "$_path"
-  is_func "$_action" || return 0
+  if ! is_func "$_action"; then
+    type -t -- "$_action"
+    log info "no $_action action for $module"
+  fi
   log notice "$_action: $module"
   log_prefix "$module"
   _oldsetopts=$-

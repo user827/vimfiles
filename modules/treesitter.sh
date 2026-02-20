@@ -1,3 +1,3 @@
 install() {
-  /usr/bin/nvim "+require'nvim-treesitter'.install { 'vim', 'regex', 'lua', 'bash', 'markdown', 'markdown_inline' } | quit"
+  /usr/bin/nvim --headless "+lua require'nvim-treesitter'.install { 'vim', 'regex', 'lua', 'bash', 'markdown', 'markdown_inline' }" "+quit"
 }
