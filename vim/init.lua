@@ -12,8 +12,9 @@ require('snacks').setup({
   explorer = {},
   picker = {},
   image = {},
-  -- otherwise the previous plugins kill the performance
-  -- bigfile = {},
+  -- otherwise the previous plugins kill the performance. even profiler does not
+  -- show why
+  bigfile = {},
   profiler = {},
   toggle = {},
   -- so slow
