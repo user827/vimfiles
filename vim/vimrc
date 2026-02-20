@@ -54,7 +54,6 @@ let s:use_unicode = !has('win32') && (&termencoding ==# 'utf-8' || &encoding ==#
 if &loadplugins
   packadd! Colorizer
   packadd! ale
-  packadd! ferm
   packadd! friendly-snippets
   "packadd! indentLine
   " todo replace with lualine

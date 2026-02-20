@@ -1,0 +1,4 @@
+install() {
+  cd vim/pack/light/opt/blink.cmp/
+  [ -d target ] || cargo build --release --target-dir target
+}

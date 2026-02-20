@@ -7,9 +7,6 @@
 [submodule "vim/pack/light/opt/vim-repeat"]
 	path = vim/pack/light/opt/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
-[submodule "vim/pack/light/opt/ferm"]
-	path = vim/pack/light/opt/ferm
-	url = https://github.com/cometsong/ferm.vim.git
 [submodule "vim/pack/light/opt/rust"]
 	path = vim/pack/light/opt/rust
 	url = https://github.com/rust-lang/rust.vim.git
