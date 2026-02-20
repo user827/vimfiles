@@ -56,7 +56,7 @@ if &loadplugins
   packadd! ale
   packadd! ferm
   packadd! friendly-snippets
-  packadd! indentLine
+  "packadd! indentLine
   " todo replace with lualine
   packadd! lightline
   "packadd! nerdtree
@@ -103,6 +103,7 @@ if &loadplugins
     " hurts eyes
     packadd! tokyonight
     packadd! render-markdown
+    packadd! grug-far
   endif
 endif
 " }}}
@@ -370,6 +371,9 @@ if $TERM =~# "alacritty\\|tmux\\|xterm" || has('gui_running')
   let s:colors_set=1
   "colorscheme mysolarized8
   colorscheme solarized
+  "colorscheme mysolarized
+  hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
+  hi SnacksIndent guifg=#3b4261
 endif
 
 let &colorcolumn='+' . join(range(0, 254), ',+')
