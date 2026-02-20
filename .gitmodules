@@ -19,9 +19,6 @@
 [submodule "vim/pack/light/opt/vim-solarized8"]
 	path = vim/pack/light/opt/vim-solarized8
 	url = https://github.com/lifepillar/vim-solarized8.git
-[submodule "vim/pack/light/opt/vim-gitgutter"]
-	path = vim/pack/light/opt/vim-gitgutter
-	url = https://github.com/airblade/vim-gitgutter.git
 [submodule "vim/pack/light/opt/vim-surround"]
 	path = vim/pack/light/opt/vim-surround
 	url = https://github.com/tpope/vim-surround.git
@@ -133,3 +130,6 @@
 [submodule "vim/pack/light/opt/trouble"]
 	path = vim/pack/light/opt/trouble
 	url = https://github.com/folke/trouble.nvim.git
+[submodule "vim/pack/light/opt/gitsigns"]
+	path = vim/pack/light/opt/gitsigns
+	url = https://github.com/lewis6991/gitsigns.nvim.git

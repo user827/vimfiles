@@ -63,8 +63,7 @@ if &loadplugins
   packadd! vim-vsnip
   packadd! vim-eunuch
   packadd! vim-fugitive
-  " TODO replace with gitsigns?
-  packadd! vim-gitgutter
+  "packadd! vim-gitgutter
   packadd! vim-glsl
   packadd! vim-repeat
   packadd! vim-scriptease
@@ -103,6 +102,7 @@ if &loadplugins
     packadd! lualine
     packadd! nvim-colorizer
     packadd! trouble
+    packadd! gitsigns
   endif
 endif
 " }}}
@@ -814,7 +814,7 @@ fun! s:external_plugins()
 
   "let g:gitgutter_sign_allow_clobber = 0
   let g:gitgutter_sign_priority = 5
-  let g:gitgutter_max_signs = 500
+  "let g:gitgutter_max_signs = 500
 
 
 

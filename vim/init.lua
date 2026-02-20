@@ -30,7 +30,7 @@ require'colorizer'.setup()
 
 -- custom_solarized.normal.a.fg = '#112233'
 require('lsp-progress').setup({})
-require("lualine").setup({
+local lualine_opts = {
   options = {
     theme = "auto",
     globalstatus = vim.o.laststatus == 3,
@@ -57,13 +57,12 @@ require("lualine").setup({
       {
         'diff',
         source = function()
-          vim.fn.GitGutterGetHunkSummary()
-          local gitsigns = vim.fn.GitGutterGetHunkSummary()
+          local gitsigns = vim.b.gitsigns_status_dict
           if gitsigns then
             return {
-              added = gitsigns[1],
-              modified = gitsigns[2],
-              removed = gitsigns[3],
+              added = gitsigns.added,
+              modified = gitsigns.changed,
+              removed = gitsigns.removed,
             }
           end
         end,
@@ -71,7 +70,25 @@ require("lualine").setup({
     },
     ...
   }
+}
+
+local trouble = require("trouble")
+local symbols = trouble.statusline({
+  mode = "lsp_document_symbols",
+  groups = {},
+  title = false,
+  filter = { range = true },
+  format = "{kind_icon}{symbol.name:Normal}",
+  -- The following line is needed to fix the background color
+  -- Set it to the lualine section you want to use
+  hl_group = "lualine_c_normal",
 })
+table.insert(lualine_opts.sections.lualine_c, {
+  symbols.get,
+  cond = symbols.has,
+})
+
+require("lualine").setup(lualine_opts)
 
 -- listen lsp-progress event and refresh lualine
 vim.api.nvim_create_augroup("lualine_augroup", { clear = true })
@@ -80,38 +97,6 @@ vim.api.nvim_create_autocmd("User", {
   pattern = "LspProgressStatusUpdated",
   callback = require("lualine").refresh,
 })
-
-
---require('copilot').setup({
---  suggestion = { enabled = false },
---  panel = { enabled = false },
---  -- avoid secrets
---  filetypes = {
---    markdown = false,
---    sh = true,
---    bash = true,
---    ["*"] = false,
---  }
---})
-
---require("noice").setup({
---  lsp = {
---    -- override markdown rendering so that **cmp** and other plugins use **Treesitter**
---    override = {
---      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
---      ["vim.lsp.util.stylize_markdown"] = true,
---      ["cmp.entry.get_documentation"] = true, -- requires hrsh7th/nvim-cmp
---    },
---  },
---  -- you can enable a preset for easier configuration
---  presets = {
---    bottom_search = true, -- use a classic bottom cmdline for search
---    command_palette = true, -- position the cmdline and popupmenu together
---    long_message_to_split = true, -- long messages will be sent to a split
---    inc_rename = false, -- enables an input dialog for inc-rename.nvim
---    lsp_doc_border = false, -- add a border to hover docs and signature help
---  },
---})
 
 -- flickers
 --vim.notify = require("notify")
