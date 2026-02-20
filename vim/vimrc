@@ -60,20 +60,16 @@ if &loadplugins
   packadd! lightline
   "packadd! nerdtree
   packadd! pinnacle
-  packadd! rust
   packadd! vim-vsnip
   packadd! vim-eunuch
   packadd! vim-fugitive
   " TODO replace with gitsigns?
   packadd! vim-gitgutter
   packadd! vim-glsl
-  " for teh funcs
-  packadd! vim-pathogen
   packadd! vim-repeat
   packadd! vim-scriptease
   "packadd! vim-solarized8
   packadd! vim-surround
-  packadd! vim-tmux
   packadd! vim-unimpaired
   packadd! vimchant
   packadd! Jenkinsfile-vim-syntax

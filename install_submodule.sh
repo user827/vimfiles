@@ -10,5 +10,5 @@ git submodule add --name "$name" "$url" vim/pack/light/opt/"$name"
 
 #vim "+helptags ALL" +q
 #nvim "+helptags ALL" "+UpdateRemotePlugins" +q
-nvim -u NONE -N "+packadd $name | packadd vim-pathogen | call pathogen#helptags() | quit"
+nvim -u NONE -N "+packadd $name | helptags ALL | quit"
 echo "Run UpdateRemotePlugins if necessary"

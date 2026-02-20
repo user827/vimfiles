@@ -34,4 +34,4 @@ link_verbose "$L_GIT_ROOT/vim" "$nvimpath"
 
 run_modules "$modbase" install
 
-nvim "+call pathogen#helptags() | UpdateRemotePlugins | quit"
+nvim "+call helptags ALL | UpdateRemotePlugins | quit"

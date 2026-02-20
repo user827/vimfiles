@@ -7,9 +7,6 @@
 [submodule "vim/pack/light/opt/vim-repeat"]
 	path = vim/pack/light/opt/vim-repeat
 	url = https://github.com/tpope/vim-repeat.git
-[submodule "vim/pack/light/opt/rust"]
-	path = vim/pack/light/opt/rust
-	url = https://github.com/rust-lang/rust.vim.git
 [submodule "vim/pack/light/opt/vim-scriptease"]
 	path = vim/pack/light/opt/vim-scriptease
 	url = https://github.com/tpope/vim-scriptease.git
@@ -19,9 +16,6 @@
 [submodule "vim/pack/light/opt/vim-fugitive"]
 	path = vim/pack/light/opt/vim-fugitive
 	url = https://github.com/tpope/vim-fugitive.git
-[submodule "vim/pack/light/opt/vim-tmux"]
-	path = vim/pack/light/opt/vim-tmux
-	url = https://github.com/tmux-plugins/vim-tmux.git
 [submodule "vim/pack/light/opt/vim-solarized8"]
 	path = vim/pack/light/opt/vim-solarized8
 	url = https://github.com/lifepillar/vim-solarized8.git
@@ -34,9 +28,6 @@
 [submodule "vim/pack/light/opt/vim-surround"]
 	path = vim/pack/light/opt/vim-surround
 	url = https://github.com/tpope/vim-surround.git
-[submodule "vim/pack/light/opt/vim-pathogen"]
-	path = vim/pack/light/opt/vim-pathogen
-	url = https://github.com/tpope/vim-pathogen.git
 [submodule "vim/pack/light/opt/vim-sensible"]
 	path = vim/pack/light/opt/vim-sensible
 	url = https://github.com/tpope/vim-sensible.git
