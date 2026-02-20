@@ -102,7 +102,8 @@ if &loadplugins
     packadd! nvim-solarized-lua
     " hurts eyes
     packadd! tokyonight
-    packadd! render-markdown
+    " annoying
+    "packadd! render-markdown
     packadd! grug-far
   endif
 endif

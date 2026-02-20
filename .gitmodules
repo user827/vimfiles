@@ -130,9 +130,6 @@
 [submodule "vim/pack/light/opt/tokyonight"]
 	path = vim/pack/light/opt/tokyonight
 	url = https://github.com/folke/tokyonight.nvim.git
-[submodule "vim/pack/light/opt/render-markdown"]
-	path = vim/pack/light/opt/render-markdown
-	url = https://github.com/MeanderingProgrammer/render-markdown.nvim.git
 [submodule "vim/pack/light/opt/grug-far"]
 	path = vim/pack/light/opt/grug-far
 	url = https://github.com/MagicDuck/grug-far.nvim.git

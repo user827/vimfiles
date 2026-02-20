@@ -35,9 +35,13 @@ require('snacks').setup({
   explorer = {},
   picker = {},
   image = {},
-  bigfile = {},
-  indent = {},
-
+  -- kills diary
+  -- bigfile = {},
+  indent = {
+    scope = {
+      enabled = false
+    }
+  },
 })
 
 --require('copilot').setup({
@@ -73,8 +77,6 @@ vim.notify = require("notify")
 --     lsp_doc_border = false, -- add a border to hover docs and signature help
 --   },
 -- })
-
-require("render-markdown").setup({})
 
 require("grug-far").setup({})
 
