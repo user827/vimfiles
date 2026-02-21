@@ -20,6 +20,8 @@ require('dap').set_log_level('DEBUG')
 --   }
 -- })
 
+require('nvim-treesitter').setup({})
+
 require('which-key').setup({
   preset = 'helix',
   defaults = {},
