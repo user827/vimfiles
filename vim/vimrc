@@ -101,6 +101,8 @@ if &loadplugins
     packadd! gitsigns
     packadd! catppuccin
     packadd! hardtime
+    packadd! mini.icons
+    packadd! nvim-web-devicons
   else
     packadd! vim-solarized8
   endif

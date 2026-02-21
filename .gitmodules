@@ -115,3 +115,9 @@
 [submodule "vim/pack/light/opt/hardtime"]
 	path = vim/pack/light/opt/hardtime
 	url = https://github.com/m4xshen/hardtime.nvim.git
+[submodule "vim/pack/light/opt/mini.icons"]
+	path = vim/pack/light/opt/mini.icons
+	url = https://github.com/nvim-mini/mini.icons.git
+[submodule "vim/pack/light/opt/nvim-web-devicons"]
+	path = vim/pack/light/opt/nvim-web-devicons
+	url = https://github.com/nvim-tree/nvim-web-devicons.git
