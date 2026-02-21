@@ -56,7 +56,6 @@ if &loadplugins
   packadd! friendly-snippets
   packadd! indentLine
   " todo replace with lualine
-  "packadd! lightline
   "packadd! nerdtree
   packadd! vim-vsnip
   packadd! vim-eunuch
@@ -638,9 +637,6 @@ fun! s:external_plugins()
 
   "LINTING: statusline, lsp, ale
 
-  let g:ale_set_balloons = 1
-  let g:ale_set_balloons_legacy_echo = 0
-
   let g:ale_lint_on_text_changed = 0
   let g:ale_lint_on_insert_leave = 0
   let g:ale_lint_on_enter = 0
@@ -649,8 +645,6 @@ fun! s:external_plugins()
 
   let g:ale_fix_on_save = 0
 
-
-  let g:ale_completion_enabled = 0
 
   let g:ale_rust_cargo_use_clippy = executable('cargo-clippy')
   let g:ale_rust_cargo_check_tests = 1
@@ -670,7 +664,6 @@ fun! s:external_plugins()
 	\ 'cs': [],
 	\ 'javascript': ['xo'],
 	\ }
-  let g:ale_disable_lsp = 1
   let g:ale_set_loclist = 0
   let g:ale_go_golangci_lint_options = '--fast'
 
@@ -736,17 +729,6 @@ fun! s:external_plugins()
         \ },
         \}
 
-  if s:colors_set == 1
-    let g:lightline.colorscheme = 'solarized'
-  endif
-
-  if ! has('nvim')
-    fun! MyDummy() abort
-      return ''
-    endfun
-    let g:lightline.component_function.lsp = 'MyDummy'
-  endif
-
   function! MyFileEncoding() abort
     if &fileencoding !=# 'utf-8'
       return &fileencoding
@@ -784,22 +766,6 @@ fun! s:external_plugins()
   endfunction
 
   "breakadd func s:format_lint
-
-  function! MyAleStatus() abort
-    if ale#engine#IsCheckingBuffer(bufnr('')) == 1
-      return '...'
-    endif
-
-    let counts = ale#statusline#Count(bufnr(''))
-    let errors = counts.error + counts.style_error
-    let warns = counts.total - errors
-    return s:format_lint(errors, warns, 0, 0)
-  endfunction
-
-  "augroup myale
-  "  au!
-  "  autocmd User ALEJobStarted,ALELintPost call lightline#update()
-  "augroup END
 
   function! MyLspStatus() abort
     if luaeval('#vim.lsp.buf_get_clients() <= 0')

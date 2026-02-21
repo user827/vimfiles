@@ -134,7 +134,7 @@ local lualine_opts = {
   sections = {
     -- Other Status Line components
     lualine_a = { "mode" },
-    lualine_b = { "branch" },
+    lualine_b = { "FugitiveHead" },
     lualine_c = {
       'diagnostics',
       { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
