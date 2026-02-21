@@ -100,6 +100,8 @@ if &loadplugins
     packadd! nvim-colorizer
     packadd! trouble
     packadd! gitsigns
+    packadd! catppuccin
+    packadd! hardtime
   endif
 endif
 " }}}
@@ -296,19 +298,23 @@ set diffopt+=foldcolumn:0
 set diffopt+=vertical
 set display=lastline " Show as much as possible in the window in case we wrap
 set encoding=utf-8
+set expandtab
+set foldtext=''
 set foldlevelstart=99
 set foldmethod=indent " event more clear than syntax
 set foldnestmax=2
-set formatoptions+=l "Remove comment leaders when joining lines
+set formatoptions+=ln "Remove comment leaders when joining lines
 set formatoptions-=o " Do not put comment leader after pressing o.
-set grepprg=grep\ -nH
+set grepformat="%f:%l:%c:%m"
+set grepprg="rg --vimgrep"
 set hidden
 set history=1000        " keep 1000 lines of command line history
 set hlsearch
 set ignorecase "affects only tags and infercase when smartcase is on?
-set keymap=finnish_utf-8
 set iminsert=0
 set imsearch=-1
+set jumpoptions = "view"
+set keymap=finnish_utf-8
 "set lazyredraw
 set linebreak "TOLEARN switch with ]ol
 set list
@@ -321,6 +327,9 @@ set number
 set numberwidth=3
 set path+=./include;~
 set path+=/usr/local/include
+set pumheight=10
+set pumblend=10
+set relativenumber
 set ruler       " show the cursor position all the time, info in statusline but no need in ctrl-g
 set scrolloff=3
 set secure
@@ -332,6 +341,7 @@ set shortmess-=F " don't set F as it disables echom in autocmds for example
 set showbreak=…
 set showcmd
 set sidescroll=1
+set sidescrolloff=8
 set smartcase
 set spelllang=en
 set splitright                      " open vertical splits to the right of the current window
@@ -349,8 +359,10 @@ set viewoptions=folds,options,cursor,unix,slash " Better Unix / Windows compatib
 set virtualedit=block
 set whichwrap=b,h,l,s,<,>,[,],~
 set wildmode=longest:full,full
-set winminheight=0
-set expandtab
+"set winminheight=0
+set winminwidth=5
+
+set smoothscroll
 
 let s:colors_set=0
 "Set colors only after defining `background`
@@ -366,10 +378,13 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
 
   let s:colors_set=1
   "colorscheme mysolarized8
-  colorscheme solarized
   "colorscheme mysolarized
+
+  colorscheme solarized
   hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
   hi SnacksIndent guifg=#3b4261
+
+  "colorscheme catppuccin
 endif
 
 let &colorcolumn='+' . join(range(0, 254), ',+')
@@ -493,7 +508,9 @@ command! -nargs=* UnWrap :call UnSetupWrapping()<CR>
 " }}}
 
 " {{{ Mappings
-let g:mapleader = ',' "has to be defined before usage!
+"let g:mapleader = ',' "has to be defined before usage!
+nnoremap <SPACE> <Nop>
+let g:mapleader = ' ' "has to be defined before usage!
 let maplocalleader = '\'
 
 nnoremap <silent> <C-_> :silent edit <C-R>=empty(expand('%')) ? '.' : fnameescape(expand('%:p:h'))<CR><CR>
@@ -549,10 +566,6 @@ augroup LsAutocommands
   autocmd VimResized * execute "normal! \<c-w>="
   "use only pastetoggle
   autocmd InsertLeave  * set nopaste
-
-  if exists('##TextYankPost') && has('nvim')
-    autocmd TextYankPost * silent! lua return (not vim.v.event.visual) and require'vim.highlight'.on_yank({higroup='Substitute', timeout=200})
-  endif
 augroup END
 
 "}}}

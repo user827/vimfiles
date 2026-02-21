@@ -109,3 +109,9 @@
 [submodule "vim/pack/light/opt/nvim-colorizer"]
 	path = vim/pack/light/opt/nvim-colorizer
 	url = https://github.com/catgoose/nvim-colorizer.lua.git
+[submodule "vim/pack/light/opt/catppuccin"]
+	path = vim/pack/light/opt/catppuccin
+	url = https://github.com/catppuccin/nvim.git
+[submodule "vim/pack/light/opt/hardtime"]
+	path = vim/pack/light/opt/hardtime
+	url = https://github.com/m4xshen/hardtime.nvim.git

@@ -1,5 +1,14 @@
 local vimrc = vim.fn.stdpath("config") .. "/vimrc"
 vim.cmd.source(vimrc)
+vim.opt.fillchars = {
+  foldopen = "",
+  foldclose = "",
+  fold = " ",
+  foldsep = " ",
+  diff = "╱",
+  eob = " ",
+}
+vim.opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
 
 require('dap-go').setup()
 require('dap').set_log_level('DEBUG')
@@ -73,7 +82,10 @@ require'trouble'.setup({
     }
   }
 })
+
 require'colorizer'.setup()
+
+require'hardtime'.setup()
 
 require'gitsigns'.setup({
   signs = {
@@ -215,22 +227,50 @@ require("grug-far").setup({
 
 -- Plugin configuration
 require('blink.cmp').setup({
-  keymap = { preset = 'default' },
+  snippets = {
+    preset = "default"
+  },
+
+  keymap = {
+    preset = 'enter',
+    ["<C-y>"] = { "select_and_accept" }
+  },
 
   appearance = {
     nerd_font_variant = 'mono'
   },
 
   completion = {
-    documentation = { auto_show = true },
-    list = { selection = { preselect = true, auto_insert = true } },
+    menu = {
+      draw = {
+        treesitter = { "lsp" },
+      }
+    },
+    documentation = {
+      auto_show = true,
+      auto_show_delay_ms = 200,
+    },
+    ghost_text = {
+      enabled = true
+    },
+    --list = { selection = { preselect = true, auto_insert = true } },
   },
 
   cmdline = {
+    enabled = true,
+    keymap = {
+      preset = "cmdline",
+      ["<Right>"] = false,
+      ["<Left>"] = false,
+    },
     completion = {
+      list = { selection = { preselect = false } },
       menu = {
-        auto_show = true
-      }
+        auto_show = function(ctx)
+          return vim.fn.getcmdtype() == ":"
+        end,
+      },
+      ghost_text = { enabled = true },
     }
   },
 
@@ -391,3 +431,5 @@ Snacks.toggle.profiler():map("<leader>pp")
 Snacks.toggle.profiler_highlights():map("<leader>ph")
 
 require 'mylsp'
+require 'keymaps'
+require 'autocmds'
