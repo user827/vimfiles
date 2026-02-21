@@ -59,7 +59,6 @@ if &loadplugins
   " todo replace with lualine
   "packadd! lightline
   "packadd! nerdtree
-  packadd! pinnacle
   packadd! vim-vsnip
   packadd! vim-eunuch
   packadd! vim-fugitive
