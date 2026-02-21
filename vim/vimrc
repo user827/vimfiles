@@ -698,51 +698,6 @@ fun! s:external_plugins()
         \}
 
 
-  let g:lightline = {
-        \ 'active': {
-        \   'left': [ [ 'mode', 'paste' ],
-        \             [ 'readonly', 'relativepath', 'modified', 'git' ], [ 'lsp' ] ],
-        \   'right': [ [ 'ale', 'lineinfo' ],
-        \              [ 'percent' ],
-        \              [ 'myfileformat', 'myfileencoding', 'filetype' ] ]
-        \ },
-        \ 'inactive': {
-        \   'left': [ [ 'relativepath' ] ],
-        \   'right': [ [ 'lineinfo' ],
-        \            [ 'percent' ] ]
-        \ },
-        \ 'tabline': {
-        \   'left': [ [ 'tabs' ] ],
-        \   'right': []
-        \ },
-        \ 'component_type': {
-        \   'ale': 'error',
-        \ },
-        \ 'component_expand': {
-        \   'ale': 'MyAleStatus',
-        \ },
-        \ 'component_function': {
-        \   'lsp': 'MyLspStatus',
-        \   'git': 'FugitiveHead',
-        \   'myfileencoding': 'MyFileEncoding',
-        \   'myfileformat': 'MyFileFormat',
-        \ },
-        \}
-
-  function! MyFileEncoding() abort
-    if &fileencoding !=# 'utf-8'
-      return &fileencoding
-    endif
-    return ''
-  endfun
-
-  function! MyFileFormat() abort
-    if &fileformat !=# 'unix'
-      return &fileformat
-    endif
-    return ''
-  endfun
-
   function! s:adds(res, symbol, num) abort
     let l:r = a:res
     if a:num == 0
@@ -766,15 +721,6 @@ fun! s:external_plugins()
   endfunction
 
   "breakadd func s:format_lint
-
-  function! MyLspStatus() abort
-    if luaeval('#vim.lsp.buf_get_clients() <= 0')
-      return ''
-    endif
-    let l:status = luaeval("require('lsp-progress').progress()")
-    "echom l:status
-    return l:status
-  endfunction
 
   augroup mylspconf
     au!

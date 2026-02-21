@@ -148,6 +148,14 @@ local lualine_opts = {
       end,
     },
     lualine_x = {
+      {
+        'encoding',
+        cond = function() if vim.api.nvim_get_option_value("fileencoding", {buf = 0}) == 'utf-8' then return false else return true end end
+      },
+      {
+        'fileformat',
+        cond = function() if vim.api.nvim_get_option_value("fileformat", {buf = 0}) == 'unix' then return false else return true end end
+      },
       Snacks.profiler.status(),
       {
         'diff',
