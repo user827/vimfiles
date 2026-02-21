@@ -65,7 +65,6 @@ if &loadplugins
   packadd! vim-glsl
   packadd! vim-repeat
   packadd! vim-scriptease
-  "packadd! vim-solarized8
   packadd! vim-surround
   packadd! vim-unimpaired
   packadd! vimchant
@@ -102,6 +101,8 @@ if &loadplugins
     packadd! gitsigns
     packadd! catppuccin
     packadd! hardtime
+  else
+    packadd! vim-solarized8
   endif
 endif
 " }}}
@@ -328,7 +329,6 @@ set numberwidth=3
 set path+=./include;~
 set path+=/usr/local/include
 set pumheight=10
-set pumblend=10
 set relativenumber
 set ruler       " show the cursor position all the time, info in statusline but no need in ctrl-g
 set scrolloff=3
@@ -377,16 +377,19 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
   " https://colorswat.ch/vim/list?bg=dark&cat=all
 
   let s:colors_set=1
-  "colorscheme mysolarized8
-  "colorscheme mysolarized
+  if !has('nvim')
+    colorscheme mysolarized8
+  else
+    "colorscheme mysolarized
 
-  colorscheme solarized
-  hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
-  hi SnacksIndent guifg=#3b4261
-  "hi LspInlayHint guifg=#6E738E guibg=#303348
-  hi LspInlayHint guifg=#657b83 guibg=#073642
+    colorscheme solarized
+    hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
+    hi SnacksIndent guifg=#3b4261
+    "hi LspInlayHint guifg=#6E738E guibg=#303348
+    hi LspInlayHint guifg=#657b83 guibg=#073642
 
-  "colorscheme catppuccin
+    "colorscheme catppuccin
+  endif
 endif
 
 let &colorcolumn='+' . join(range(0, 254), ',+')
