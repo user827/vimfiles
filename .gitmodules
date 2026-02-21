@@ -100,12 +100,12 @@
 [submodule "vim/pack/light/opt/lualine"]
 	path = vim/pack/light/opt/lualine
 	url = https://github.com/nvim-lualine/lualine.nvim.git
-[submodule "vim/pack/light/opt/nvim-colorizer"]
-	path = vim/pack/light/opt/nvim-colorizer
-	url = https://github.com/norcalli/nvim-colorizer.lua.git
 [submodule "vim/pack/light/opt/trouble"]
 	path = vim/pack/light/opt/trouble
 	url = https://github.com/folke/trouble.nvim.git
 [submodule "vim/pack/light/opt/gitsigns"]
 	path = vim/pack/light/opt/gitsigns
 	url = https://github.com/lewis6991/gitsigns.nvim.git
+[submodule "vim/pack/light/opt/nvim-colorizer"]
+	path = vim/pack/light/opt/nvim-colorizer
+	url = https://github.com/catgoose/nvim-colorizer.lua.git
