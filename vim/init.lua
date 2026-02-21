@@ -13,6 +13,12 @@ vim.opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with 
 require('dap-go').setup()
 require('dap').set_log_level('DEBUG')
 
+-- require('catppuccin').setup({
+--   background = {
+--     dark = 'macchiato'
+--   }
+-- })
+
 require('which-key').setup({
   preset = 'helix',
   defaults = {},
@@ -250,9 +256,9 @@ require('blink.cmp').setup({
       auto_show = true,
       auto_show_delay_ms = 200,
     },
-    ghost_text = {
-      enabled = true
-    },
+    -- ghost_text = {
+    --   enabled = true
+    -- },
     --list = { selection = { preselect = true, auto_insert = true } },
   },
 
