@@ -63,8 +63,9 @@ if &loadplugins
   packadd! vim-vsnip
   packadd! vim-eunuch
   packadd! vim-fugitive
-  " just there to keep lua ls happy... todo
-  "packadd! vim-gitgutter
+  " just there to keep lua ls happy... todo it just needs to sdo the one system
+  " call no matter what the bash command is
+  packadd! vim-gitgutter
   packadd! vim-glsl
   packadd! vim-repeat
   packadd! vim-scriptease
@@ -103,7 +104,7 @@ if &loadplugins
     packadd! lualine
     packadd! nvim-colorizer
     packadd! trouble
-    packadd! gitsigns
+    "packadd! gitsigns
   endif
 endif
 " }}}
@@ -814,10 +815,15 @@ fun! s:external_plugins()
   endfunction
 
   let g:gitgutter_map_keys = 0
-  "GitGutterDisable
-  " even this breaks lazydev
-  "let g:loaded_gitgutter = 1
-  let g:gitgutter_enabled = 0
+  nmap ]h <Plug>(GitGutterNextHunk)
+  nmap [h <Plug>(GitGutterPrevHunk)
+  nmap <leader>ghp <Plug>(GitGutterPreviewHunk)
+  nmap <leader>ghs <Plug>(GitGutterStageHunk)
+  nmap <leader>ghu <Plug>(GitGutterUndoHunk)
+  omap ih <Plug>(GitGutterTextObjectInnerPending)
+  omap ah <Plug>(GitGutterTextObjectOuterPending)
+  xmap ih <Plug>(GitGutterTextObjectInnerVisual)
+  xmap ah <Plug>(GitGutterTextObjectOuterVisual)
 
 
 
