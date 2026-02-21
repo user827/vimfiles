@@ -57,7 +57,6 @@ if &loadplugins
   packadd! indentLine
   " todo replace with lualine
   "packadd! nerdtree
-  packadd! vim-vsnip
   packadd! vim-eunuch
   packadd! vim-fugitive
   " just there to keep lua ls happy... todo it just needs to sdo the one system
@@ -103,6 +102,9 @@ if &loadplugins
     packadd! hardtime
     packadd! mini.icons
     packadd! nvim-web-devicons
+    packadd! bufferline
+    packadd! luasnip
+    packadd! neogit
   else
     packadd! vim-solarized8
   endif
@@ -757,13 +759,6 @@ fun! s:external_plugins()
   let g:vimchant_spellcheck_lang = 'fi'
   nmap \st <Plug>VimchantSpellCheckSwitch
   nmap \sl <Plug>VimchantChangeLanguage
-
-  """vsnip
-  " Jump forward or backward
-  imap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-  smap <expr> <Tab>   vsnip#jumpable(1)   ? '<Plug>(vsnip-jump-next)'      : '<Tab>'
-  imap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
-  smap <expr> <S-Tab> vsnip#jumpable(-1)  ? '<Plug>(vsnip-jump-prev)'      : '<S-Tab>'
 
 endfun
 

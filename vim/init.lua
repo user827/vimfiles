@@ -1,3 +1,77 @@
+-- from lazy vim
+-- icons used by other plugins
+-- stylua: ignore
+local icons = {
+  misc = {
+    dots = "󰇘",
+  },
+  ft = {
+    octo = " ",
+    gh = " ",
+    ["markdown.gh"] = " ",
+  },
+  dap = {
+    Stopped             = { "󰁕 ", "DiagnosticWarn", "DapStoppedLine" },
+    Breakpoint          = " ",
+    BreakpointCondition = " ",
+    BreakpointRejected  = { " ", "DiagnosticError" },
+    LogPoint            = ".>",
+  },
+  diagnostics = {
+    Error = " ",
+    Warn  = " ",
+    Hint  = " ",
+    Info  = " ",
+  },
+  git = {
+    added    = " ",
+    modified = " ",
+    removed  = " ",
+  },
+  kinds = {
+    Array         = " ",
+    Boolean       = "󰨙 ",
+    Class         = " ",
+    Codeium       = "󰘦 ",
+    Color         = " ",
+    Control       = " ",
+    Collapsed     = " ",
+    Constant      = "󰏿 ",
+    Constructor   = " ",
+    Copilot       = " ",
+    Enum          = " ",
+    EnumMember    = " ",
+    Event         = " ",
+    Field         = " ",
+    File          = " ",
+    Folder        = " ",
+    Function      = "󰊕 ",
+    Interface     = " ",
+    Key           = " ",
+    Keyword       = " ",
+    Method        = "󰊕 ",
+    Module        = " ",
+    Namespace     = "󰦮 ",
+    Null          = " ",
+    Number        = "󰎠 ",
+    Object        = " ",
+    Operator      = " ",
+    Package       = " ",
+    Property      = " ",
+    Reference     = " ",
+    Snippet       = "󱄽 ",
+    String        = " ",
+    Struct        = "󰆼 ",
+    Supermaven    = " ",
+    TabNine       = "󰏚 ",
+    Text          = " ",
+    TypeParameter = " ",
+    Unit          = " ",
+    Value         = " ",
+    Variable      = "󰀫 ",
+  },
+}
+
 local vimrc = vim.fn.stdpath("config") .. "/vimrc"
 vim.cmd.source(vimrc)
 vim.opt.fillchars = {
@@ -76,6 +150,7 @@ require('snacks').setup({
   toggle = {},
   util = {},
   rename = {},
+  bufdelete = {},
   -- so slow
   --indent = {
   --  scope = {
@@ -83,6 +158,39 @@ require('snacks').setup({
   --  }
   --},
 })
+
+require('bufferline').setup({
+  options = {
+    -- stylua: ignore
+    close_command = function(n) Snacks.bufdelete(n) end,
+    -- stylua: ignore
+    right_mouse_command = function(n) Snacks.bufdelete(n) end,
+    diagnostics = "nvim_lsp",
+    always_show_bufferline = false,
+    diagnostics_indicator = function(_, _, diag)
+      local icons = icons.diagnostics
+      local ret = (diag.error and icons.Error .. diag.error .. " " or "")
+      .. (diag.warning and icons.Warn .. diag.warning or "")
+      return vim.trim(ret)
+    end,
+    offsets = {
+      {
+        filetype = "neo-tree",
+        text = "Neo-tree",
+        highlight = "Directory",
+        text_align = "left",
+      },
+      {
+        filetype = "snacks_layout_box",
+      },
+    },
+    ---@param opts bufferline.IconFetcherOpts
+    get_element_icon = function(opts)
+      return icons.ft[opts.filetype]
+    end
+  }
+})
+-- todo bufferline autocmds
 
 require'trouble'.setup({
   modes = {
@@ -146,6 +254,10 @@ require'gitsigns'.setup({
   end,
 })
 
+require("luasnip.loaders.from_vscode").lazy_load()
+
+local neogit = require('neogit')
+
 -- custom_solarized.normal.a.fg = '#112233'
 require('lsp-progress').setup({
 })
@@ -160,7 +272,15 @@ local lualine_opts = {
     lualine_a = { "mode" },
     lualine_b = { "FugitiveHead" },
     lualine_c = {
-      'diagnostics',
+      {
+        'diagnostics',
+        symbols = {
+          error = icons.diagnostics.Error,
+          warn = icons.diagnostics.Warn,
+          info = icons.diagnostics.Info,
+          hint = icons.diagnostics.Hint,
+        },
+      },
       { "filetype", icon_only = true, separator = "", padding = { left = 1, right = 0 } },
       {
         'filename',
@@ -183,6 +303,11 @@ local lualine_opts = {
       Snacks.profiler.status(),
       {
         'diff',
+        symbols = {
+          added = icons.git.added,
+          modified = icons.git.modified,
+          removed = icons.git.removed,
+        },
         source = function()
           local gitsigns = vim.b.gitsigns_status_dict
           if gitsigns then
@@ -240,7 +365,7 @@ require("grug-far").setup({
 -- Plugin configuration
 require('blink.cmp').setup({
   snippets = {
-    preset = "default"
+    preset = "luasnip"
   },
 
   keymap = {
@@ -310,14 +435,6 @@ require('blink.cmp').setup({
 local function noremap(mode, lhs, rhs, desc)
   vim.keymap.set(mode, lhs, rhs, { silent = true, desc = desc })
 end
-
--- Repurpose cursor keys (accessible near homerow via "SpaceFN" layout) for one
--- of my most oft-use key sequences.
-noremap('n', '<S-Up>', vim.diagnostic.goto_prev)
-noremap('n', '<S-Down>', vim.diagnostic.goto_next)
-noremap('n', '<Leader>gq',    vim.diagnostic.setqflist)
-noremap('n', '<Leader>gl',    vim.diagnostic.setloclist)
-noremap('n', '<Leader>ld', vim.diagnostic.open_float)
 
 local keys = {
   -- Top Pickers & Explorer
@@ -394,7 +511,7 @@ local keys = {
   { "<leader>bd", function() Snacks.bufdelete() end, desc = "Delete Buffer" },
   { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File" },
   { "<leader>gB", function() Snacks.gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
-  { "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
+  --{ "<leader>gg", function() Snacks.lazygit() end, desc = "Lazygit" },
   { "<leader>un", function() Snacks.notifier.hide() end, desc = "Dismiss All Notifications" },
   { "<c-/>",      function() Snacks.terminal() end, desc = "Toggle Terminal" },
   { "<c-_>",      function() Snacks.terminal() end, desc = "which_key_ignore" },
@@ -433,6 +550,19 @@ local keys = {
     "<cmd>Trouble qflist toggle<cr>",
     desc = "Quickfix List (Trouble)",
   },
+
+  { "<leader>gg", neogit.open, desc = "Open Neogit UI" },
+
+  { "<leader>bp", "<Cmd>BufferLineTogglePin<CR>", desc = "Toggle Pin" },
+  { "<leader>bP", "<Cmd>BufferLineGroupClose ungrouped<CR>", desc = "Delete Non-Pinned Buffers" },
+  { "<leader>br", "<Cmd>BufferLineCloseRight<CR>", desc = "Delete Buffers to the Right" },
+  { "<leader>bl", "<Cmd>BufferLineCloseLeft<CR>", desc = "Delete Buffers to the Left" },
+  { "<S-h>", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+  { "<S-l>", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+  { "[b", "<cmd>BufferLineCyclePrev<cr>", desc = "Prev Buffer" },
+  { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
+  { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer prev" },
+  { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer next" },
 }
 
 for _, value in ipairs(keys) do

@@ -121,3 +121,12 @@
 [submodule "vim/pack/light/opt/nvim-web-devicons"]
 	path = vim/pack/light/opt/nvim-web-devicons
 	url = https://github.com/nvim-tree/nvim-web-devicons.git
+[submodule "vim/pack/light/opt/bufferline"]
+	path = vim/pack/light/opt/bufferline
+	url = https://github.com/akinsho/bufferline.nvim.git
+[submodule "vim/pack/light/opt/luasnip"]
+	path = vim/pack/light/opt/luasnip
+	url = https://github.com/L3MON4D3/LuaSnip.git
+[submodule "vim/pack/light/opt/neogit"]
+	path = vim/pack/light/opt/neogit
+	url = https://github.com/NeogitOrg/neogit.git
