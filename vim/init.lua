@@ -134,13 +134,6 @@ require'colorizer'.setup()
 
 -- custom_solarized.normal.a.fg = '#112233'
 require('lsp-progress').setup({
-  client_format = function(_, spinner, series_messages)
-    if #series_messages > 0 then
-      return spinner
-    else
-      return nil
-    end
-  end,
 })
 local lualine_opts = {
   options = {

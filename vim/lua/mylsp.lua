@@ -5,12 +5,6 @@ end
 
 -- setup lsps
 do
-  vim.lsp.handlers["textDocument/publishDiagnostics"] = vim.lsp.with(
-    vim.lsp.diagnostic.on_publish_diagnostics, {
-      update_in_insert = false,
-    }
-  )
-
   vim.api.nvim_create_autocmd('LspAttach', {
     group = vim.api.nvim_create_augroup('my.lsp', {}),
     callback = function(args)
@@ -264,7 +258,15 @@ do
   for server, config in pairs(opts.servers) do
     -- passing config.capabilities to blink.cmp merges with the capabilities in your
     -- `opts[server].capabilities, if you've defined it
-    config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities)
+    config.capabilities = require('blink.cmp').get_lsp_capabilities(config.capabilities, true)
+    config.capabilities = vim.tbl_deep_extend('force', config.capabilities, {
+      workspace = {
+        fileOperations = {
+          didRename = true,
+          willRename = true,
+        }
+      }
+    })
     vim.lsp.enable(server)
     vim.lsp.config(server, config)
   end
@@ -277,4 +279,39 @@ do
   --    --},
   --  }
 
+    -- setup autoformat
+    --LazyVim.format.register(LazyVim.lsp.formatter())
+
+    -- setup keymaps
+    --for server, server_opts in pairs(opts.servers) do
+    --  if type(server_opts) == "table" and server_opts.keys then
+    --    require("lazyvim.plugins.lsp.keymaps").set({ name = server ~= "*" and server or nil }, server_opts.keys)
+    --  end
+    --end
+
+    -- inlay hints
+      Snacks.util.lsp.on({ method = "textDocument/inlayHint" }, function(buffer)
+        if
+          vim.api.nvim_buf_is_valid(buffer)
+          and vim.bo[buffer].buftype == ""
+        then
+          vim.lsp.inlay_hint.enable(true, { bufnr = buffer })
+        end
+      end)
+
+    -- folds
+      Snacks.util.lsp.on({ method = "textDocument/foldingRange" }, function()
+        vim.opt.foldmethod = "expr"
+        vim.opt.foldexpr = "v:lua.vim.lsp.foldexpr()"
+      end)
+
+      -- makes the lsp crunch all the time
+    ---- code lens
+    --  Snacks.util.lsp.on({ method = "textDocument/codeLens" }, function(buffer)
+    --    vim.lsp.codelens.refresh()
+    --    vim.api.nvim_create_autocmd({ "BufEnter", "CursorHold", "InsertLeave" }, {
+    --      buffer = buffer,
+    --      callback = vim.lsp.codelens.refresh,
+    --    })
+    --  end)
 end
