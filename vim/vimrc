@@ -63,6 +63,7 @@ if &loadplugins
   packadd! vim-vsnip
   packadd! vim-eunuch
   packadd! vim-fugitive
+  " just there to keep lua ls happy... todo
   "packadd! vim-gitgutter
   packadd! vim-glsl
   packadd! vim-repeat
@@ -812,9 +813,11 @@ fun! s:external_plugins()
     return l:status
   endfunction
 
-  "let g:gitgutter_sign_allow_clobber = 0
-  let g:gitgutter_sign_priority = 5
-  "let g:gitgutter_max_signs = 500
+  let g:gitgutter_map_keys = 0
+  "GitGutterDisable
+  " even this breaks lazydev
+  "let g:loaded_gitgutter = 1
+  let g:gitgutter_enabled = 0
 
 
 

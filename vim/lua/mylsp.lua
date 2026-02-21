@@ -1,11 +1,6 @@
-local function nnoremap(lhs, rhs)
-  vim.keymap.set('n', lhs, rhs, {buffer = 0, silent = true})
+local function noremap(mode, lhs, rhs, desc)
+  vim.keymap.set(mode, lhs, rhs, { buffer = 0, silent = true, desc = desc })
 end
-
-local gid = vim.api.nvim_create_augroup('lsp_global_aucmds', {clear = false})
-vim.api.nvim_clear_autocmds({group = gid})
-vim.api.nvim_create_autocmd({'User'}, {group = gid, pattern = 'LspProgressStatusUpdated', callback = vim.schedule_wrap(
-function() vim.cmd('redrawstatus') end)})
 
 
 -- setup lsps
@@ -49,21 +44,43 @@ do
 
       vim.api.nvim_win_set_option(0, 'signcolumn', 'yes')
 
-      -- nnoremap('<c-]>', vim.lsp.buf.definition)
-      ---- nnoremap('K',     vim.lsp.buf.hover)
-      -- nnoremap('<Leader>gD',    vim.lsp.buf.implementation)
-      -- nnoremap('1K',    vim.lsp.buf.signature_help)
-      -- nnoremap('<Leader>1gD',   vim.lsp.buf.type_definition)
-      -- nnoremap('<Leader>gr',    vim.lsp.buf.references)
-      -- nnoremap('<Leader>g0',    vim.lsp.buf.document_symbol)
-      -- nnoremap('<Leader>gW',    vim.lsp.buf.workspace_symbol)
-      -- nnoremap('<Leader>gA',    vim.lsp.buf.code_action)
-      -- nnoremap('<Leader>gd',    vim.lsp.buf.declaration)
+
+      local keys = {
+        { "<leader>cl", function() Snacks.picker.lsp_config() end, desc = "Lsp Info" },
+        -- in snacks picker
+        --{ "gd", vim.lsp.buf.definition, desc = "Goto Definition", has = "definition" },
+        --{ "gr", vim.lsp.buf.references, desc = "References", nowait = true },
+        --{ "gI", vim.lsp.buf.implementation, desc = "Goto Implementation" },
+        --{ "gy", vim.lsp.buf.type_definition, desc = "Goto T[y]pe Definition" },
+        --{ "gD", vim.lsp.buf.declaration, desc = "Goto Declaration" },
+        --{ "K", function() return vim.lsp.buf.hover() end, desc = "Hover" },
+        { "gK", function() return vim.lsp.buf.signature_help() end, desc = "Signature Help", has = "signatureHelp" },
+        { "<c-k>", function() return vim.lsp.buf.signature_help() end, mode = "i", desc = "Signature Help", has = "signatureHelp" },
+        { "<leader>ca", vim.lsp.buf.code_action, desc = "Code Action", mode = { "n", "x" }, has = "codeAction" },
+        { "<leader>cc", vim.lsp.codelens.run, desc = "Run Codelens", mode = { "n", "x" }, has = "codeLens" },
+        { "<leader>cC", vim.lsp.codelens.refresh, desc = "Refresh & Display Codelens", mode = { "n" }, has = "codeLens" },
+        { "<leader>cR", function() Snacks.rename.rename_file() end, desc = "Rename File", mode ={"n"}, has = { "workspace/didRenameFiles", "workspace/willRenameFiles" } },
+        { "<leader>cr", vim.lsp.buf.rename, desc = "Rename", has = "rename" },
+        --{ "<leader>cA", LazyVim.lsp.action.source, desc = "Source Action", has = "codeAction" },
+        { "]]", function() Snacks.words.jump(vim.v.count1) end, has = "documentHighlight",
+          desc = "Next Reference", enabled = function() return Snacks.words.is_enabled() end },
+        { "[[", function() Snacks.words.jump(-vim.v.count1) end, has = "documentHighlight",
+          desc = "Prev Reference", enabled = function() return Snacks.words.is_enabled() end },
+        { "<a-n>", function() Snacks.words.jump(vim.v.count1, true) end, has = "documentHighlight",
+          desc = "Next Reference", enabled = function() return Snacks.words.is_enabled() end },
+        { "<a-p>", function() Snacks.words.jump(-vim.v.count1, true) end, has = "documentHighlight",
+          desc = "Prev Reference", enabled = function() return Snacks.words.is_enabled() end },
+      }
+
+      for _, value in ipairs(keys) do
+        local mode = value.mode or 'n'
+        if not value.has or (value.has and client:supports_method(value.has) or client:supports_method('textDocument/' .. value.has)) then
+          noremap(mode, value[1], value[2], value.desc)
+        end
+      end
     end,
   })
 
-  -- TODO still used with lsp-progress?
-  -- TODO why does vim.cmd not work here?
   vim.api.nvim_command('sign define LspDiagnosticsSignError text=')
   vim.api.nvim_command('sign define LspDiagnosticsSignWarning text=')
   vim.api.nvim_command('sign define LspDiagnosticsSignInformation text=ℹ')
@@ -213,7 +230,33 @@ do
       bicep = {
         cmd = { "bicep-langserver" }
       },
+      -- because lazyvim has
+      stylua = { enabled = false },
       lua_ls = {
+        settings = {
+          Lua = {
+            workspace = {
+              checkThirdParty = false,
+            },
+            codeLens = {
+              enable = true,
+            },
+            completion = {
+              callSnippet = "Replace",
+            },
+            doc = {
+              privateName = { "^_" },
+            },
+            hint = {
+              enable = true,
+              setType = false,
+              paramType = true,
+              paramName = "Disable",
+              semicolon = "Disable",
+              arrayIndex = "Disable",
+            },
+          },
+        },
       }
     }
   }
@@ -233,8 +276,5 @@ do
   --      --['textDocument/publishDiagnostics'] = multi_diagnostics_cb,
   --    --},
   --  }
-
-
-
 
 end

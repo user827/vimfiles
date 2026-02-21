@@ -133,3 +133,6 @@
 [submodule "vim/pack/light/opt/gitsigns"]
 	path = vim/pack/light/opt/gitsigns
 	url = https://github.com/lewis6991/gitsigns.nvim.git
+[submodule "vim/pack/light/opt/vim-gitgutter"]
+	path = vim/pack/light/opt/vim-gitgutter
+	url = https://github.com/airblade/vim-gitgutter.git

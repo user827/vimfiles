@@ -1,12 +1,60 @@
 local vimrc = vim.fn.stdpath("config") .. "/vimrc"
 vim.cmd.source(vimrc)
 
-require 'mylsp'
-
 require('dap-go').setup()
 require('dap').set_log_level('DEBUG')
 
-require('lazydev').setup({})
+require('lazydev').setup({
+  -- library = {
+  --   { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+  --   { path = "LazyVim", words = { "LazyVim" } },
+  --   { path = "snacks.nvim", words = { "Snacks" } },
+  --   { path = "lazy.nvim", words = { "LazyVim" } },
+  -- },
+})
+
+require('which-key').setup({
+  preset = 'helix',
+  defaults = {},
+  spec = {
+    {
+      mode = { "n", "x" },
+      { "<leader><tab>", group = "tabs" },
+      { "<leader>c", group = "code" },
+      { "<leader>d", group = "debug" },
+      { "<leader>dp", group = "profiler" },
+      { "<leader>f", group = "file/find" },
+      { "<leader>g", group = "git" },
+      { "<leader>gh", group = "hunks" },
+      { "<leader>q", group = "quit/session" },
+      { "<leader>s", group = "search" },
+      { "<leader>u", group = "ui" },
+      { "<leader>x", group = "diagnostics/quickfix" },
+      { "[", group = "prev" },
+      { "]", group = "next" },
+      { "g", group = "goto" },
+      { "gs", group = "surround" },
+      { "z", group = "fold" },
+      {
+        "<leader>b",
+        group = "buffer",
+        expand = function()
+          return require("which-key.extras").expand.buf()
+        end,
+      },
+      {
+        "<leader>w",
+        group = "windows",
+        proxy = "<c-w>",
+        expand = function()
+          return require("which-key.extras").expand.win()
+        end,
+      },
+      -- better descriptions
+      { "gx", desc = "Open with system app" },
+    },
+  }
+})
 
 require('snacks').setup({
   explorer = {},
@@ -17,6 +65,8 @@ require('snacks').setup({
   bigfile = {},
   profiler = {},
   toggle = {},
+  util = {},
+  rename = {},
   -- so slow
   --indent = {
   --  scope = {
@@ -25,73 +75,60 @@ require('snacks').setup({
   --},
 })
 
-require'trouble'.setup()
+require'trouble'.setup({
+  modes = {
+    lsp = {
+      win = { position = "right" },
+    }
+  }
+})
 require'colorizer'.setup()
 
 require'gitsigns'.setup({
-  on_attach = function(bufnr)
-    local gitsigns = require('gitsigns')
+  signs = {
+    delete = { text = "" },
+    topdelete = { text = "" },
+  },
+  signs_staged = {
+    delete = { text = "" },
+    topdelete = { text = "" },
+  },
+  on_attach = function(buffer)
+    local gs = package.loaded.gitsigns
 
-    local function map(mode, l, r, opts)
-      opts = opts or {}
-      opts.buffer = bufnr
-      vim.keymap.set(mode, l, r, opts)
+    local function map(mode, l, r, desc)
+      vim.keymap.set(mode, l, r, { buffer = buffer, desc = desc, silent = true })
     end
 
-    -- Navigation
-    map('n', ']c', function()
+    -- stylua: ignore start
+    map("n", "]h", function()
       if vim.wo.diff then
-        vim.cmd.normal({']c', bang = true})
+        vim.cmd.normal({ "]c", bang = true })
       else
-        gitsigns.nav_hunk('next')
+        gs.nav_hunk("next")
       end
-    end)
-
-    map('n', '[c', function()
+    end, "Next Hunk")
+    map("n", "[h", function()
       if vim.wo.diff then
-        vim.cmd.normal({'[c', bang = true})
+        vim.cmd.normal({ "[c", bang = true })
       else
-        gitsigns.nav_hunk('prev')
+        gs.nav_hunk("prev")
       end
-    end)
-
-    -- Actions
-    map('n', '<leader>hs', gitsigns.stage_hunk)
-    map('n', '<leader>hr', gitsigns.reset_hunk)
-
-    map('v', '<leader>hs', function()
-      gitsigns.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') })
-    end)
-
-    map('v', '<leader>hr', function()
-      gitsigns.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') })
-    end)
-
-    map('n', '<leader>hS', gitsigns.stage_buffer)
-    map('n', '<leader>hR', gitsigns.reset_buffer)
-    map('n', '<leader>hp', gitsigns.preview_hunk)
-    map('n', '<leader>hi', gitsigns.preview_hunk_inline)
-
-    map('n', '<leader>hb', function()
-      gitsigns.blame_line({ full = true })
-    end)
-
-    map('n', '<leader>hd', gitsigns.diffthis)
-
-    map('n', '<leader>hD', function()
-      gitsigns.diffthis('~')
-    end)
-
-    map('n', '<leader>hQ', function() gitsigns.setqflist('all') end)
-    map('n', '<leader>hq', gitsigns.setqflist)
-
-    -- Toggles
-    map('n', '<leader>tb', gitsigns.toggle_current_line_blame)
-    map('n', '<leader>tw', gitsigns.toggle_word_diff)
-
-    -- Text object
-    map({'o', 'x'}, 'ih', gitsigns.select_hunk)
-  end
+    end, "Prev Hunk")
+    map("n", "]H", function() gs.nav_hunk("last") end, "Last Hunk")
+    map("n", "[H", function() gs.nav_hunk("first") end, "First Hunk")
+    map({ "n", "x" }, "<leader>ghs", ":Gitsigns stage_hunk<CR>", "Stage Hunk")
+    map({ "n", "x" }, "<leader>ghr", ":Gitsigns reset_hunk<CR>", "Reset Hunk")
+    map("n", "<leader>ghS", gs.stage_buffer, "Stage Buffer")
+    map("n", "<leader>ghu", gs.undo_stage_hunk, "Undo Stage Hunk")
+    map("n", "<leader>ghR", gs.reset_buffer, "Reset Buffer")
+    map("n", "<leader>ghp", gs.preview_hunk_inline, "Preview Hunk Inline")
+    map("n", "<leader>ghb", function() gs.blame_line({ full = true }) end, "Blame Line")
+    map("n", "<leader>ghB", function() gs.blame() end, "Blame Buffer")
+    map("n", "<leader>ghd", gs.diffthis, "Diff This")
+    map("n", "<leader>ghD", function() gs.diffthis("~") end, "Diff This ~")
+    map({ "o", "x" }, "ih", ":<C-U>Gitsigns select_hunk<CR>", "GitSigns Select Hunk")
+  end,
 })
 
 -- custom_solarized.normal.a.fg = '#112233'
@@ -180,7 +217,9 @@ vim.api.nvim_create_autocmd("User", {
 --  stages = "static",
 --})
 
-require("grug-far").setup({})
+require("grug-far").setup({
+  headerMaxWidth = 80
+})
 
 -- Plugin configuration
 require('blink.cmp').setup({
@@ -295,7 +334,7 @@ local keys = {
   -- LSP
   { "gd", function() Snacks.picker.lsp_definitions() end, desc = "Goto Definition" },
   { "gD", function() Snacks.picker.lsp_declarations() end, desc = "Goto Declaration" },
-  { "gr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
+  { "grr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
   { "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
   { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
   { "gai", function() Snacks.picker.lsp_incoming_calls() end, desc = "C[a]lls Incoming" },
@@ -358,3 +397,5 @@ for _, value in ipairs(keys) do
 end
 Snacks.toggle.profiler():map("<leader>pp")
 Snacks.toggle.profiler_highlights():map("<leader>ph")
+
+require 'mylsp'
