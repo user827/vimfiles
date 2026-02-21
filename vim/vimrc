@@ -314,10 +314,7 @@ set hidden
 set history=1000        " keep 1000 lines of command line history
 set hlsearch
 set ignorecase "affects only tags and infercase when smartcase is on?
-set iminsert=0
-set imsearch=-1
 set jumpoptions = "view"
-set keymap=finnish_utf-8
 "set lazyredraw
 set linebreak "TOLEARN switch with ]ol
 set list
@@ -363,6 +360,11 @@ set whichwrap=b,h,l,s,<,>,[,],~
 set wildmode=longest:full,full
 "set winminheight=0
 set winminwidth=5
+
+" order matters
+set keymap=finnish_utf-8
+set iminsert=0
+set imsearch=-1
 
 set smoothscroll
 
