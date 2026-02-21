@@ -64,7 +64,6 @@ if &loadplugins
   packadd! vim-fugitive
   " just there to keep lua ls happy... todo it just needs to sdo the one system
   " call no matter what the bash command is
-  packadd! vim-gitgutter
   packadd! vim-glsl
   packadd! vim-repeat
   packadd! vim-scriptease
@@ -85,7 +84,6 @@ if &loadplugins
     packadd! nvim-dap-go
     packadd! blink.cmp
     packadd! which-key
-    packadd! lazydev
     packadd! snacks
     packadd! CopilotChat
     " flickers
@@ -103,7 +101,7 @@ if &loadplugins
     packadd! lualine
     packadd! nvim-colorizer
     packadd! trouble
-    "packadd! gitsigns
+    packadd! gitsigns
   endif
 endif
 " }}}
@@ -812,19 +810,6 @@ fun! s:external_plugins()
     "echom l:status
     return l:status
   endfunction
-
-  let g:gitgutter_map_keys = 0
-  nmap ]h <Plug>(GitGutterNextHunk)
-  nmap [h <Plug>(GitGutterPrevHunk)
-  nmap <leader>ghp <Plug>(GitGutterPreviewHunk)
-  nmap <leader>ghs <Plug>(GitGutterStageHunk)
-  nmap <leader>ghu <Plug>(GitGutterUndoHunk)
-  omap ih <Plug>(GitGutterTextObjectInnerPending)
-  omap ah <Plug>(GitGutterTextObjectOuterPending)
-  xmap ih <Plug>(GitGutterTextObjectInnerVisual)
-  xmap ah <Plug>(GitGutterTextObjectOuterVisual)
-
-
 
   augroup mylspconf
     au!
