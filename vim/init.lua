@@ -1,3 +1,5 @@
+-- todo install conform
+
 -- from lazy vim
 -- icons used by other plugins
 -- stylua: ignore
@@ -84,6 +86,9 @@ vim.opt.fillchars = {
 }
 vim.opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
 vim.opt.pumblend = 10
+
+require('tokyonight').setup({
+})
 
 require('dap-go').setup()
 require('dap').set_log_level('DEBUG')
