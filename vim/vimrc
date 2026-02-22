@@ -86,8 +86,8 @@ if &loadplugins
     "packadd! nvim-notify
     packadd! nvim-treesitter
     " not nice without notify
-    "packadd! nui
-    "packadd! noice
+    packadd! nui
+    packadd! noice
     packadd! nvim-solarized-lua
     " hurts eyes
     packadd! tokyonight
@@ -105,6 +105,8 @@ if &loadplugins
     packadd! bufferline
     packadd! luasnip
     packadd! neogit
+    packadd! flash
+    packadd! mini.pairs
   else
     packadd! vim-solarized8
   endif
@@ -388,14 +390,14 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
   else
     "colorscheme mysolarized
 
-    colorscheme tokyonight
+    "colorscheme tokyonight
     "colorscheme solarized
     "hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
     "hi SnacksIndent guifg=#3b4261
     ""hi LspInlayHint guifg=#6E738E guibg=#303348
     hi LspInlayHint guifg=#657b83 guibg=#073642
 
-    "colorscheme catppuccin
+    colorscheme catppuccin-macchiato
   endif
 endif
 

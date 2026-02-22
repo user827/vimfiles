@@ -130,3 +130,9 @@
 [submodule "vim/pack/light/opt/neogit"]
 	path = vim/pack/light/opt/neogit
 	url = https://github.com/NeogitOrg/neogit.git
+[submodule "vim/pack/light/opt/flash"]
+	path = vim/pack/light/opt/flash
+	url = https://github.com/folke/flash.nvim.git
+[submodule "vim/pack/light/opt/mini.pairs"]
+	path = vim/pack/light/opt/mini.pairs
+	url = https://github.com/nvim-mini/mini.pairs.git

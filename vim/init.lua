@@ -1,3 +1,5 @@
+vim.g.snacks_animate = true
+
 -- todo install conform
 
 -- from lazy vim
@@ -84,10 +86,27 @@ vim.opt.fillchars = {
   diff = "╱",
   eob = " ",
 }
-vim.opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
+-- vim.opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
+-- i want to work with multiple clipboards
 vim.opt.pumblend = 10
 
+require('mini.pairs').setup({
+  modes = { insert = true, command = true, terminal = false },
+  -- skip autopair when next character is one of these
+  skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+  -- skip autopair when the cursor is inside these treesitter nodes
+  skip_ts = { "string" },
+  -- skip autopair when next character is closing pair
+  -- and there are more closing pairs than opening pairs
+  skip_unbalanced = true,
+  -- better deal with markdown code blocks
+  markdown = true,
+})
+
 require('tokyonight').setup({
+})
+
+require('flash').setup({
 })
 
 require('dap-go').setup()
@@ -145,8 +164,18 @@ require('which-key').setup({
 })
 
 require('snacks').setup({
+  animate = {},
+  scroll = {},
   explorer = {},
-  picker = {},
+  -- does not flicker unlike nvim-notify
+  notifier = {},
+  picker = {
+    exclude = {
+      "Downloads",
+      "Pictures",
+      "Videos",
+    },
+  },
   image = {},
   -- otherwise the previous plugins kill the performance. even profiler does not
   -- show why
@@ -156,6 +185,9 @@ require('snacks').setup({
   util = {},
   rename = {},
   bufdelete = {},
+  -- for [i ]i
+  scope = {},
+  words = {},
   -- so slow
   --indent = {
   --  scope = {
@@ -163,6 +195,35 @@ require('snacks').setup({
   --  }
   --},
 })
+
+require('noice').setup({
+  lsp = {
+    override = {
+      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+      ["vim.lsp.util.stylize_markdown"] = true,
+      ["cmp.entry.get_documentation"] = true,
+    },
+  },
+  routes = {
+    {
+      filter = {
+        event = "msg_show",
+        any = {
+          { find = "%d+L, %d+B" },
+          { find = "; after #%d+" },
+          { find = "; before #%d+" },
+        },
+      },
+      view = "mini",
+    },
+  },
+  presets = {
+    bottom_search = true,
+    command_palette = true,
+    long_message_to_split = true,
+  },
+})
+
 
 require('bufferline').setup({
   options = {
@@ -178,6 +239,7 @@ require('bufferline').setup({
       .. (diag.warning and icons.Warn .. diag.warning or "")
       return vim.trim(ret)
     end,
+    highlights = require("catppuccin.special.bufferline").get_theme(),
     offsets = {
       {
         filetype = "neo-tree",
@@ -355,14 +417,6 @@ vim.api.nvim_create_autocmd("User", {
   callback = require("lualine").refresh,
 })
 
--- flickers
---vim.notify = require("notify")
---vim.notify.setup({
---  merge_duplicates = true,
---  -- fix flicker
---  stages = "static",
---})
-
 require("grug-far").setup({
   headerMaxWidth = 80
 })
@@ -436,10 +490,6 @@ require('blink.cmp').setup({
     }
   }
 })
-
-local function noremap(mode, lhs, rhs, desc)
-  vim.keymap.set(mode, lhs, rhs, { silent = true, desc = desc })
-end
 
 local keys = {
   -- Top Pickers & Explorer
@@ -568,12 +618,45 @@ local keys = {
   { "]b", "<cmd>BufferLineCycleNext<cr>", desc = "Next Buffer" },
   { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer prev" },
   { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer next" },
+
+  { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+  { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+  { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
+  { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
+  { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
+  -- Simulate nvim-treesitter incremental selection
+  { "<c-space>", mode = { "n", "o", "x" },
+  function()
+    require("flash").treesitter({
+      actions = {
+        ["<c-space>"] = "next",
+        ["<BS>"] = "prev"
+      }
+    })
+  end, desc = "Treesitter Incremental Selection" },
+
+  { "<leader>sn", "", desc = "+noice"},
+  { "<S-Enter>", function() require("noice").redirect(vim.fn.getcmdline()) end, mode = "c", desc = "Redirect Cmdline" },
+  { "<leader>snl", function() require("noice").cmd("last") end, desc = "Noice Last Message" },
+  { "<leader>snh", function() require("noice").cmd("history") end, desc = "Noice History" },
+  { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
+  { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
+  { "<leader>snt", function() require("noice").cmd("pick") end, desc = "Noice Picker (Telescope/FzfLua)" },
+  { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
+  { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
 }
 
 for _, value in ipairs(keys) do
   local mode = value.mode or 'n'
-  noremap(mode, value[1], value[2], value.desc)
+  value.silent = true
+  local key = value[1]
+  local cmd = value[2]
+  value[1] = nil
+  value[2] = nil
+  value.mode = nil
+  vim.keymap.set(mode, key, cmd, value)
 end
+
 Snacks.toggle.profiler():map("<leader>pp")
 Snacks.toggle.profiler_highlights():map("<leader>ph")
 
