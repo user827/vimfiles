@@ -78,6 +78,8 @@ local icons = {
 
 local vimrc = vim.fn.stdpath("config") .. "/vimrc"
 vim.cmd.source(vimrc)
+--vim.opt.shortmess:append({ W = true, I = true, c = true, C = true })
+vim.opt.showmode = false -- we have a statusline
 vim.opt.fillchars = {
   foldopen = "",
   foldclose = "",
@@ -89,6 +91,28 @@ vim.opt.fillchars = {
 -- vim.opt.clipboard = vim.env.SSH_CONNECTION and "" or "unnamedplus" -- Sync with system clipboard
 -- i want to work with multiple clipboards
 vim.opt.pumblend = 10
+
+require('nvim-treesitter').setup({
+  indent = { enable = true },
+  highlight = { enable = true },
+})
+
+vim.api.nvim_create_autocmd("FileType", {
+  group = vim.api.nvim_create_augroup("lazyvim_treesitter", { clear = true }),
+  callback = function(ev)
+    -- highlighting
+    pcall(vim.treesitter.start, ev.buf)
+
+    -- indents
+    -- vim.opt.indentexpr = "v:lua.LazyVim.treesitter.indentexpr()"
+
+    -- folds
+    -- handled by lsp
+    -- if LazyVim.set_default("foldmethod", "expr") then
+    --   LazyVim.set_default("foldexpr", "v:lua.LazyVim.treesitter.foldexpr()")
+    -- end
+  end,
+})
 
 require('mini.pairs').setup({
   modes = { insert = true, command = true, terminal = false },
@@ -168,7 +192,9 @@ require('snacks').setup({
   scroll = {},
   explorer = {},
   -- does not flicker unlike nvim-notify
-  notifier = {},
+  --notifier = {
+  --  level = vim.log.levels.TRACE,
+  --},
   picker = {
     exclude = {
       "Downloads",
@@ -196,6 +222,7 @@ require('snacks').setup({
   --},
 })
 
+-- does not show verbose set notifications...
 require('noice').setup({
   lsp = {
     override = {
@@ -368,6 +395,30 @@ local lualine_opts = {
         cond = function() if vim.api.nvim_get_option_value("fileformat", {buf = 0}) == 'unix' then return false else return true end end
       },
       Snacks.profiler.status(),
+       -- stylua: ignore
+      {
+        function() return require("noice").api.status.command.get() end,
+        cond = function() return package.loaded["noice"] and require("noice").api.status.command.has() end,
+        color = function() return { fg = Snacks.util.color("Statement") } end,
+      },
+      -- stylua: ignore
+      {
+        function() return require("noice").api.status.mode.get() end,
+        cond = function() return package.loaded["noice"] and require("noice").api.status.mode.has() end,
+        color = function() return { fg = Snacks.util.color("Constant") } end,
+      },
+      -- stylua: ignore
+      {
+        function() return "  " .. require("dap").status() end,
+        cond = function() return package.loaded["dap"] and require("dap").status() ~= "" end,
+        color = function() return { fg = Snacks.util.color("Debug") } end,
+      },
+      -- stylua: ignore
+      -- {
+      --   require("lazy.status").updates,
+      --   cond = require("lazy.status").has_updates,
+      --   color = function() return { fg = Snacks.util.color("Special") } end,
+      -- },
       {
         'diff',
         symbols = {

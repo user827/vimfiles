@@ -340,7 +340,8 @@ set selection=exclusive
 set shell=sh " setting this to bash breaks lsp
 set shiftwidth=2
 set shortmess+=acOtI " Abbrev. of messages (avoids 'hit enter')"
-set shortmess-=F " don't set F as it disables echom in autocmds for example
+"set shortmess-=F " don't set F as it disables echom in autocmds for example
+"but gives annoying extra messages
 set showbreak=…
 set showcmd
 set sidescroll=1
