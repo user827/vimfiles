@@ -76,9 +76,6 @@
 [submodule "vim/pack/light/opt/CopilotChat"]
 	path = vim/pack/light/opt/CopilotChat
 	url = https://github.com/CopilotC-Nvim/CopilotChat.nvim.git
-[submodule "vim/pack/light/opt/nvim-notify"]
-	path = vim/pack/light/opt/nvim-notify
-	url = https://github.com/rcarriga/nvim-notify.git
 [submodule "vim/pack/light/opt/nvim-treesitter"]
 	path = vim/pack/light/opt/nvim-treesitter
 	url = https://github.com/nvim-treesitter/nvim-treesitter.git
