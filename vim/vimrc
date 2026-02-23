@@ -751,8 +751,8 @@ fun! s:external_plugins()
 
   """Vimchant
   let g:vimchant_spellcheck_lang = 'fi'
-  nmap \st <Plug>VimchantSpellCheckSwitch
-  nmap \sl <Plug>VimchantChangeLanguage
+  nmap \vt <Plug>VimchantSpellCheckSwitch
+  nmap \vl <Plug>VimchantChangeLanguage
 
 endfun
 

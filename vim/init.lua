@@ -489,8 +489,8 @@ require('blink.cmp').setup({
   },
 
   keymap = {
-    preset = 'enter',
-    ["<C-y>"] = { "select_and_accept" }
+    preset = 'default',
+    --["<C-y>"] = { "select_and_accept" }
   },
 
   appearance = {
@@ -680,8 +680,8 @@ local keys = {
   { "[B", "<cmd>BufferLineMovePrev<cr>", desc = "Move buffer prev" },
   { "]B", "<cmd>BufferLineMoveNext<cr>", desc = "Move buffer next" },
 
-  { "s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
-  { "S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
+  { "<localleader>s", mode = { "n", "x", "o" }, function() require("flash").jump() end, desc = "Flash" },
+  { "<localleader>S", mode = { "n", "o", "x" }, function() require("flash").treesitter() end, desc = "Flash Treesitter" },
   { "r", mode = "o", function() require("flash").remote() end, desc = "Remote Flash" },
   { "R", mode = { "o", "x" }, function() require("flash").treesitter_search() end, desc = "Treesitter Search" },
   { "<c-s>", mode = { "c" }, function() require("flash").toggle() end, desc = "Toggle Flash Search" },
