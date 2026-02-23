@@ -192,9 +192,7 @@ require('snacks').setup({
   scroll = {},
   explorer = {},
   -- does not flicker unlike nvim-notify
-  --notifier = {
-  --  level = vim.log.levels.TRACE,
-  --},
+  notifier = { },
   picker = {
     exclude = {
       "Downloads",
