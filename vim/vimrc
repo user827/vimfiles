@@ -334,7 +334,7 @@ set path+=/usr/local/include
 set pumheight=10
 set relativenumber
 set ruler       " show the cursor position all the time, info in statusline but no need in ctrl-g
-set scrolloff=3
+set scrolloff=10
 set secure
 set selection=exclusive
 set shell=sh " setting this to bash breaks lsp
