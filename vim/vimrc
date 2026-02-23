@@ -306,7 +306,7 @@ set diffopt+=vertical
 set display=lastline " Show as much as possible in the window in case we wrap
 set encoding=utf-8
 set expandtab
-set foldtext=''
+set foldtext=
 set foldlevelstart=99
 set foldmethod=indent " event more clear than syntax
 set foldnestmax=2
@@ -327,7 +327,7 @@ set mouse=a
 set nojoinspaces
 set noshiftround
 set nostartofline
-set number
+"set number "is seen in statusline and takes space
 set numberwidth=3
 set path+=./include;~
 set path+=/usr/local/include
@@ -471,9 +471,9 @@ augroup myfiletypes
   autocmd FileType c,cpp setlocal keywordprg=info\ --vi-keys
 
   autocmd FileType gitcommit setlocal spell
-  autocmd FileType markdown setlocal signcolumn=number showbreak= norelativenumber nonumber breakindent linebreak
+  autocmd FileType markdown setlocal signcolumn=number showbreak= relativenumber nonumber breakindent linebreak
   " diary is recognized as bigfile with snacks bigfile enabled
-  autocmd FileType bigfile setlocal signcolumn=number showbreak= norelativenumber nonumber breakindent linebreak
+  autocmd FileType bigfile setlocal signcolumn=number showbreak= relativenumber nonumber breakindent linebreak
   " shiftwidt so that folds work
   autocmd FileType man setlocal iskeyword+=(,) shiftwidth=2 showbreak= virtualedit=all nocursorline foldlevel=1
 
