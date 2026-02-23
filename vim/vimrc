@@ -575,16 +575,6 @@ cnoremap <c-a> <c-b>
 "cnoremap <left> <c-f>
 " }}}
 
-" {{{ Autocommands
-augroup LsAutocommands
-  au!
-  autocmd VimResized * execute "normal! \<c-w>="
-  "use only pastetoggle
-  autocmd InsertLeave  * set nopaste
-augroup END
-
-"}}}
-
 function! s:AzurePipelinesLint()
     let l:lines = getline(1, 20)
     let l:id = ""

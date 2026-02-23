@@ -354,6 +354,14 @@ local neogit = require('neogit')
 -- custom_solarized.normal.a.fg = '#112233'
 require('lsp-progress').setup({
 })
+
+local function keymap()
+  if vim.opt.iminsert:get() > 0 and vim.b.keymap_name then
+    return '⌨ ' .. vim.b.keymap_name
+  end
+  return ''
+end
+
 local lualine_opts = {
   options = {
     theme = "auto",
@@ -362,7 +370,10 @@ local lualine_opts = {
   },
   sections = {
     -- Other Status Line components
-    lualine_a = { "mode" },
+    lualine_a = {
+      "mode",
+      keymap
+    },
     lualine_b = { "FugitiveHead" },
     lualine_c = {
       {
