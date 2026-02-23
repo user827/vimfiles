@@ -99,7 +99,7 @@ if &loadplugins
     packadd! trouble
     packadd! gitsigns
     packadd! catppuccin
-    packadd! hardtime
+    "packadd! hardtime
     packadd! mini.icons
     packadd! nvim-web-devicons
     packadd! bufferline

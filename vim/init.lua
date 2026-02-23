@@ -297,7 +297,8 @@ require'colorizer'.setup()
 require'mini.icons'.setup()
 require'nvim-web-devicons'.setup()
 
-require'hardtime'.setup()
+-- i like mouse more than thinking about my every step
+-- require'hardtime'.setup()
 
 require'gitsigns'.setup({
   signs = {
