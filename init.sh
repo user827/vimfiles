@@ -27,8 +27,8 @@ if [ -d "$vimpath" ] && ! [ -L "$vimpath" ]; then
   mv -- "$vimpath" "$vimpath".old.bck
 fi
 link_verbose "$L_GIT_ROOT/vim" "$vimpath"
-link_verbose "$L_GIT_ROOT/vimrc.d" "$HOME"/.vimrc.d
 link_verbose "$L_GIT_ROOT/vim" "$nvimpath"
+[ -d "$HOME/.vimrc.d" ] || mkdir "$HOME/.vimrc.d"
 
 
 
