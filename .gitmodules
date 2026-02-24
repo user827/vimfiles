@@ -130,3 +130,6 @@
 [submodule "vim/pack/light/opt/mini.pairs"]
 	path = vim/pack/light/opt/mini.pairs
 	url = https://github.com/nvim-mini/mini.pairs.git
+[submodule "vim/pack/light/opt/lsp-progress"]
+	path = vim/pack/light/opt/lsp-progress
+	url = https://github.com/linrongbin16/lsp-progress.nvim.git

@@ -92,6 +92,16 @@ vim.opt.fillchars = {
 -- i want to work with multiple clipboards
 vim.opt.pumblend = 10
 
+require('lsp-progress').setup({
+  client_format = function(_, spinner, series_messages)
+    if #series_messages > 0 then
+      return spinner
+    else
+      return nil
+    end
+  end,
+})
+
 require('nvim-treesitter').setup({
   indent = { enable = true },
   highlight = { enable = true },
@@ -397,9 +407,7 @@ local lualine_opts = {
         path = 1,
       },
       {
-        function()
-          return " LSP"
-        end,
+        require('lsp-progress').progress,
         cond = function() return type(next(vim.lsp.get_clients())) ~= "nil" end
       }
     },
@@ -712,8 +720,8 @@ local keys = {
   { "<leader>sna", function() require("noice").cmd("all") end, desc = "Noice All" },
   { "<leader>snd", function() require("noice").cmd("dismiss") end, desc = "Dismiss All" },
   { "<leader>snt", function() require("noice").cmd("pick") end, desc = "Noice Picker (Telescope/FzfLua)" },
-  { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
-  { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
+  -- { "<c-f>", function() if not require("noice.lsp").scroll(4) then return "<c-f>" end end, silent = true, expr = true, desc = "Scroll Forward", mode = {"i", "n", "s"} },
+  -- { "<c-b>", function() if not require("noice.lsp").scroll(-4) then return "<c-b>" end end, silent = true, expr = true, desc = "Scroll Backward", mode = {"i", "n", "s"}},
 }
 
 for _, value in ipairs(keys) do

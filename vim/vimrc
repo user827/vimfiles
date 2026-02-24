@@ -74,6 +74,7 @@ if &loadplugins
 
   if has('nvim')
     packadd! nvim-lspconfig
+    packadd! lsp-progress
     packadd! plenary
     packadd! nvim-dap
     packadd! nvim-dap-go
