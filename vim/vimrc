@@ -406,7 +406,9 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
     "colorscheme catppuccin-macchiato
     "colorscheme gruvbox
     colorscheme neosolarized
+    "colorscheme solarized8
     hi def link BlinkCmpLabelMatch Special
+    hi Normal guifg=#93A1A1
     "colorscheme everforest
   endif
 endif
