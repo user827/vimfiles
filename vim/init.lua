@@ -114,18 +114,18 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
-require('mini.pairs').setup({
-  modes = { insert = true, command = true, terminal = false },
-  -- skip autopair when next character is one of these
-  skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
-  -- skip autopair when the cursor is inside these treesitter nodes
-  skip_ts = { "string" },
-  -- skip autopair when next character is closing pair
-  -- and there are more closing pairs than opening pairs
-  skip_unbalanced = true,
-  -- better deal with markdown code blocks
-  markdown = true,
-})
+--require('mini.pairs').setup({
+--  modes = { insert = true, command = true, terminal = false },
+--  -- skip autopair when next character is one of these
+--  skip_next = [=[[%w%%%'%[%"%.%`%$]]=],
+--  -- skip autopair when the cursor is inside these treesitter nodes
+--  skip_ts = { "string" },
+--  -- skip autopair when next character is closing pair
+--  -- and there are more closing pairs than opening pairs
+--  skip_unbalanced = true,
+--  -- better deal with markdown code blocks
+--  markdown = true,
+--})
 
 require('tokyonight').setup({
 })
@@ -192,7 +192,7 @@ require('snacks').setup({
   scroll = {},
   explorer = {},
   -- does not flicker unlike nvim-notify
-  notifier = { },
+  -- notifier = { },
   picker = {
     exclude = {
       "Downloads",
@@ -221,41 +221,41 @@ require('snacks').setup({
 })
 
 -- does not show verbose set notifications...
-require('noice').setup({
-  -- format = {
-  --   lsp_progress = { "{spinner} ", hl_group = "NoiceLspProgressSpinner" },
-  --   lsp_progress_done = false,
-  -- },
-  lsp = {
-    progress = {
-      -- use lsp_progress instead for less invasive notification
-      -- enabled = false,
-    },
-    override = {
-      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-      ["vim.lsp.util.stylize_markdown"] = true,
-      ["cmp.entry.get_documentation"] = true,
-    },
-  },
-  routes = {
-    {
-      filter = {
-        event = "msg_show",
-        any = {
-          { find = "%d+L, %d+B" },
-          { find = "; after #%d+" },
-          { find = "; before #%d+" },
-        },
-      },
-      view = "mini",
-    },
-  },
-  presets = {
-    bottom_search = true,
-    command_palette = true,
-    long_message_to_split = true,
-  },
-})
+--require('noice').setup({
+--  -- format = {
+--  --   lsp_progress = { "{spinner} ", hl_group = "NoiceLspProgressSpinner" },
+--  --   lsp_progress_done = false,
+--  -- },
+--  lsp = {
+--    progress = {
+--      -- use lsp_progress instead for less invasive notification
+--      -- enabled = false,
+--    },
+--    override = {
+--      ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+--      ["vim.lsp.util.stylize_markdown"] = true,
+--      ["cmp.entry.get_documentation"] = true,
+--    },
+--  },
+--  routes = {
+--    {
+--      filter = {
+--        event = "msg_show",
+--        any = {
+--          { find = "%d+L, %d+B" },
+--          { find = "; after #%d+" },
+--          { find = "; before #%d+" },
+--        },
+--      },
+--      view = "mini",
+--    },
+--  },
+--  presets = {
+--    bottom_search = true,
+--    command_palette = true,
+--    long_message_to_split = true,
+--  },
+--})
 
 
 require('bufferline').setup({

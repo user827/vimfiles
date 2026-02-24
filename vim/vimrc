@@ -85,8 +85,8 @@ if &loadplugins
     "packadd! nvim-notify
     packadd! nvim-treesitter
     " not nice without notify
-    packadd! nui
-    packadd! noice
+    ""packadd! nui
+    ""packadd! noice
     packadd! nvim-solarized-lua
     " hurts eyes
     packadd! tokyonight
@@ -105,7 +105,7 @@ if &loadplugins
     packadd! luasnip
     packadd! neogit
     packadd! flash
-    packadd! mini.pairs
+    ""packadd! mini.pairs
   else
     packadd! vim-solarized8
   endif
