@@ -222,7 +222,15 @@ require('snacks').setup({
 
 -- does not show verbose set notifications...
 require('noice').setup({
+  -- format = {
+  --   lsp_progress = { "{spinner} ", hl_group = "NoiceLspProgressSpinner" },
+  --   lsp_progress_done = false,
+  -- },
   lsp = {
+    progress = {
+      -- use lsp_progress instead for less invasive notification
+      -- enabled = false,
+    },
     override = {
       ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
       ["vim.lsp.util.stylize_markdown"] = true,
@@ -351,10 +359,6 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 local neogit = require('neogit')
 
--- custom_solarized.normal.a.fg = '#112233'
-require('lsp-progress').setup({
-})
-
 local function keymap()
   if vim.opt.iminsert:get() > 0 and vim.b.keymap_name then
     return '⌨ ' .. vim.b.keymap_name
@@ -390,10 +394,12 @@ local lualine_opts = {
         'filename',
         path = 1,
       },
-      function()
-        -- invoke `progress` here.
-        return require('lsp-progress').progress()
-      end,
+      {
+        function()
+          return " LSP"
+        end,
+        cond = function() return type(next(vim.lsp.get_clients())) ~= "nil" end
+      }
     },
     lualine_x = {
       {
@@ -614,8 +620,9 @@ local keys = {
   { "grr", function() Snacks.picker.lsp_references() end, nowait = true, desc = "References" },
   { "gI", function() Snacks.picker.lsp_implementations() end, desc = "Goto Implementation" },
   { "gy", function() Snacks.picker.lsp_type_definitions() end, desc = "Goto T[y]pe Definition" },
-  { "gai", function() Snacks.picker.lsp_incoming_calls() end, desc = "C[a]lls Incoming" },
-  { "gao", function() Snacks.picker.lsp_outgoing_calls() end, desc = "C[a]lls Outgoing" },
+  -- ga is for ascii codes
+  { "gAi", function() Snacks.picker.lsp_incoming_calls() end, desc = "C[a]lls Incoming" },
+  { "gAo", function() Snacks.picker.lsp_outgoing_calls() end, desc = "C[a]lls Outgoing" },
   { "<leader>ss", function() Snacks.picker.lsp_symbols() end, desc = "LSP Symbols" },
   { "<leader>sS", function() Snacks.picker.lsp_workspace_symbols() end, desc = "LSP Workspace Symbols" },
   -- Other

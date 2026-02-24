@@ -74,7 +74,6 @@ if &loadplugins
 
   if has('nvim')
     packadd! nvim-lspconfig
-    packadd! lsp-progress
     packadd! plenary
     packadd! nvim-dap
     packadd! nvim-dap-go
@@ -346,6 +345,7 @@ set showbreak=…
 set showcmd
 set sidescroll=1
 set sidescrolloff=8
+set signcolumn
 set smartcase
 set spelllang=en
 set splitright                      " open vertical splits to the right of the current window
