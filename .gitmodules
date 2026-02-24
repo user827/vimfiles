@@ -133,9 +133,6 @@
 [submodule "vim/pack/light/opt/Colorizer"]
 	path = vim/pack/light/opt/Colorizer
 	url = https://github.com/chrisbra/Colorizer.git
-[submodule "vim/pack/light/opt/gruvbox"]
-	path = vim/pack/light/opt/gruvbox
-	url = https://github.com/ellisonleao/gruvbox.nvim.git
 [submodule "vim/pack/light/opt/everforest-nvim"]
 	path = vim/pack/light/opt/everforest-nvim
 	url = https://github.com/neanias/everforest-nvim.git

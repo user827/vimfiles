@@ -304,10 +304,6 @@ require('bufferline').setup({
 })
 -- todo bufferline autocmds
 
-require'gruvbox'.setup({
-  contrast = "soft"
-})
-
 require'trouble'.setup({
   modes = {
     lsp = {

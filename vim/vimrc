@@ -109,7 +109,6 @@ if &loadplugins
     packadd! neogit
     packadd! flash
     ""packadd! mini.pairs
-    packadd! gruvbox
     packadd! gruvbox-material
     packadd! everforest-nvim
   else
