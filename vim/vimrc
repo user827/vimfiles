@@ -87,9 +87,11 @@ if &loadplugins
     "packadd! nvim-notify
     packadd! nvim-treesitter
     " not nice without notify
-    ""packadd! nui
-    ""packadd! noice
+    "packadd! nui
+    "packadd! noice
     packadd! nvim-solarized-lua
+    packadd! colorbuddy
+    packadd! neosolarized
     " hurts eyes
     packadd! tokyonight
     " annoying
@@ -107,6 +109,9 @@ if &loadplugins
     packadd! neogit
     packadd! flash
     ""packadd! mini.pairs
+    packadd! gruvbox
+    packadd! gruvbox-material
+    packadd! everforest-nvim
   else
     packadd! vim-solarized8
   endif
@@ -397,9 +402,13 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
     "hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
     "hi SnacksIndent guifg=#3b4261
     ""hi LspInlayHint guifg=#6E738E guibg=#303348
-    hi LspInlayHint guifg=#657b83 guibg=#073642
+    "hi LspInlayHint guifg=#657b83 guibg=#073642
 
-    colorscheme catppuccin-macchiato
+    "colorscheme catppuccin-macchiato
+    "colorscheme gruvbox
+    colorscheme neosolarized
+    hi def link BlinkCmpLabelMatch Special
+    "colorscheme everforest
   endif
 endif
 
