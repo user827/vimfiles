@@ -312,8 +312,6 @@ require'trouble'.setup({
   }
 })
 
-require'colorizer'.setup()
-
 require'mini.icons'.setup()
 require'nvim-web-devicons'.setup()
 

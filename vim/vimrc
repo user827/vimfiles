@@ -52,6 +52,7 @@ let s:use_unicode = !has('win32') && (&termencoding ==# 'utf-8' || &encoding ==#
 " use z] z[ to move betwwen end and beginning of a fold
 """ Choose packages """
 if &loadplugins
+  packadd! Colorizer
   packadd! ale
   packadd! friendly-snippets
   packadd! indentLine
@@ -95,7 +96,6 @@ if &loadplugins
     "packadd! render-markdown
     packadd! grug-far
     packadd! lualine
-    packadd! nvim-colorizer
     packadd! trouble
     packadd! gitsigns
     packadd! catppuccin
