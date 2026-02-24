@@ -582,7 +582,7 @@ augroup LsAutocommands
   autocmd VimResized * execute "normal! \<c-w>="
   "use only pastetoggle
   autocmd InsertLeave  * set nopaste
-augroup
+augroup END
 "}}}
 
 function! s:AzurePipelinesLint()
