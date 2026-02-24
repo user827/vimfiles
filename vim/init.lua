@@ -203,7 +203,9 @@ require('snacks').setup({
   image = {},
   -- otherwise the previous plugins kill the performance. even profiler does not
   -- show why
-  bigfile = {},
+  bigfile = {
+    notify = false,
+  },
   profiler = {},
   toggle = {},
   util = {},
