@@ -189,7 +189,7 @@ require('which-key').setup({
 
 require('snacks').setup({
   animate = {},
-  scroll = {},
+  -- scroll = {},
   explorer = {},
   -- does not flicker unlike nvim-notify
   -- notifier = { },

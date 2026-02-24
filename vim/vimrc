@@ -345,7 +345,7 @@ set showbreak=…
 set showcmd
 set sidescroll=1
 set sidescrolloff=8
-set signcolumn
+set signcolumn=auto
 set smartcase
 set spelllang=en
 set splitright                      " open vertical splits to the right of the current window
