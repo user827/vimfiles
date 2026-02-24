@@ -63,7 +63,8 @@ map(
 )
 
 -- https://github.com/mhinz/vim-galore#saner-behavior-of-n-and-n
--- nah
+-- nah, the idea is that you can choose the direction at the beginning to avoid
+-- needing to keep the shift pressed
 --map("n", "n", "'Nn'[v:searchforward].'zv'", { expr = true, desc = "Next Search Result" })
 --map("x", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
 --map("o", "n", "'Nn'[v:searchforward]", { expr = true, desc = "Next Search Result" })
