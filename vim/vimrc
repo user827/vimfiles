@@ -397,20 +397,19 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
     "colorscheme mysolarized
 
     "colorscheme tokyonight
-    "colorscheme solarized
-    "hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
-    "hi SnacksIndent guifg=#3b4261
-    ""hi LspInlayHint guifg=#6E738E guibg=#303348
-    "hi LspInlayHint guifg=#657b83 guibg=#073642
-
     "colorscheme catppuccin-macchiato
     "colorscheme gruvbox
 
+    colorscheme solarized
+    hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
+    "hi SnacksIndent guifg=#3b4261
+    ""hi LspInlayHint guifg=#6E738E guibg=#303348
+    hi LspInlayHint guifg=#657b83 guibg=#073642
     "colorscheme solarized8
-    colorscheme neosolarized
+    "colorscheme neosolarized
     hi def link BlinkCmpLabelMatch Special
-
     "hi Normal guifg=#93A1A1
+
     "colorscheme everforest
   endif
 endif
