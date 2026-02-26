@@ -104,7 +104,7 @@ if &loadplugins
     "packadd! hardtime
     packadd! mini.icons
     packadd! nvim-web-devicons
-    packadd! bufferline
+    "packadd! bufferline
     packadd! luasnip
     packadd! neogit
     packadd! flash
