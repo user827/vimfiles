@@ -146,11 +146,11 @@ require('flash').setup({
 require('dap-go').setup()
 require('dap').set_log_level('DEBUG')
 
--- require('catppuccin').setup({
---   background = {
---     dark = 'macchiato'
---   }
--- })
+ require('catppuccin').setup({
+   --background = {
+     --dark = 'macchiato'
+   --}
+ })
 
 require('nvim-treesitter').setup({})
 
@@ -284,7 +284,7 @@ require('bufferline').setup({
       .. (diag.warning and icons.Warn .. diag.warning or "")
       return vim.trim(ret)
     end,
-    highlights = require("catppuccin.special.bufferline").get_theme(),
+    --highlights = require("catppuccin.special.bufferline").get_theme(),
     offsets = {
       {
         filetype = "neo-tree",

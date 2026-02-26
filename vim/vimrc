@@ -331,12 +331,12 @@ set mouse=a
 set nojoinspaces
 set noshiftround
 set nostartofline
-"set number "is seen in statusline and takes space
+set number "is seen in statusline and takes space
 set numberwidth=3
 set path+=./include;~
 set path+=/usr/local/include
 set pumheight=10
-set relativenumber
+"set relativenumber " i need real numbers to scan where i am
 set ruler       " show the cursor position all the time, info in statusline but no need in ctrl-g
 set scrolloff=10
 set secure
@@ -405,9 +405,11 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
 
     "colorscheme catppuccin-macchiato
     "colorscheme gruvbox
-    colorscheme neosolarized
+
     "colorscheme solarized8
+    colorscheme neosolarized
     hi def link BlinkCmpLabelMatch Special
+
     "hi Normal guifg=#93A1A1
     "colorscheme everforest
   endif
