@@ -537,7 +537,7 @@ command! -nargs=* UnWrap :call UnSetupWrapping()<CR>
 
 " {{{ Mappings
 "let g:mapleader = ',' "has to be defined before usage!
-nnoremap <SPACE> <Nop>
+" something you can press with both thumbs
 let g:mapleader = ' ' "has to be defined before usage!
 let maplocalleader = '\'
 
