@@ -10,6 +10,9 @@ do
     callback = function(args)
       local client = assert(vim.lsp.get_client_by_id(args.data.client_id))
 
+      -- avoid flickering signcolumn when lsp is on
+      vim.api.nvim_set_option_value('signcolumn', 'yes', { win = 0 })
+
       local keys = {
         { "<leader>cl", function() Snacks.picker.lsp_config() end, desc = "Lsp Info" },
         -- in snacks picker
