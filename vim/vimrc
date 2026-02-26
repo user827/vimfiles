@@ -90,8 +90,8 @@ if &loadplugins
     "packadd! nui
     "packadd! noice
     packadd! nvim-solarized-lua
-    packadd! colorbuddy
-    packadd! neosolarized
+    "packadd! colorbuddy
+    "packadd! neosolarized
     " hurts eyes
     packadd! tokyonight
     " annoying
@@ -109,8 +109,8 @@ if &loadplugins
     packadd! neogit
     packadd! flash
     ""packadd! mini.pairs
-    packadd! gruvbox-material
-    packadd! everforest-nvim
+    "packadd! gruvbox-material
+    "packadd! everforest-nvim
   else
     packadd! vim-solarized8
   endif
