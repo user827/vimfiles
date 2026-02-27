@@ -90,8 +90,8 @@ if &loadplugins
     "packadd! nui
     "packadd! noice
     packadd! nvim-solarized-lua
-    packadd! colorbuddy
-    packadd! neosolarized
+    "packadd! colorbuddy
+    "packadd! neosolarized
     " hurts eyes
     packadd! tokyonight
     " annoying

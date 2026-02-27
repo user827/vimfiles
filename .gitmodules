@@ -124,9 +124,3 @@
 [submodule "vim/pack/light/opt/bufferline"]
 	path = vim/pack/light/opt/bufferline
 	url = https://github.com/akinsho/bufferline.nvim.git
-[submodule "vim/pack/light/opt/neosolarized"]
-	path = vim/pack/light/opt/neosolarized
-	url = https://github.com/svrana/neosolarized.nvim.git
-[submodule "vim/pack/light/opt/colorbuddy"]
-	path = vim/pack/light/opt/colorbuddy
-	url = https://github.com/tjdevries/colorbuddy.nvim.git
