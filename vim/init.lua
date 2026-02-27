@@ -524,7 +524,7 @@ require('blink.cmp').setup({
     -- ghost_text = {
     --   enabled = true
     -- },
-    --list = { selection = { preselect = true, auto_insert = true } },
+    list = { selection = { preselect = false, auto_insert = true } },
   },
 
   cmdline = {
