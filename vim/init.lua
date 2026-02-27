@@ -482,6 +482,9 @@ table.insert(lualine_opts.sections.lualine_c, {
 })
 
 require("lualine").setup(lualine_opts)
+-- see https://github.com/folke/trouble.nvim/issues/569
+vim.api.nvim_set_hl(0, "StatusLine", { link = "lualine_c_normal" })
+
 
 -- listen lsp-progress event and refresh lualine
 vim.api.nvim_create_augroup("lualine_augroup", { clear = true })

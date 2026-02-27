@@ -400,8 +400,18 @@ if $TERM =~# "alacritty\\|tmux\\|xterm\\|kitty" || has('gui_running')
     "colorscheme catppuccin-macchiato
     "colorscheme gruvbox
 
+    " for tabs
+    let g:solarized_statusline = 'flat'
     colorscheme solarized
+    "hi TabLineFill gui=nocombine
+    "hi TabLine gui=nocombine
     hi SignColumn ctermfg=11 guifg=#657b83 guibg=#073642
+    "hi BufferLineFill guifg=#073642
+    "hi Comment guifg=#073642
+    "hi Comment guifg=#073642
+    "hi Normal guifg=#6E738E
+    "hi TablineSel guibg=#6E738E
+    "hi WinSeparator guifg=#6E738E
     "hi SnacksIndent guifg=#3b4261
     ""hi LspInlayHint guifg=#6E738E guibg=#303348
     hi LspInlayHint guifg=#657b83 guibg=#073642
