@@ -717,13 +717,6 @@ fun! s:external_plugins()
   let g:ale_set_loclist = 0
   let g:ale_go_golangci_lint_options = '--fast'
 
-
-  nmap <leader>i <plug>(ale_detail)
-  nnoremap <S-Left> <Plug>(ale_previous_wrap)
-  nnoremap <S-Right> <Plug>(ale_next_wrap)
-
-
-
   let g:ale_fixers = {
         \   'javascript': [
         \       'xo',
@@ -748,29 +741,16 @@ fun! s:external_plugins()
         \}
 
 
-  function! s:adds(res, symbol, num) abort
-    let l:r = a:res
-    if a:num == 0
-      return l:r
-    endif
-
-    if l:r != ''
-      let l:r .= ' '
-    endif
-
-    let l:r .= a:symbol . a:num
-    return l:r
-  endfunction
-
-  function! s:format_lint(errors, warns, infos, hints) abort
-    let res = s:adds('', 'H:', a:hints)
-    let res = s:adds(res, 'I:', a:infos)
-    let res = s:adds(res, 'W:', a:warns)
-    let res = s:adds(res, 'E:', a:errors)
-    return res
-  endfunction
-
-  "breakadd func s:format_lint
+  nnoremap <silent><leader>1 <Cmd>BufferLineGoToBuffer 1<CR>
+  nnoremap <silent><leader>2 <Cmd>BufferLineGoToBuffer 2<CR>
+  nnoremap <silent><leader>3 <Cmd>BufferLineGoToBuffer 3<CR>
+  nnoremap <silent><leader>4 <Cmd>BufferLineGoToBuffer 4<CR>
+  nnoremap <silent><leader>5 <Cmd>BufferLineGoToBuffer 5<CR>
+  nnoremap <silent><leader>6 <Cmd>BufferLineGoToBuffer 6<CR>
+  nnoremap <silent><leader>7 <Cmd>BufferLineGoToBuffer 7<CR>
+  nnoremap <silent><leader>8 <Cmd>BufferLineGoToBuffer 8<CR>
+  nnoremap <silent><leader>9 <Cmd>BufferLineGoToBuffer 9<CR>
+  nnoremap <silent><leader>$ <Cmd>BufferLineGoToBuffer -1<CR>
 
   augroup mylspconf
     au!
