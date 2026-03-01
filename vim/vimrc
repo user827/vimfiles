@@ -595,7 +595,8 @@ cnoremap <c-a> <c-b>
 " this is important
 augroup LsAutocommands
   au!
-  autocmd VimResized * execute "normal! \<c-w>="
+  " in lua
+  "autocmd VimResized * execute "normal! \<c-w>="
   "use only pastetoggle
   autocmd InsertLeave  * set nopaste
 augroup END
