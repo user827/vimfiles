@@ -112,15 +112,20 @@ vim.api.nvim_create_autocmd("FileType", {
   callback = function(ev)
     -- highlighting
     pcall(vim.treesitter.start, ev.buf)
+    --local ft, lang = ev.match, vim.treesitter.language.get_lang(ev.match)
+    --if lang then
+    --  -- highlighting
+    --  pcall(vim.treesitter.start, ev.buf)
 
-    -- indents
-    -- vim.opt.indentexpr = "v:lua.LazyVim.treesitter.indentexpr()"
+    --  -- indents
+    --  -- vim.opt.indentexpr = "v:lua.LazyVim.treesitter.indentexpr()"
 
-    -- folds
-    -- handled by lsp
-    -- if LazyVim.set_default("foldmethod", "expr") then
-    --   LazyVim.set_default("foldexpr", "v:lua.LazyVim.treesitter.foldexpr()")
-    -- end
+    --  -- folds
+    --  -- handled by lsp
+    --  -- if LazyVim.set_default("foldmethod", "expr") then
+    --  --   LazyVim.set_default("foldexpr", "v:lua.LazyVim.treesitter.foldexpr()")
+    --  -- end
+    --end
   end,
 })
 
